@@ -15,10 +15,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':password', $password);
 
-    if ($stmt->execute()) {
-        echo '<h1>Registration successful</h1>';
-    } else {
-        echo '<h1>Registration failed</h1>';
+    try {
+        if ($stmt->execute()) {
+            echo '<h1>Registration successful</h1>';
+        } else {
+            echo '<h1>Registration failed</h1>';
+        }
+    } catch (PDOException $e) {
+        if ($e->getCode() == '23000') {
+            // Check for a duplicate entry error
+            echo '<h1>Username or email already exists. Please choose a different one.</h1>';
+        } else {
+            // Handle other database-related errors
+            echo '<h1>Error: ' . $e->getMessage() . '</h1>';
+        }
     }
 }
 ?>

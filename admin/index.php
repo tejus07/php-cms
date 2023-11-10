@@ -29,6 +29,6 @@ require_once 'admin-navbar.php';
   </div>
 </div>
 
-<?php
+<!-- <?php
 require_once '../includes/footer.php';
-?>
+?> -->
