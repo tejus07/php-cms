@@ -1,0 +1,150 @@
+body {
+    font-family: 'Montserrat', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+}
+
+header {
+    background-color: #f8f8f8;
+    color: #ff6600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+header h3 img {
+    width: 100px;
+    height: auto;
+}
+
+nav {
+    text-align: right;
+}
+
+nav a {
+    color: #ff6600;
+    text-decoration: none;
+    margin: 0 10px;
+    transition: color 0.3s;
+    font-family: 'Montserrat', Arial, sans-serif;
+}
+
+nav a:hover {
+    color: #ffcc66;
+}
+
+footer {
+    background-color: #f8f8f8;
+    color: #ff6600;
+    text-align: center;
+    padding: 10px 0;
+    font-family: 'Montserrat', Arial, sans-serif;
+}
+
+.blogShort {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.blogShort h3 {
+    color: #333;
+    font-size: 24px;
+    margin: 0;
+}
+
+.blogShort em {
+    color: #888;
+    font-size: 14px;
+    margin: 0;
+    display: block;
+}
+
+.blogShort strong {
+    font-weight: bold;
+}
+
+.blogShort a {
+    color: #ff6600;
+    text-decoration: none;
+}
+
+.blogShort a.btn-blog {
+    color: #ffffff;
+}
+
+.blogShort a:hover {
+    text-decoration: underline;
+}
+
+.blogShort article {
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+.btn-blog {
+    background-color: #ff6600;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.btn-blog:hover {
+    background-color: #ffcc66;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+
+.recipe-title {
+    color: #ff6600;
+}
+
+
+.section-title {
+    color: #333;
+}
+
+
+.details-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.detail-item {
+    margin-bottom: 10px;
+}
+
+
+a {
+    color: #ff6600;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.btn {
+    background-color: #ff6600;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #ffcc66;
+}
