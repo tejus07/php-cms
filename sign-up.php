@@ -1,19 +1,20 @@
 <?php
 $title = 'Sign Up';
 require_once 'includes/header.php';
+require_once 'navbar.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     include 'db.php';
     $username = $_POST['username'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash the password for security
+    $password = password_hash($_POST['password1'], PASSWORD_DEFAULT); // Hash the password for security
     $email = $_POST['email'];
 
     // Insert the user data into the "users" table
-    $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)");
+    $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (:username, :email, :password1)");
 
     $stmt->bindParam(':username', $username);
     $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':password', $password);
+    $stmt->bindParam(':password1', $password1);
 
     try {
         if ($stmt->execute()) {
@@ -51,8 +52,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <input type="email" class="form-control" id="email" name="email">
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" name="password">
+                    <label for="password1">Password</label>
+                    <input type="password" class="form-control" id="password1" name="password1">
+                </div>
+                <div class="form-group">
+                    <label for="password2">Re-enter Password</label>
+                    <input type="password" class="form-control" id="password2" name="password2">
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

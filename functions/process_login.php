@@ -14,8 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($user && password_verify($password, $user['password'])) {
         // Correct credentials; create a user session and redirect to a protected page
-        // session_start();
-        // $_SESSION['user_id'] = $user['id']; 
+        session_start();
+        $_SESSION['user_id'] = $user['id']; 
         header('Location: ../index.php');
         exit();
     } else {

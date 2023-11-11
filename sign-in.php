@@ -5,27 +5,12 @@ require_once 'includes/header.php';
 if (isset($_GET['error']) && $_GET['error'] === '1') {
     echo '<p style="color: red;">Invalid username or password. Please try again.</p>';
 }
-
-// if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-//     include 'db.php';
-
-//     $username = $_POST['username'];
-//     $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash the password for security
-//     $email = $_POST['email'];
-
-
-//     if ($stmt->execute()) {
-//         echo '<h1>Sign in successful</h1>';
-//     } else {
-//         echo '<h1>Sign in failed</h1>';
-//     }
-// }
 ?>
 
 <div class="container">
     <div class="row">
         <div class="col">
-            <h2>Sign Up</h2>
+            <h2>Sign In</h2>
         </div>
     </div>
     <div class="row">
