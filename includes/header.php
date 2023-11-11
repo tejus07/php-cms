@@ -12,6 +12,10 @@
 
     <link rel="stylesheet" href="../styles.css">
 
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    
 
     <title>PSH -
         <?php echo $title; ?>

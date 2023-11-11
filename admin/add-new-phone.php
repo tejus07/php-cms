@@ -1,32 +1,8 @@
 <?php
-$title = 'Edit Phone';
+$title = 'Add New Phone';
 require_once '../includes/header.php';
 require_once '../includes/initialize.php';
 require_once 'admin-navbar.php';
-
-$phone_id = (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : '0';
-$query = "SELECT phones.*, 
-phone_specs.processor, phone_specs.RAM, phone_specs.storage, phone_specs.camera, phone_specs.display, phone_specs.battery, phone_specs.operating_system,
-brands.name AS brand_name
-FROM phones
-INNER JOIN phone_specs ON phone_specs.phone_id = phones.id
-INNER JOIN brands ON brands.id = phones.brand_id 
-WHERE phones.id = :phoneId";
-
-$stmt = $pdo->prepare($query);
-$stmt->bindParam(':phoneId', $phone_id, PDO::PARAM_INT);
-$stmt->execute();
-
-$data = $stmt->fetch(PDO::FETCH_ASSOC);
-
-?>
-
-<?php
-// if(empty($_SESSION['user_id'])) {
-// header('Location: login.php');
-// }
-?>
-<?php
 
 $users = [];
 $user_sql = "SELECT id, username FROM Users";
@@ -44,9 +20,9 @@ while ($row = $brands_stmt->fetch(PDO::FETCH_ASSOC)) {
     $brands[$row['id']] = $row['name'];
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $phone_id = $_GET['id'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Extract data from the form
     $name = $_POST['name'];
     $description = $_POST['description-hidden'];
     $release_date = $_POST['release_date'];
@@ -60,56 +36,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $operating_system = $_POST['operating_system'];
     $brand_id = $_POST['brand_id'];
     $user_id = $_POST['user_id'];
-
     try {
-
-        $sql = "UPDATE phones SET 
-        name = :name,
-    description = :description,
-    release_date = :release_date,
-    image_url = :image_url,
-    brand_id = :brand_id,
-    user_id = :user_id
-    WHERE id = :phone_id";
+        $sql = "INSERT INTO phone_specs (phone_id, processor, RAM, storage, camera, display, battery, operating_system) VALUES (:title, :description, :preparation_time, :cooking_time, :servings, :difficulty_level, :cuisine, :course, :instructions, :ingredients, :category_id, :user_id, NOW(), NOW())";
 
         $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':name', $name);
-        $stmt->bindValue(':description', $description);
-        $stmt->bindValue(':release_date', $release_date);
-        $stmt->bindValue(':image_url', $image_url);
-        $stmt->bindValue(':brand_id', $brand_id);
-        $stmt->bindValue(':user_id', $user_id);
-        $stmt->bindValue(':phone_id', $phone_id);
+        $stmt->bindParam(':name', $title);
+        $stmt->bindParam(':description', $description);
+        $stmt->bindParam(':preparation_time', $preparation_time);
+        $stmt->bindParam(':cooking_time', $cooking_time);
+        $stmt->bindParam(':servings', $servings);
+        $stmt->bindParam(':difficulty_level', $difficulty_level);
+        $stmt->bindParam(':cuisine', $cuisine);
+        $stmt->bindParam(':course', $course);
+        $stmt->bindParam(':instructions', $instructions);
+        $stmt->bindParam(':ingredients', $ingredients);
+        $stmt->bindParam(':category_id', $category_id);
+        $stmt->bindParam(':user_id', $user_id);
+
+        
+        echo $sql;
         $stmt->execute();
 
-        $sql1 = "UPDATE phone_specs SET 
-    processor = :processor,
-    RAM = :RAM,
-    storage = :storage,
-    camera = :camera,
-    display = :display,
-    battery = :battery,
-    operating_system = :operating_system
-    WHERE phone_id = :phone_id";
-
-        $stmt = $pdo->prepare($sql1);
-        $stmt->bindValue(':processor', $processor);
-        $stmt->bindValue(':RAM', $RAM);
-        $stmt->bindValue(':storage', $storage);
-        $stmt->bindValue(':camera', $camera);
-        $stmt->bindValue(':display', $display);
-        $stmt->bindValue(':battery', $battery);
-        $stmt->bindValue(':operating_system', $operating_system);
-        $stmt->bindValue(':phone_id', $phone_id);
-        $stmt->execute();
-
-        echo "Phone updated successfully!";
+        echo "Phone added successfully!";
+    
         header("Location: phones.php");
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
 }
+
 ?>
+
 <div class="container-fluid">
     <div class="row">
         <?php
@@ -123,71 +80,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     plugins: 'advlist autolink lists link image charmap print preview anchor',
                     toolbar_mode: 'floating',
                 });
+
+
+                function updateHiddenTextarea() {
+                    var hiddenTextarea = document.getElementById('description-hidden');
+                    var content = tinymce.get('description').getContent();
+                    hiddenTextarea.value = content;
+                }
+
+                document.querySelector('form').addEventListener('submit', updateHiddenTextarea);
             </script>
             <div class="container">
-                <h2 class="edit-phone-title">Edit Phone</h2>
-                <form class="phone-form" action="edit-phone.php?id=<?php echo $data['id'] ?>" method="post">
+                <h2 class="add-phone-title">Add Phone</h2>
+                <form class="phone-form" action="add-new-phone.php" method="post">
                     <div class="form-group">
                         <label for="name">Name:</label>
-                        <input type="text" id="name" name="name" class="form-input" value="<?php echo $data['name'] ?>"
-                            required>
+                        <input type="text" id="name" name="name" class="form-input" required>
                     </div>
                     <div class="form-group">
                         <label for="description">Description:</label>
-                        <textarea id="description-hidden"
-                            name="description-hidden"><?php echo $data['description'] ?></textarea>
+                        <textarea id="description-hidden" name="description-hidden"></textarea>
 
                     </div>
                     <div class="form-group">
                         <label for="release_date">Release Date:</label>
-                        <input type="date" id="release_date" name="release_date" class="form-input"
-                            value="<?php echo $data['release_date'] ?>" required>
+                        <input type="date" id="release_date" name="release_date" class="form-input" required>
                     </div>
                     <div class="form-group">
                         <label for="image_url">Image URL:</label>
-                        <input type="text" id="image_url" name="image_url" class="form-input"
-                            value="<?php echo $data['image_url'] ?>" required>
+                        <input type="text" id="image_url" name="image_url" class="form-input" required>
                     </div>
                     <div class="form-group">
                         <label for="processor">Processor:</label>
-                        <input type="text" id="processor" name="processor" class="form-input"
-                            value="<?php echo $data['processor'] ?>" required>
+                        <input type="text" id="processor" name="processor" class="form-input" required>
                     </div>
                     <div class="form-group">
                         <label for="RAM">RAM:</label>
-                        <input type="number" id="RAM" name="RAM" class="form-input" value="<?php echo $data['RAM'] ?>"
-                            required>
+                        <input type="number" id="RAM" name="RAM" class="form-input" required>
                     </div>
                     <div class="form-group">
                         <label for="storage">Storage:</label>
                         <input type="number" id="storage" name="storage" class="form-input"
-                            value="<?php echo $data['storage'] ?>" required>
+                            required>
                     </div>
                     <div class="form-group">
                         <label for="camera">Camera:</label>
                         <input type="text" id="camera" name="camera" class="form-input"
-                            value="<?php echo $data['camera'] ?>" required>
+                            required>
                     </div>
                     <div class="form-group">
                         <label for="display">Display:</label>
                         <input type="text" id="display" name="display" class="form-input"
-                            value="<?php echo $data['display'] ?>" required>
+                            required>
                     </div>
                     <div class="form-group">
                         <label for="battery">Battery:</label>
                         <input type="text" id="battery" name="battery" class="form-input"
-                            value="<?php echo $data['battery'] ?>" required>
+                           required>
                     </div>
                     <div class="form-group">
                         <label for="operating_system">Operating System:</label>
                         <input type="text" id="operating_system" name="operating_system" class="form-input"
-                            value="<?php echo $data['operating_system'] ?>" required>
+                            required>
                     </div>
                     <div class="form-group">
                         <label for="brand_id">Select Brand</label>
                         <select id="brand_id" name="brand_id">
                             <?php foreach ($brands as $brandId => $brandName): ?>
-                                <option value="<?php echo $brandId; ?>" <?php echo ($brandId == $data['brand_id']) ? 'selected' : ''; ?>>
+                                <option value="<?php echo $brandId; ?>">
                                     <?php echo $brandName; ?>
                                 </option>
                             <?php endforeach; ?>
@@ -196,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="form-group">
                         <label for="user_id">Select User:</label>
-                        <select id="user_id" name="user_id" value="<?php echo $data['user_id'] ?>">
+                        <select id="user_id" name="user_id">
                             <?php foreach ($users as $userId => $username): ?>
                                 <option value="<?php echo $userId; ?>">
                                     <?php echo $username; ?>

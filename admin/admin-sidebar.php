@@ -6,7 +6,6 @@ $pages = [
   'phones.php' => 'Phones',
   'users.php' => 'Users',
 ];
-echo var_dump($current_page);
 ?>
 <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
       <div class="sidebar-sticky pt-3">

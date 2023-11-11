@@ -103,3 +103,8 @@
   /*
  *Admin CSS ends
  */
+
+ .tox-notification.tox-notification--in.tox-notification--warning {
+  display: none;
+  visibility: hidden;
+}
