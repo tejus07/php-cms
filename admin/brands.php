@@ -4,6 +4,12 @@ require_once '../includes/header.php';
 require_once '../includes/initialize.php';
 require_once 'admin-navbar.php';
 
+
+if (empty($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+  }
+
 try {
     $stmt = $pdo->prepare("SELECT * FROM brands");
     $stmt->execute();

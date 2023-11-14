@@ -3,6 +3,16 @@ $title = 'Admin';
 require_once '../includes/header.php';
 require_once '../includes/initialize.php';
 require_once 'admin-navbar.php';
+
+if (session_status() == PHP_SESSION_NONE) {
+  session_start();
+}
+
+
+if (empty($_SESSION['user_id'])) {
+  header("Location: login.php");
+  exit();
+}
 ?>
 <div class="container-fluid">
   <div class="row">

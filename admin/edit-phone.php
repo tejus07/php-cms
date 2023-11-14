@@ -4,6 +4,11 @@ require_once '../includes/header.php';
 require_once '../includes/initialize.php';
 require_once 'admin-navbar.php';
 
+if (empty($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+  }
+
 $phone_id = (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : '0';
 $query = "SELECT phones.*, 
 phone_specs.processor, phone_specs.RAM, phone_specs.storage, phone_specs.camera, phone_specs.display, phone_specs.battery, phone_specs.operating_system,

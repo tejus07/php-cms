@@ -6,7 +6,7 @@ require_once 'navbar.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     include 'db.php';
     $username = $_POST['username'];
-    $password = password_hash($_POST['password1'], PASSWORD_DEFAULT); // Hash the password for security
+    $password1 = password_hash($_POST['password1'], PASSWORD_DEFAULT); // Hash the password for security
     $email = $_POST['email'];
 
     // Insert the user data into the "users" table

@@ -4,6 +4,12 @@ require_once '../includes/header.php';
 require_once '../includes/initialize.php';
 require_once 'admin-navbar.php';
 
+
+if (empty($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+  }
+
 $users = [];
 $user_sql = "SELECT id, username FROM Users";
 $user_stmt = $pdo->query($user_sql);
@@ -22,11 +28,13 @@ while ($row = $brands_stmt->fetch(PDO::FETCH_ASSOC)) {
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Extract data from the form
     $name = $_POST['name'];
     $description = $_POST['description-hidden'];
     $release_date = $_POST['release_date'];
     $image_url = $_POST['image_url'];
+    $brand_id = $_POST['brand_id'];
+    $user_id = $_POST['user_id'];
+
     $processor = $_POST['processor'];
     $RAM = $_POST['RAM'];
     $storage = $_POST['storage'];
@@ -34,33 +42,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $display = $_POST['display'];
     $battery = $_POST['battery'];
     $operating_system = $_POST['operating_system'];
-    $brand_id = $_POST['brand_id'];
-    $user_id = $_POST['user_id'];
     try {
-        $sql = "INSERT INTO phone_specs (phone_id, processor, RAM, storage, camera, display, battery, operating_system) VALUES (:title, :description, :preparation_time, :cooking_time, :servings, :difficulty_level, :cuisine, :course, :instructions, :ingredients, :category_id, :user_id, NOW(), NOW())";
+        // ensure data consistency
+        $pdo->beginTransaction();
 
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':name', $title);
-        $stmt->bindParam(':description', $description);
-        $stmt->bindParam(':preparation_time', $preparation_time);
-        $stmt->bindParam(':cooking_time', $cooking_time);
-        $stmt->bindParam(':servings', $servings);
-        $stmt->bindParam(':difficulty_level', $difficulty_level);
-        $stmt->bindParam(':cuisine', $cuisine);
-        $stmt->bindParam(':course', $course);
-        $stmt->bindParam(':instructions', $instructions);
-        $stmt->bindParam(':ingredients', $ingredients);
-        $stmt->bindParam(':category_id', $category_id);
-        $stmt->bindParam(':user_id', $user_id);
-
-        
-        echo $sql;
+        $stmt = $pdo->prepare("INSERT INTO phones (brand_id, name, description, release_date, image_url, user_id) VALUES (:brand_id, :name, :description, :release_date, :image_url, :user_id)");
+        $stmt->bindParam(':brand_id', $brand_id, PDO::PARAM_INT);
+        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+        $stmt->bindParam(':description', $description, PDO::PARAM_STR);
+        $stmt->bindParam(':release_date', $release_date, PDO::PARAM_STR);
+        $stmt->bindParam(':image_url', $image_url, PDO::PARAM_STR);
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
 
+        $phone_id = $pdo->lastInsertId();
+
+        $stmt = $pdo->prepare("INSERT INTO phone_specs (phone_id, processor, RAM, storage, camera, display, battery, operating_system) VALUES (:phone_id, :processor, :RAM, :storage, :camera, :display, :battery, :operating_system)");
+        $stmt->bindParam(':phone_id', $phone_id, PDO::PARAM_INT);
+        $stmt->bindParam(':processor', $processor, PDO::PARAM_STR);
+        $stmt->bindParam(':RAM', $RAM, PDO::PARAM_INT);
+        $stmt->bindParam(':storage', $storage, PDO::PARAM_INT);
+        $stmt->bindParam(':camera', $camera, PDO::PARAM_STR);
+        $stmt->bindParam(':display', $display, PDO::PARAM_STR);
+        $stmt->bindParam(':battery', $battery, PDO::PARAM_STR);
+        $stmt->bindParam(':operating_system', $operating_system, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $pdo->commit();
+
         echo "Phone added successfully!";
-    
         header("Location: phones.php");
     } catch (PDOException $e) {
+        // Rollback the transaction in case of an error
+        $pdo->rollBack();
         echo "Error: " . $e->getMessage();
     }
 }
@@ -120,28 +134,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="form-group">
                         <label for="storage">Storage:</label>
-                        <input type="number" id="storage" name="storage" class="form-input"
-                            required>
+                        <input type="number" id="storage" name="storage" class="form-input" required>
                     </div>
                     <div class="form-group">
                         <label for="camera">Camera:</label>
-                        <input type="text" id="camera" name="camera" class="form-input"
-                            required>
+                        <input type="text" id="camera" name="camera" class="form-input" required>
                     </div>
                     <div class="form-group">
                         <label for="display">Display:</label>
-                        <input type="text" id="display" name="display" class="form-input"
-                            required>
+                        <input type="text" id="display" name="display" class="form-input" required>
                     </div>
                     <div class="form-group">
                         <label for="battery">Battery:</label>
-                        <input type="text" id="battery" name="battery" class="form-input"
-                           required>
+                        <input type="text" id="battery" name="battery" class="form-input" required>
                     </div>
                     <div class="form-group">
                         <label for="operating_system">Operating System:</label>
-                        <input type="text" id="operating_system" name="operating_system" class="form-input"
-                            required>
+                        <input type="text" id="operating_system" name="operating_system" class="form-input" required>
                     </div>
                     <div class="form-group">
                         <label for="brand_id">Select Brand</label>

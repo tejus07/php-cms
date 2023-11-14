@@ -4,6 +4,11 @@ require_once '../includes/header.php';
 require_once '../includes/initialize.php';
 require_once 'admin-navbar.php';
 
+if (empty($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+  }
+
 try {
     $stmt = $pdo->prepare("SELECT phones.*, brands.name AS brand_name, brands.logo_url FROM phones INNER JOIN brands ON phones.brand_id = brands.id");
     $stmt->execute();
