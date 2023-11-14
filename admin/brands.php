@@ -4,11 +4,14 @@ require_once '../includes/header.php';
 require_once '../includes/initialize.php';
 require_once 'admin-navbar.php';
 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
-if (empty($_SESSION['user_id'])) {
-    header("Location: login.php");
+if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+    header("Location: ./login.php");
     exit();
-  }
+}
 
 try {
     $stmt = $pdo->prepare("SELECT * FROM brands");

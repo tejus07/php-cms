@@ -1,7 +1,33 @@
+<form method="GET">
+    <label for="sort">Sort by:</label>
+    <select name="sort" id="sort">
+        <option value="name_ASC">Name (Ascending)</option>
+        <option value="name_DESC">Name (Descending)</option>
+    </select>
+    <button type="submit">Sort</button>
+</form>
 <?php
 require './includes/initialize.php';
+
 try {
-    $stmt = $pdo->prepare("SELECT phones.*, brands.name AS brand_name, brands.logo_url FROM phones INNER JOIN brands ON phones.brand_id = brands.id");
+    $sortOrder = isset($_GET['sort']) ? $_GET['sort'] : 'name_ASC'; // Get the selected sorting option or default to 'name_ASC'
+
+    // Split the sort order into column and sorting direction
+    $sort = explode('_', $sortOrder);
+
+    $sortColumn = isset($sort[0]) ? $sort[0] : 'name'; // Get sort column or default to 'name'
+    $sortDirection = isset($sort[1]) ? $sort[1] : 'ASC'; // Get sort direction or default to 'ASC'
+
+    // Check if the sort column and direction are valid before using them in the query
+    if (!in_array($sortColumn, ['name', 'release_date']) || !in_array($sortDirection, ['ASC', 'DESC'])) {
+        throw new Exception("Invalid sorting parameters.");
+    }
+
+    $stmt = $pdo->prepare("SELECT phones.*, brands.name AS brand_name 
+                            FROM phones 
+                            INNER JOIN brands ON phones.brand_id = brands.id 
+                            ORDER BY $sortColumn " . ($sortDirection === 'ASC' ? 'ASC' : 'DESC')); // Order by the selected column and direction
+
     $stmt->execute();
 
     $phones = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -9,8 +35,7 @@ try {
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
-?>
-<?php
+
 foreach ($phones as $phone) {
     echo '<div class="card">';
     echo '<svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img"

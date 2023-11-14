@@ -1,17 +1,13 @@
 <?php
 $title = 'Edit Phone';
 require_once '../includes/header.php';
-require_once '../includes/initialize.php';
-require_once 'admin-navbar.php';
+require '../db.php';
+require '../navbar.php';
 
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
-if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
-    header("Location: ./login.php");
+if (empty($_SESSION['user_id'])) {
+    header("Location: login.php");
     exit();
-}
+  }
 
 $phone_id = (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : '0';
 $query = "SELECT phones.*, 

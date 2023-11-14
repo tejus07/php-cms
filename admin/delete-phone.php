@@ -1,10 +1,14 @@
 <?php
 require_once '../includes/initialize.php';
 
-if (empty($_SESSION['user_id'])) {
-    header("Location: login.php");
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+    header("Location: ./login.php");
     exit();
-  }
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_phone'])) {
     $phone_id = $_POST['phone_id'];

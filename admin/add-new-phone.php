@@ -5,10 +5,10 @@ require_once '../includes/initialize.php';
 require_once 'admin-navbar.php';
 
 
-if (empty($_SESSION['user_id'])) {
-    header("Location: login.php");
+if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+    header("Location: ../sign-in.php");
     exit();
-  }
+}
 
 $users = [];
 $user_sql = "SELECT id, username FROM Users";
