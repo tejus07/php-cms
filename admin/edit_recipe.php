@@ -47,9 +47,15 @@ while ($row = $category_stmt->fetch(PDO::FETCH_ASSOC)) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    // $imageFileName = $_FILES['uploadFile']['name'];
+    // $imageTempName = $_FILES['uploadFile']['tmp_name'];
+    // $folder = "../uploads/images/".$imageFileName;
+    // move_uploaded_file($imageTempName, $folder);
+
     $recipe_id = $_GET['id'];
     $title = $_POST['title'];
     $description = $_POST['description-hidden'];
+    // $image_url = $folder;
     $preparation_time = $_POST['preparation_time'];
     $cooking_time = $_POST['cooking_time'];
     $servings = $_POST['servings'];
@@ -80,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':title', $title);
     $stmt->bindParam(':description', $description);
+    // $stmt->bindParam(':image_url', $image_url);
     $stmt->bindParam(':preparation_time', $preparation_time);
     $stmt->bindParam(':cooking_time', $cooking_time);
     $stmt->bindParam(':servings', $servings);
@@ -146,6 +153,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <textarea id="description-hidden" name="description-hidden"><?php echo $data['description']?></textarea>
 
         </div>
+        <?php if (!empty($data['image_url'])) {?>
+        <div class="form-group">
+            <label for="image_url">Uploaded Image:</label>
+            <span class="image-container"><img src="<?php echo $data['image_url']?>" width="100"></span>
+            <!-- <input type="file" id="image_url" name="uploadFile" class="form-input" value="<?php echo $image_url?>" required> -->
+        </div>
+        <?php }?>
         <div class="form-group">
             <label for="preparation_time">Preparation Time (minutes):</label>
             <input type="number" id="preparation_time" name="preparation_time" class="form-input" value="<?php echo $data['preparation_time']?>" required>

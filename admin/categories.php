@@ -19,6 +19,7 @@ $results = $pdo->query('SELECT * FROM categories');
     <main>
     <div class="user-list-container">
         <h2 class="user-list-title">Categories List</h2>
+        <button class="add-new-recipe-btn edit-button"><a href="add_new_category.php">Add New</a></button>
         <ul class="user-list">
         <?php
         while ($post = $results->fetch(PDO::FETCH_ASSOC)) {
