@@ -156,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if (!empty($data['image_url'])) {?>
         <div class="form-group">
             <label for="image_url">Uploaded Image:</label>
-            <span class="image-container"><img src="<?php echo $data['image_url']?>" width="100"></span>
+            <span class="image-container"><img src="../<?php echo $data['image_url']?>" width="100"></span>
             <!-- <input type="file" id="image_url" name="uploadFile" class="form-input" value="<?php echo $image_url?>" required> -->
         </div>
         <?php }?>

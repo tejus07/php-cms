@@ -17,6 +17,7 @@ $query = "SELECT
     R.description AS recipe_description,
     R.preparation_time,
     R.cooking_time,
+    R.image_url,
     R.servings,
     R.difficulty_level,
     R.cuisine,
@@ -53,6 +54,7 @@ $data = $stmt->fetch(PDO::FETCH_ASSOC);
 <main>
 <div class="container">
         <h1 class="recipe-title"><?php echo $data['recipe_title']; ?></h1>
+		<img src="<?php echo $data['image_url'] ?>" width="500">
         <p class="recipe-description"><?php echo $data['recipe_description']; ?></p>
 
         <h2 class="section-title">Recipe Details</h2>

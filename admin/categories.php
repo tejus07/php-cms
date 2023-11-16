@@ -27,8 +27,11 @@ $results = $pdo->query('SELECT * FROM categories');
             <li class="user-item">
                 <span class="user-name"><?php echo $post['category_name']?></span>
                 <div class="user-actions">
-                    <button class="edit-button">Edit</button>
-                    <button class="delete-button">Delete</button>
+                    <button class="edit-button"><a href="edit_category.php?id=<?php echo $post['category_id']?>">Edit</a></button>
+                    <form method="post" action="delete_category.php">
+                        <input type="hidden" name="category_id" value="<?php echo $post['category_id']?>">
+                        <input type="submit" class="delete-button" name="delete_category" value="Delete Category" onclick="return confirm('Are you sure you want to delete this Category?');">
+                    </form>
                 </div>
             </li>
 		<?php } ?>
