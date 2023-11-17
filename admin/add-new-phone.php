@@ -5,32 +5,30 @@ require_once '../includes/initialize.php';
 require_once '../functions/function.php';
 require_once 'admin-navbar.php';
 
-
-
-if (session_status() == PHP_SESSION_NONE) {
+if (session_status() == PHP_SESSION_NONE):
     session_start();
-}
+endif;
 
-if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])):
     header("Location: ./login.php");
     exit();
-}
+endif;
 
 $users = [];
 $user_sql = "SELECT id, username FROM Users";
 $user_stmt = $pdo->query($user_sql);
 
-while ($row = $user_stmt->fetch(PDO::FETCH_ASSOC)) {
+while ($row = $user_stmt->fetch(PDO::FETCH_ASSOC)):
     $users[$row['id']] = $row['username'];
-}
+endwhile;
 
 $brands = [];
 $brands_sql = "SELECT id, name FROM brands";
 $brands_stmt = $pdo->query($brands_sql);
 
-while ($row = $brands_stmt->fetch(PDO::FETCH_ASSOC)) {
+while ($row = $brands_stmt->fetch(PDO::FETCH_ASSOC)):
     $brands[$row['id']] = $row['name'];
-}
+endwhile;
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
