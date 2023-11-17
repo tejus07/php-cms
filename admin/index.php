@@ -1,5 +1,4 @@
 <?php
-session_start();
 include_once '../shared/database.php';
 
 $database = new Database();

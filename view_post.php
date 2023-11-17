@@ -13,6 +13,7 @@ $query = "SELECT
     R.title AS recipe_title,
     R.instructions,
     R.ingredients,
+    R.image_url,
     C.title, 
     U.username AS user_username,
     U.email AS user_email
@@ -38,17 +39,21 @@ $data = $stmt->fetch(PDO::FETCH_ASSOC);
 <?php include('shared/header.php');?>
 
 <main>
-<div class="container">
-        <h1 class="recipe-title"><?php echo $data['recipe_title']; ?></h1>
-        <!-- <p class="recipe-description">
-        </p> -->
+    <div class="previous-page">
+        <a class="btn" href="index.php">Back to Recipes</a>
+    </div>
+<div class="container view-recipe">
 
-        <h2 class="section-title">User Information</h2>
-        <ul class="details-list">
-            <li class="detail-item">Pizza reciepe by: 
-        <p class="user-info">Username: <?php echo $data['user_username']; ?></p>
-        <p class="user-info">Email: <?php echo $data['user_email']; ?></p></li>
-        </ul>
+    <div class="image-container">        
+    <img src="<?php echo $data['image_url'] ?>" width="500">
+    </div>
+    <div class="details-container">
+        <h1 class="recipe-title"><?php echo $data['recipe_title']; ?></h1>
+        
+            
+        <div class="detail-item">Pizza reciepe by: <?php echo $data['user_username']; ?></div>
+        <p class="user-info">Email: <?php echo $data['user_email']; ?></p>
+        
 
         <h2 class="section-title">Instructions</h2>
         <p class="instructions"><?php echo $data['instructions']; ?></p>
@@ -59,8 +64,10 @@ $data = $stmt->fetch(PDO::FETCH_ASSOC);
         <h2 class="section-title">Category</h2>
         <p class="category"><?php echo $data['title']; ?></p>
 
-        <a class="btn" href="index.php">Back to Recipes</a>
+        
     </div>
+    
+</div>
 
 </main>
 

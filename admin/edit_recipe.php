@@ -131,7 +131,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="instructions">Instructions:</label>
             <textarea id="instructions" name="instructions" value="<?php echo $data['instructions']?>"></textarea>
         </div>
-        
+        <?php if (!empty($data['image_url'])) {?>
+        <div class="form-group">
+            <label for="image_url">Uploaded Image:</label>
+            <span class="image-container"><img src="../<?php echo $data['image_url']?>" width="100"></span>
+        </div>
+        <?php }?>
             <input type="submit" value="Save" class="submit-button">
         </form>
     </div>

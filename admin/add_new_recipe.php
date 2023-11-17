@@ -5,7 +5,24 @@ if(empty($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
 }
+function file_is_an_image($temporary_path, $new_path)
+{
+    $allowed_mime_types = ['image/gif', 'image/jpeg', 'image/png'];
+    $allowed_file_extensions = ['gif', 'jpg', 'png', 'jpeg'];
 
+    $actual_file_info = getimagesize($temporary_path);
+    if ($actual_file_info === false) {
+        return false;
+    }
+
+    $actual_mime_type = $actual_file_info['mime'];
+    $actual_file_extension = pathinfo($new_path, PATHINFO_EXTENSION);
+
+    $file_extension_is_valid = in_array($actual_file_extension, $allowed_file_extensions);
+    $mime_type_is_valid = in_array($actual_mime_type, $allowed_mime_types);
+
+    return $file_extension_is_valid && $mime_type_is_valid;
+}
 $database = new Database();
 $pdo = $database->getConnection();
 
@@ -26,10 +43,30 @@ while ($row = $category_stmt->fetch(PDO::FETCH_ASSOC)) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $image_file = $_FILES['uploadFile'];
+
+    if ($image_file['error'] === UPLOAD_ERR_OK):
+        $file_type = exif_imagetype($image_file['tmp_name']);
+
+        if (file_is_an_image($image_file['tmp_name'], $image_file['name'])) {
+            $uploads_dir = 'uploads/images/';
+            $image_filename = uniqid() . '_' . basename($image_file['name']);
+            $target_file = $uploads_dir . $image_filename;
+
+            if (move_uploaded_file($image_file['tmp_name'], "../".$target_file)) {
+                $image_url = $target_file;
+            } else {
+                throw new Exception("Failed to move the uploaded file.");
+            }
+        } else {
+            throw new Exception("Invalid file format. Please upload a valid image file.");
+        }
+    endif;
     $title = $_POST['title'];
     $ingredients = $_POST['ingredients'];
     $instructions = $_POST['instructions'];
-    $image_url = ""; // Add logic to handle image upload if needed
+    // $image_url = ""; // Add logic to handle image upload if needed
     $user_id = $_POST['user_id'];
     $category_id = $_POST['category_id'];
 
@@ -98,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="add-recipe-container">
         <h2 class="add-recipe-title">Add New Pizza Recipe</h2>
-        <form class="recipe-form" action="add_new_recipe.php" method="post">
+        <form class="recipe-form" action="add_new_recipe.php" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="title">Title:</label>
             <input type="text" id="title" name="title" class="form-input" required>
@@ -127,7 +164,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="instructions">Instructions:</label>
             <textarea id="instructions" name="instructions"></textarea>
         </div>
-
+        <div class="form-group">
+            <label for="image_url">Upload Image:</label>
+            <input type="file" id="image_url" name="uploadFile" class="form-input">
+        </div>
             <input type="submit" value="Add Recipe" class="submit-button">
         </form>
     </div>

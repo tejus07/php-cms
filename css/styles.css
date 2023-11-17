@@ -7,24 +7,26 @@ body {
 
 header {
     background-color: #f8f8f8;
-    color: #ff6600;
+    color: #131b5d;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     padding: 10px 20px;
 }
-
+header h3 {
+    font-size: xx-large;
+}
 header h3 img {
     width: 100px;
     height: auto;
 }
 
 nav {
-    text-align: right;
+    margin: 50px auto;
 }
 
 nav a {
-    color: #ff6600;
+    color: #131b5d;
     text-decoration: none;
     margin: 0 10px;
     transition: color 0.3s;
@@ -32,26 +34,44 @@ nav a {
 }
 
 nav a:hover {
-    color: #ffcc66;
+    color: #5564f6;
 }
 
 footer {
     background-color: #f8f8f8;
-    color: #ff6600;
+    color: #131b5d;
     text-align: center;
     padding: 10px 0;
     font-family: 'Montserrat', Arial, sans-serif;
 }
-
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 80vw;
+    margin: 20px auto;
+}
+.container.view-recipe {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.recipe-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    max-width: 80vw;
+    margin: 50px auto;
+}
 .blogShort {
     background-color: #fff;
     border: 1px solid #ddd;
     padding: 20px;
     margin-bottom: 20px;
+    width: 20%;
 }
 
 .blogShort h3 {
-    color: #333;
+    color: #b1c2b6;
     font-size: 24px;
     margin: 0;
 }
@@ -68,7 +88,7 @@ footer {
 }
 
 .blogShort a {
-    color: #ff6600;
+    color: #131b5d;
     text-decoration: none;
 }
 
@@ -86,7 +106,7 @@ footer {
 }
 
 .btn-blog {
-    background-color: #ff6600;
+    background-color: #131b5d;
     color: #fff;
     padding: 10px 20px;
     text-decoration: none;
@@ -94,7 +114,7 @@ footer {
 }
 
 .btn-blog:hover {
-    background-color: #ffcc66;
+    background-color: #5564f6;
 }
 
 .container {
@@ -105,12 +125,12 @@ footer {
 
 
 .recipe-title {
-    color: #ff6600;
+    color: #131b5d;
 }
 
 
 .section-title {
-    color: #333;
+    color: #b1c2b6;
 }
 
 
@@ -125,7 +145,7 @@ footer {
 
 
 a {
-    color: #ff6600;
+    color: #131b5d;
     text-decoration: none;
 }
 
@@ -134,7 +154,7 @@ a:hover {
 }
 
 .btn {
-    background-color: #ff6600;
+    background-color: #131b5d;
     color: #fff;
     padding: 10px 20px;
     border: none;
@@ -146,5 +166,5 @@ a:hover {
 }
 
 .btn:hover {
-    background-color: #ffcc66;
+    background-color: #5564f6;
 }
