@@ -11,7 +11,7 @@ try {
 	$query = 'SELECT * FROM recipes';
 
 	if ($isUserLoggedIn) {
-		$sortOrder = isset($_GET['sort']) ? $_GET['sort'] : 'title__DESC';
+		$sortOrder = isset($_GET['sort']) ? $_GET['sort'] : 'title__ASC';
 
 		$sort = explode('__', $sortOrder);
 
@@ -48,8 +48,8 @@ try {
     		<select name="sort" id="sort">
         		<option value="title__ASC" <?php echo ($sortOrder === 'title__ASC') ? 'selected' : ''; ?>>Title: A to Z</option>
         		<option value="title__DESC" <?php echo ($sortOrder === 'title__DESC') ? 'selected' : ''; ?>>Title: Z to A</option>
-        		<option value="created_at__ASC" <?php echo ($sortOrder === 'created_at__ASC') ? 'selected' : ''; ?>>Date: New to Old</option>
-        		<option value="created_at__DESC" <?php echo ($sortOrder === 'created_at__DESC') ? 'selected' : ''; ?>>Date: Old to New</option>
+        		<option value="created_at__DESC" <?php echo ($sortOrder === 'created_at__DESC') ? 'selected' : ''; ?>>Date: New to Old</option>
+        		<option value="created_at__ASC" <?php echo ($sortOrder === 'created_at__ASC') ? 'selected' : ''; ?>>Date: Old to New</option>
         		<option value="preparation_time__ASC" <?php echo ($sortOrder === 'preparation_time__ASC') ? 'selected' : ''; ?>>Preparation Time: Quickest to Longest</option>
         		<option value="preparation_time__DESC" <?php echo ($sortOrder === 'preparation_time__DESC') ? 'selected' : ''; ?>>Preparation Time: Longest to Quickest</option>
     		</select>
