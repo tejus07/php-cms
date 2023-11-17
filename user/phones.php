@@ -38,6 +38,7 @@ try {
                 <div
                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Phones</h1>
+                    <a href="add-new-phone.php" class="btn btn-primary">Add New Phone</a>
                 </div>
                 <table class="table">
                     <thead>

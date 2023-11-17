@@ -63,7 +63,8 @@ $projectName = $parts[3];
                     User Actions
                 </a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="./user/phones.php">My Posts</a>
+                    <a class="dropdown-item" href="/<?php echo $projectName; ?>/user/phones.php">My Posts</a>
+                    <a class="dropdown-item" href="/<?php echo $projectName; ?>/user/info.php">My Info</a>
                 </div>
             </li>
         </ul>

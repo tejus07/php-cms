@@ -7,7 +7,7 @@ require '../navbar.php';
 if (empty($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
-  }
+}
 
 $phone_id = (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : '0';
 $query = "SELECT phones.*, 
@@ -16,29 +16,18 @@ brands.name AS brand_name
 FROM phones
 INNER JOIN phone_specs ON phone_specs.phone_id = phones.id
 INNER JOIN brands ON brands.id = phones.brand_id 
-WHERE phones.id = :phoneId";
+WHERE phones.id = :phoneId
+AND phones.user_id = :userId";
 
 $stmt = $pdo->prepare($query);
 $stmt->bindParam(':phoneId', $phone_id, PDO::PARAM_INT);
+$stmt->bindParam(':userId', $_SESSION['user_id'], PDO::PARAM_INT);
 $stmt->execute();
 
 $data = $stmt->fetch(PDO::FETCH_ASSOC);
-
-?>
-
-<?php
-// if(empty($_SESSION['user_id'])) {
-// header('Location: login.php');
-// }
-?>
-<?php
-
-$users = [];
-$user_sql = "SELECT id, username FROM Users";
-$user_stmt = $pdo->query($user_sql);
-
-while ($row = $user_stmt->fetch(PDO::FETCH_ASSOC)) {
-    $users[$row['id']] = $row['username'];
+if (empty($data)) {
+    header("Location: phones.php");
+    exit();
 }
 
 $brands = [];
@@ -64,18 +53,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $battery = $_POST['battery'];
     $operating_system = $_POST['operating_system'];
     $brand_id = $_POST['brand_id'];
-    $user_id = $_POST['user_id'];
 
     try {
-
+        $pdo->beginTransaction();
         $sql = "UPDATE phones SET 
         name = :name,
-    description = :description,
-    release_date = :release_date,
-    image_url = :image_url,
-    brand_id = :brand_id,
-    user_id = :user_id
-    WHERE id = :phone_id";
+        description = :description,
+        release_date = :release_date,
+        image_url = :image_url,
+        brand_id = :brand_id
+        WHERE id = :phone_id";
 
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':name', $name);
@@ -83,19 +70,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindValue(':release_date', $release_date);
         $stmt->bindValue(':image_url', $image_url);
         $stmt->bindValue(':brand_id', $brand_id);
-        $stmt->bindValue(':user_id', $user_id);
         $stmt->bindValue(':phone_id', $phone_id);
         $stmt->execute();
 
-        $sql1 = "UPDATE phone_specs SET 
-    processor = :processor,
-    RAM = :RAM,
-    storage = :storage,
-    camera = :camera,
-    display = :display,
-    battery = :battery,
-    operating_system = :operating_system
-    WHERE phone_id = :phone_id";
+        $sql1 = "UPDATE phone_specs SET
+        processor = :processor,
+        RAM = :RAM,
+        storage = :storage,
+        camera = :camera,
+        display = :display,
+        battery = :battery,
+        operating_system = :operating_system
+        WHERE phone_id = :phone_id";
 
         $stmt = $pdo->prepare($sql1);
         $stmt->bindValue(':processor', $processor);
@@ -108,19 +94,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindValue(':phone_id', $phone_id);
         $stmt->execute();
 
+        $pdo->commit();
         echo "Phone updated successfully!";
         header("Location: phones.php");
     } catch (PDOException $e) {
+        $pdo->rollBack();
         echo "Error: " . $e->getMessage();
     }
 }
 ?>
 <div class="container-fluid">
     <div class="row">
-        <?php
-        require 'admin-sidebar.php'
-            ?>
-
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
             <script>
                 tinymce.init({
@@ -194,17 +178,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <?php foreach ($brands as $brandId => $brandName): ?>
                                 <option value="<?php echo $brandId; ?>" <?php echo ($brandId == $data['brand_id']) ? 'selected' : ''; ?>>
                                     <?php echo $brandName; ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="user_id">Select User:</label>
-                        <select id="user_id" name="user_id" value="<?php echo $data['user_id'] ?>">
-                            <?php foreach ($users as $userId => $username): ?>
-                                <option value="<?php echo $userId; ?>">
-                                    <?php echo $username; ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
