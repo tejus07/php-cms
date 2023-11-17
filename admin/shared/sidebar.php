@@ -16,12 +16,15 @@ if(empty($_SESSION['user_id'])) {
     <div class="admin-panel">
         <div class="sidebar">
             <h1>Admin Panel</h1>
-            <ul>
+            <h4 class="view-website-logo"><a href="../" target="_blank">Preview Website</a></h4>
+        <a href="logout.php">Logout</a>
+        </div>
+        <div class="nav-bar">
+        <ul>
                 <li><a href="./">Dashboard</a></li>
                 <li><a href="users.php">Users</a></li>
                 <li><a href="recipes.php">Recipes</a></li>
                 <li><a href="categories.php">Categories</a></li>
                 <!-- <li><a href="#">Comments</a></li> -->
-            </ul>
-            <h4 class="view-website-logo"><a href="../" target="_blank">Preview Website</a></h4>
-        </div>
+        </ul>
+</div>

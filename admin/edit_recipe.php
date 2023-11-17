@@ -83,22 +83,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Admin Panel</title>
 </head>
 <body>
-    <div class="admin-panel">
-        <div class="sidebar">
-            <h1>Admin Panel</h1>
-            <ul>
-                <li><a href="./">Dashboard</a></li>
-                <li><a href="users.php">Users</a></li>
-                <li><a href="recipes.php">Recipes</a></li>
-                <li><a href="categories.php">Categories</a></li>
-                <!-- <li><a href="#">Comments</a></li> -->
-            </ul>
-        </div>
+<?php include('shared/sidebar.php');?>
 <script>
     tinymce.init({
-        selector: 'textarea#instructions-hidden',
+        selector: 'textarea#instructions',
         plugins: 'advlist autolink lists link image charmap print preview anchor',
         toolbar_mode: 'floating',
+        setup: function (editor) {
+            editor.on('init', function () {
+                // Get the existing instructions from PHP
+                var existingInstructions = <?php echo json_encode($data['instructions']); ?>;
+                // Set the existing instructions into the editor
+                editor.setContent(existingInstructions);
+            });
+        }
     });
 </script>
 
@@ -131,11 +129,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="form-group">
             <label for="instructions">Instructions:</label>
-            <textarea id="instructions-hidden" name="instructions-hidden"><?php echo $data['instructions']?></textarea>
-
+            <textarea id="instructions" name="instructions" value="<?php echo $data['instructions']?>"></textarea>
         </div>
         
-            <input type="submit" value="Add Recipe" class="submit-button">
+            <input type="submit" value="Save" class="submit-button">
         </form>
     </div>
 

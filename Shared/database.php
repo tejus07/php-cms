@@ -4,7 +4,7 @@ class Database {
     private $host = 'localhost';
     private $user = 'root';
     private $password = '';
-    private $dbname = 'pizza_pals';
+    private $dbname = 'pizzaPals';
 
     public function getConnection() {
         $dsn = 'mysql:host='. $this->host .';dbname='. $this->dbname;

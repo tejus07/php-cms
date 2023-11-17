@@ -67,20 +67,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Admin Panel</title>
 </head>
 <body>
-    <div class="admin-panel">
-        <div class="sidebar">
-            <h1>Admin Panel</h1>
-            <ul>
-                <li><a href="./">Dashboard</a></li>
-                <li><a href="users.php">Users</a></li>
-                <li><a href="recipes.php">Recipes</a></li>
-                <li><a href="categories.php">Categories</a></li>
-                <!-- <li><a href="#">Comments</a></li> -->
-            </ul>
-        </div>
+<?php include('shared/sidebar.php');?>
 <script>
     tinymce.init({
-        selector: 'textarea#instructions-hidden',
+        selector: 'textarea#instructions',
         plugins: 'advlist autolink lists link image charmap print preview anchor',
         toolbar_mode: 'floating',
     });
@@ -89,8 +79,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     function updateHiddenTextarea() {
         var hiddenTextarea = document.getElementById('instructions-hidden');
         var content = tinymce.get('instructions').getContent();
-        hiddenTextarea.value = content;
+
+        // Extract plain text from HTML content
+        var tempDiv = document.createElement('div');
+        tempDiv.innerHTML = content;
+        var plainText = tempDiv.textContent || tempDiv.innerText || '';
+
+        hiddenTextarea.value = plainText.trim();
+
+        // Update visible textarea for submission
+        var visibleTextarea = document.getElementById('instructions');
+        visibleTextarea.value = plainText.trim();
     }
+
 
     document.querySelector('form').addEventListener('submit', updateHiddenTextarea);
 </script>
@@ -124,9 +125,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>        
         <div class="form-group">
             <label for="instructions">Instructions:</label>
-            <textarea id="instructions-hidden" name="instructions-hidden"></textarea>
-
+            <textarea id="instructions" name="instructions"></textarea>
         </div>
+
             <input type="submit" value="Add Recipe" class="submit-button">
         </form>
     </div>
