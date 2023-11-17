@@ -1,6 +1,7 @@
 <?php
 $title = 'Edit Phone';
 require_once '../includes/header.php';
+require_once '../functions/function.php';
 require '../db.php';
 require '../navbar.php';
 
@@ -44,7 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
     $description = $_POST['description-hidden'];
     $release_date = $_POST['release_date'];
-    $image_url = $_POST['image_url'];
     $processor = $_POST['processor'];
     $RAM = $_POST['RAM'];
     $storage = $_POST['storage'];
@@ -53,8 +53,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $battery = $_POST['battery'];
     $operating_system = $_POST['operating_system'];
     $brand_id = $_POST['brand_id'];
-
+    $image_file = $_FILES['image_url'];
+    // todo: fix if user not uploaded image, it will get reset.
+    $image_url = null;
     try {
+        if ($image_file['error'] === UPLOAD_ERR_OK) {
+            $file_type = exif_imagetype($image_file['tmp_name']);
+
+            if (file_is_an_image($image_file['tmp_name'], $image_file['name'])) {
+                $uploads_dir = '../uploads/';
+                $image_filename = uniqid() . '_' . basename($image_file['name']);
+                $target_file = $uploads_dir . $image_filename;
+
+                if (move_uploaded_file($image_file['tmp_name'], $target_file)) {
+                    $image_url = $image_filename;
+                } else {
+                    throw new Exception("Failed to move the uploaded file.");
+                }
+            } else {
+                throw new Exception("Invalid file format. Please upload a valid image file.");
+            }
+        }
         $pdo->beginTransaction();
         $sql = "UPDATE phones SET 
         name = :name,
@@ -98,8 +117,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Phone updated successfully!";
         header("Location: phones.php");
     } catch (PDOException $e) {
-        $pdo->rollBack();
         echo "Error: " . $e->getMessage();
+    } catch (Exception $e) {
+        $error_message = $e->getMessage(); 
+        echo "<div class='error-message'>$error_message</div>";
     }
 }
 ?>
@@ -115,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </script>
             <div class="container">
                 <h2 class="edit-phone-title">Edit Phone</h2>
-                <form class="phone-form" action="edit-phone.php?id=<?php echo $data['id'] ?>" method="post">
+                <form class="phone-form" action="edit-phone.php?id=<?php echo $data['id'] ?>" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="name">Name:</label>
                         <input type="text" id="name" name="name" class="form-input" value="<?php echo $data['name'] ?>"
@@ -133,9 +154,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             value="<?php echo $data['release_date'] ?>" required>
                     </div>
                     <div class="form-group">
-                        <label for="image_url">Image URL:</label>
-                        <input type="text" id="image_url" name="image_url" class="form-input"
-                            value="<?php echo $data['image_url'] ?>" required>
+                        <label for="image_url">Upload Image:</label>
+                        <?php if (!empty($data['image_url'])): ?>
+                            <img src="../uploads/<?php echo $data['image_url']; ?>" alt="Uploaded Image" width="200">
+                        <?php else: ?>
+                            <p>No image uploaded</p>
+                        <?php endif; ?>
+                        <input type="file" id="image_url" name="image_url" class="form-input">
                     </div>
                     <div class="form-group">
                         <label for="processor">Processor:</label>

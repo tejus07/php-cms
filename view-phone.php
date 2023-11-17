@@ -2,7 +2,7 @@
 $phone_id = (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : '0';
 
 require './includes/initialize.php';
-require_once 'includes/header.php';
+require_once './includes/header.php';
 require 'navbar.php';
 try {
 
@@ -18,7 +18,7 @@ try {
     $stmt->execute();
 
     $phone = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -28,12 +28,15 @@ try {
         <div class="col">
             <?php
             echo '<div class="card">';
-            echo '<svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img"
+            if ($phone['image_url']) {
+                echo '<img src="./uploads/' . $phone['image_url'] . '" class="bd-placeholder-img card-img-top" width="100%" height="180" alt="' . $phone['name'] . '">';
+            } else {
+                echo '<svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img"
             aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
             <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#6c757d"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">'.$phone['name'].'</text>
+            <rect width="100%" height="100%" fill="#6c757d"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">' . $phone['name'] . '</text>
         </svg>';
-            // echo '<img src="' . $phone['image_url'] . '" class="bd-placeholder-img card-img-top" width="100%" height="180" alt="' . $phone['name'] . '">';
+            }
             echo '<div class="card-body">';
             echo '<h5 class="card-title">' . $phone['name'] . '</h5>';
             echo '<p class="card-text">' . $phone['description'] . '</p>';
@@ -52,4 +55,3 @@ try {
         </div>
     </div>
 </div>
-

@@ -53,11 +53,15 @@ try {
 <?php
 foreach ($phones as $phone) {
     echo '<div class="card">';
-    echo '<svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img"
+    if ($phone['image_url']) {
+        echo '<img src="./uploads/' . $phone['image_url'] . '" class="bd-placeholder-img card-img-top" width="100%" height="180" alt="' . $phone['name'] . '">';
+    } else {
+        echo '<svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img"
     aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
     <title>Placeholder</title>
     <rect width="100%" height="100%" fill="#6c757d"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">' . $phone['name'] . '</text>
 </svg>';
+    }
     echo '<div class="card-body">';
     echo '<div class="card-body">';
     echo '<h5 class="card-title">' . $phone['name'] . '</h5>';

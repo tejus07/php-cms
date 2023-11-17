@@ -2,6 +2,7 @@
 $title = 'Add New Phone';
 require_once '../includes/header.php';
 require '../db.php';
+require_once '../functions/function.php';
 require '../navbar.php';
 
 if (session_status() == PHP_SESSION_NONE) {
@@ -34,9 +35,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
     $description = $_POST['description-hidden'];
     $release_date = $_POST['release_date'];
-    $image_url = $_POST['image_url'];
     $brand_id = $_POST['brand_id'];
     $user_id = $_POST['user_id'];
+    // todo: fix if user not uploaded image, it will get reset.
+    $image_url = null;
+    $image_file = $_FILES['image_url'];
 
     $processor = $_POST['processor'];
     $RAM = $_POST['RAM'];
@@ -46,6 +49,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $battery = $_POST['battery'];
     $operating_system = $_POST['operating_system'];
     try {
+        if ($image_file['error'] === UPLOAD_ERR_OK) {
+            $file_type = exif_imagetype($image_file['tmp_name']);
+
+            if (file_is_an_image($image_file['tmp_name'], $image_file['name'])) {
+                $uploads_dir = '../uploads/';
+                $image_filename = uniqid() . '_' . basename($image_file['name']);
+                $target_file = $uploads_dir . $image_filename;
+
+                if (move_uploaded_file($image_file['tmp_name'], $target_file)) {
+                    $image_url = $image_filename;
+                } else {
+                    throw new Exception("Failed to move the uploaded file.");
+                }
+            } else {
+                throw new Exception("Invalid file format. Please upload a valid image file.");
+            }
+        }
         // ensure data consistency
         $pdo->beginTransaction();
 
@@ -74,11 +94,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->commit();
 
         echo "Phone added successfully!";
-        header("Location: phones.php");
+        // header("Location: phones.php");
     } catch (PDOException $e) {
         // Rollback the transaction in case of an error
         $pdo->rollBack();
         echo "Error: " . $e->getMessage();
+    } catch (Exception $e) {
+        $error_message = $e->getMessage();
+        echo "<div class='error-message'>$error_message</div>";
     }
 }
 
@@ -105,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </script>
             <div class="container">
                 <h2 class="add-phone-title">Add Phone</h2>
-                <form class="phone-form" action="add-new-phone.php" method="post">
+                <form class="phone-form" action="add-new-phone.php" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="name">Name:</label>
                         <input type="text" id="name" name="name" class="form-input" required>
@@ -120,8 +143,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="date" id="release_date" name="release_date" class="form-input" required>
                     </div>
                     <div class="form-group">
-                        <label for="image_url">Image URL:</label>
-                        <input type="text" id="image_url" name="image_url" class="form-input" required>
+                        <label for="image_url">Upload Image:</label>
+                        <?php if (!empty($data['image_url'])): ?>
+                            <img src="../uploads/<?php echo $data['image_url']; ?>" alt="Uploaded Image" width="200">
+                        <?php else: ?>
+                            <p>No image uploaded</p>
+                        <?php endif; ?>
+                        <input type="file" id="image_url" name="image_url" class="form-input">
                     </div>
                     <div class="form-group">
                         <label for="processor">Processor:</label>
