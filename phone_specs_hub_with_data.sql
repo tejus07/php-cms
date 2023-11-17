@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 17, 2023 at 04:44 AM
+-- Generation Time: Nov 17, 2023 at 06:11 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -85,13 +85,13 @@ CREATE TABLE `phones` (
 --
 
 INSERT INTO `phones` (`id`, `brand_id`, `name`, `description`, `release_date`, `image_url`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 'iPhone 13', '<p><em>The latest iPhone with advanced features.s</em></p>', '2022-09-15', '6556d726748d7_71GLMJ7TQiL._SX679_.jpg', 1, '2023-11-15 03:29:35', '2023-11-17 02:59:50'),
-(2, 2, 'Galaxy S21', 'Flagship smartphone with powerful performance.', '2021-01-29', NULL, 1, '2023-11-15 03:29:35', '2023-11-17 03:12:00'),
-(3, 3, 'Pixel 6', 'Google\'s latest Pixel phone with impressive camera capabilities.', '2021-10-19', NULL, 1, '2023-11-15 03:29:35', '2023-11-17 03:12:08'),
+(1, 1, 'iPhone 13', '<p><em>The latest iPhone with advanced features.s</em></p>', '2022-09-15', '6556edae6a308_iphone 13.jpg', 1, '2023-11-15 03:29:35', '2023-11-17 04:35:58'),
+(2, 2, 'Galaxy S21', '<p>Flagship smartphone with powerful performance.</p>', '2021-01-29', NULL, 1, '2023-11-15 03:29:35', '2023-11-17 04:37:45'),
+(3, 3, 'Pixel 6', '<p>Google\'s latest Pixel phone with impressive camera capabilities.</p>', '2021-10-19', '6556edf07613e_pixel6.png', 1, '2023-11-15 03:29:35', '2023-11-17 04:37:04'),
 (4, 4, 'Mate 40 Pro', 'Huawei\'s flagship with cutting-edge technology.', '2020-10-22', 'https://example.com/mate40pro_image.png', 1, '2023-11-15 03:29:35', '2023-11-15 03:29:35'),
 (5, 5, 'OnePlus 9', 'High-performance smartphone for enthusiasts.', '2021-03-23', 'https://example.com/oneplus9_image.png', 1, '2023-11-15 03:29:35', '2023-11-15 03:29:35'),
 (6, 1, 'iPhone 14', 'The next generation iPhone with advanced features.', '2023-09-20', 'https://example.com/iphone14_image.png', 1, '2023-11-15 03:29:35', '2023-11-15 03:29:35'),
-(7, 2, 'Galaxy S22', '<p>Flagship smartphone with enhanced performance.</p>', '2023-01-30', '6556dd2c270ae_s22.jpg', 1, '2023-11-15 03:29:35', '2023-11-17 03:25:32'),
+(7, 2, 'Galaxy S22', '<p>Flagship smartphone with enhanced performance.</p>', '2023-01-30', '6556ee13c0755_s22.jpg', 1, '2023-11-15 03:29:35', '2023-11-17 04:37:39'),
 (8, 3, 'Pixel 7', 'Google\'s latest Pixel phone with cutting-edge technology.', '2023-10-25', 'https://example.com/pixel7_image.png', 1, '2023-11-15 03:29:35', '2023-11-15 03:29:35'),
 (9, 4, 'Mate 50 Pro', 'Huawei\'s flagship with innovative features.', '2023-11-01', 'https://example.com/mate50pro_image.png', 1, '2023-11-15 03:29:35', '2023-11-15 03:29:35');
 
@@ -151,9 +151,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `role`, `created_at`, `updated_at`) VALUES
-(1, 'tejus07', '$2y$10$NLHbx2n1z8muJE.A0qBPGOWYDdpELiJFTxsS8KNMTH3hD61bFwEJK', 'tejussahi07@gmail.com', 1, '2023-11-15 03:30:10', '2023-11-15 03:30:10'),
-(3, 'noor', '$2y$10$NLHbx2n1z8muJE.A0qBPGOWYDdpELiJFTxsS8KNMTH3hD61bFwEJK', 'noor@gmail.com', 2, '2023-11-15 03:30:10', '2023-11-15 03:30:10'),
-(6, 'asd', '$2y$10$T3BxIFLar/cixZPW/InPqeoQI3cqFX.8f1VRoVrPi1iX4nEAneLMq', 'tejussahi07@gmail.com', 2, '2023-11-15 03:30:10', '2023-11-15 03:30:10');
+(1, 'john', '$2y$10$NLHbx2n1z8muJE.A0qBPGOWYDdpELiJFTxsS8KNMTH3hD61bFwEJK', 'john@gmail.com', 1, '2023-11-15 03:30:10', '2023-11-17 04:35:20');
 
 --
 -- Indexes for dumped tables
