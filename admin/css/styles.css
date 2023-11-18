@@ -1,0 +1,240 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.sidebar {
+    background-color: #333;
+    color: #fff;
+    width: 250px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.label {
+    font-weight: bold;
+    padding: 10px 15px;
+    color: #fff;
+    background-color: #4a4a4a;
+}
+
+.sidebar-menu a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #fff;
+}
+
+.sidebar-menu a:hover {
+    background-color: #4a4a4a;
+}
+
+ul.submenu {
+    display: none;
+    list-style: none;
+    padding-left: 20px;
+}
+
+ul.submenu.open {
+    display: block;
+}
+
+.sidebar-menu ul li {
+    border-bottom: none;
+}
+
+.admin-container {
+    margin-left: 250px;
+    padding: 20px;
+    width: calc(100% - 250px);
+    box-sizing: border-box;
+    display: flex;
+    flex: 1;
+}
+
+.admin-content {
+    flex: 1;
+    padding: 20px;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background-color: #333;
+    color: #fff;
+    width: 100%;
+}
+
+.admin-content {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.vehicle-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.vehicle-table th,
+.vehicle-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.vehicle-table th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.vehicle-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.vehicle-table tbody tr:hover {
+    background-color: #e2e2e2;
+    cursor: pointer;
+}
+
+.vehicle-table tbody tr:hover td {
+    color: #fff;
+}
+
+.vehicle-table tbody tr:hover td {
+    background-color: #333;
+}
+
+
+.vehicle-table tbody tr:hover td button a, .vehicle-table tbody tr:hover td input[type="submit"] {
+    background-color: #fff;
+    color: #333;
+}
+
+form.add-new-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="file"],
+select,
+textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+label[for="delete_image"] {
+    margin: 20px 0;
+}
+
+input[type="submit"] {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #444;
+}
+
+
+.login-container {
+    max-width: 300px;
+    margin: 120px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.form-submit {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-submit:hover {
+    background-color: #444;
+}
+
+a.home-page-link {
+    text-decoration: none;
+    color: #333;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+.edit-btn a {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+
+.edit-btn {
+    background-color: unset;
+    border: none;
+}
