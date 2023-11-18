@@ -1,2 +1,2 @@
-# php-cms
-These Repo have 4 projects in different branches
+# RentAndGo
+This branch has code for PHP CMS RentAndGo
