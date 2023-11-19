@@ -23,34 +23,7 @@ try {
     $category_stmt = $category_obj->getListOfCategories();
     $user_stmt = $user_obj->getListOfUsers();
 
-// try {
-    // $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-
-    // $users = [];
-    // $user_sql = "SELECT user_id, username FROM Users";
-    // $user_stmt = $pdo->query($user_sql);
-
-    // while ($row = $user_stmt->fetch(PDO::FETCH_ASSOC)) {
-    //     $users[$row['user_id']] = $row['username'];
-    // }
-
-    // $brands = [];
-    // $brands_sql = "SELECT brand_id, brand_name FROM Brands";
-    // $brands_stmt = $pdo->query($brands_sql);
-
-    // while ($row = $brands_stmt->fetch(PDO::FETCH_ASSOC)) {
-    //     $brands[$row['brand_id']] = $row['brand_name'];
-    // }
-    
-    // $vehicles_sql = "SELECT COUNT(*) AS total_entries FROM vehicles;";
-    // $vehicles_stmt = $pdo->query($vehicles_sql);
-    // $result = $vehicles_stmt->fetch(PDO::FETCH_ASSOC);
-
-    // $totalEntries = $result['total_entries'];
-    // $total = $totalEntries + 1;
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $image_url = null;
 
