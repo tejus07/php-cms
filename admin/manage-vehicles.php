@@ -34,41 +34,18 @@ include_once 'common/isUserLoggedIn.php';
                 </thead>
                 <tbody>
                     <?php
-                    $host = 'localhost';
-                    $dbname = "rentandgodb";
-                    $username = 'root';
-                    $password = '';
+
+                    @include_once 'common/database.php';
+                    @include_once 'class/vehicle.php';
 
                     try {
-                        $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-                        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                        $users = [];
-                        $user_sql = "SELECT user_id, username FROM Users";
-                        $user_stmt = $pdo->query($user_sql);
-                    
-                        while ($row = $user_stmt->fetch(PDO::FETCH_ASSOC)) {
-                            $users[$row['user_id']] = $row['username'];
-                        }
+                        $conn = new Database();
 
-                        $brands = [];
-                        $brands_sql = "SELECT brand_id, brand_name FROM Brands";
-                        $brands_stmt = $pdo->query($brands_sql);
-                    
-                        while ($row = $brands_stmt->fetch(PDO::FETCH_ASSOC)) {
-                            $brands[$row['brand_id']] = $row['brand_name'];
-                        }
-                    
-                        $categories = [];
-                        $category_sql = "SELECT category_id, category_name FROM Categories";
-                        $category_stmt = $pdo->query($category_sql);
-                    
-                        while ($row = $category_stmt->fetch(PDO::FETCH_ASSOC)) {
-                            $categories[$row['category_id']] = $row['category_name'];
-                        }
+                        $pdo = $conn->setupConnection();
                         
-
-                        $stmt = $pdo->query("SELECT * FROM Vehicles"); 
+                        $vehicle_obj = new Vehicle($pdo);
+                        $stmt = $vehicle_obj->getListOfVehicles();
 
                         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             echo "<tr>";
@@ -78,9 +55,9 @@ include_once 'common/isUserLoggedIn.php';
                             ?>
                             <img src="../<?php echo $row['image_url'] ?>" width="100">
                             <?php }
-                            echo "</td><td>" . $users[$row['owner_id']] . "</td>";
-                            echo "<td>" . $brands[$row['brand_id']] . "</td>";
-                            echo "<td>" . $categories[$row['category_id']] . "</td>";
+                            echo "</td><td>" . $row['username'] . "</td>";
+                            echo "<td>" . $row['brand_name'] . "</td>";
+                            echo "<td>" . $row['category_name'] . "</td>";
                             echo "<td>" . $row['model'] . "</td>";
                             echo "<td>" . $row['description'] . "</td>";
                             echo "<td>" . $row['rental_rate'] . "</td>";
