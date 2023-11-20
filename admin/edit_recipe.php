@@ -1,7 +1,9 @@
 <?php 
 include_once '../shared/database.php';
+include_once 'shared/image_handler.php';
 
 $database = new Database();
+$imageHandler = new ImageHandler();
 
 $pdo = $database->getConnection();
 
@@ -47,15 +49,19 @@ while ($row = $category_stmt->fetch(PDO::FETCH_ASSOC)) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // $imageFileName = $_FILES['uploadFile']['name'];
-    // $imageTempName = $_FILES['uploadFile']['tmp_name'];
-    // $folder = "../uploads/images/".$imageFileName;
-    // move_uploaded_file($imageTempName, $folder);
+    $image_url = $data['image_url'];
+
+    if (!empty($_FILES['uploadFile'])) {
+
+        $returned_value = $imageHandler->upload_image($_FILES['uploadFile']);
+        if($returned_value) {
+            $image_url = $returned_value;
+        }
+    }
 
     $recipe_id = $_GET['id'];
     $title = $_POST['title'];
     $description = $_POST['description-hidden'];
-    // $image_url = $folder;
     $preparation_time = $_POST['preparation_time'];
     $cooking_time = $_POST['cooking_time'];
     $servings = $_POST['servings'];
@@ -80,13 +86,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         instructions = :instructions,
         ingredients = :ingredients,
         category_id = :category_id,
-        user_id = :user_id
+        user_id = :user_id,
+        image_url = :image_url
         WHERE recipe_id = :recipe_id";
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':title', $title);
     $stmt->bindParam(':description', $description);
-    // $stmt->bindParam(':image_url', $image_url);
+    $stmt->bindParam(':image_url', $image_url);
     $stmt->bindParam(':preparation_time', $preparation_time);
     $stmt->bindParam(':cooking_time', $cooking_time);
     $stmt->bindParam(':servings', $servings);
@@ -143,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="add-recipe-container">
         <h2 class="add-recipe-title">Add Recipe</h2>
-        <form class="recipe-form" action="edit_recipe.php?id=<?php echo $data['recipe_id']?>" method="post">
+        <form class="recipe-form" action="edit_recipe.php?id=<?php echo $data['recipe_id']?>" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="title">Title:</label>
             <input type="text" id="title" name="title" class="form-input" value="<?php echo $data['title']?>" required>
@@ -157,9 +164,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="form-group">
             <label for="image_url">Uploaded Image:</label>
             <span class="image-container"><img src="../<?php echo $data['image_url']?>" width="100"></span>
-            <!-- <input type="file" id="image_url" name="uploadFile" class="form-input" value="<?php echo $image_url?>" required> -->
         </div>
         <?php }?>
+
+        <div class="form-group">
+            <label for="image_url">Upload Image:</label>
+            <input type="file" id="image_url" name="uploadFile" class="form-input">
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', ()=>{
+                document.getElementById('image_url').addEventListener('change', function() {
+                    const fileInput = document.getElementById('image_url');
+                    const filePath = fileInput.value;
+                    const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+
+                    if (!allowedExtensions.exec(filePath)) {
+                        alert('Please upload files having extensions .jpg/.jpeg/.png/.gif only.');
+                        fileInput.value = '';
+                        throw new Error('Incorrect file format');
+                    }
+                });
+            });
+        </script>
+
         <div class="form-group">
             <label for="preparation_time">Preparation Time (minutes):</label>
             <input type="number" id="preparation_time" name="preparation_time" class="form-input" value="<?php echo $data['preparation_time']?>" required>
