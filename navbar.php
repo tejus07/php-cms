@@ -25,7 +25,7 @@ $projectName = $parts[3];
 
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="<?php echo '/'.$projectName.'/' ?>index.php">Phone Specs Hub</a>
+    <a class="navbar-brand" href="<?php echo '/' . $projectName . '/' ?>index.php">Phone Specs Hub</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -50,7 +50,7 @@ $projectName = $parts[3];
                     <?php
                     if (count($brands) > 0) {
                         foreach ($brands as $brand) {
-                            echo "<a class=\"dropdown-item\" href=\"#\">" . $brand['name'] . "</a>";
+                            echo "<a class=\"dropdown-item\" href=\"brands.php?id=" . $brand['id'] . "\">" . $brand['name'] . "</a>";
                         }
                     } else {
                         echo "No records found.";
@@ -76,11 +76,11 @@ $projectName = $parts[3];
 
             // Check if the 'user_id' session variable is set and not empty
             if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
-                $logoutPath = '/'.$projectName.'/index.php?action=logout';
+                $logoutPath = '/' . $projectName . '/index.php?action=logout';
                 echo '<a href="' . $logoutPath . '" class="btn btn-primary my-2 mr-sm-2">Log out</a>';
             } else {
-                echo '<a href="/'.$projectName.'/sign-in.php" class="btn btn-primary my-2 mr-sm-2">Sign In</a>
-                <a href="/'.$projectName.'/sign-up.php" class="btn btn-primary my-2 mr-sm-2">Sign Up</a>';
+                echo '<a href="/' . $projectName . '/sign-in.php" class="btn btn-primary my-2 mr-sm-2">Sign In</a>
+                <a href="/' . $projectName . '/sign-up.php" class="btn btn-primary my-2 mr-sm-2">Sign Up</a>';
             }
             ?>
 

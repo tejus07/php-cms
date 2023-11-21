@@ -3,8 +3,8 @@ require './includes/initialize.php';
 
 try {
     $sortOrder = isset($_GET['sort']) ? $_GET['sort'] : 'name-ASC'; // Get the selected sorting option or default to 'name_ASC'
-
     $sort = explode('-', $sortOrder);
+    $search = isset($_GET['search']) ? $_GET['search'] : ''; // Get the search query
 
     $sortColumn = isset($sort[0]) ? $sort[0] : 'name'; // Get sort column or default to 'name'
     $sortDirection = isset($sort[1]) ? $sort[1] : 'ASC'; // Get sort direction or default to 'ASC'

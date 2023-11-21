@@ -10,9 +10,7 @@ require 'navbar.php';
         <div class="col">
             <?php require_once 'phone-list.php' ?>
         </div>
-
     </div>
-
 </div>
 
 <?php
