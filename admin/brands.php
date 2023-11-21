@@ -23,25 +23,6 @@ try {
     echo "Error: " . $e->getMessage();
 }
 ?>
-
-<!-- <div class="content">
-    <div class="user-list-container">
-        <h2 class="user-list-title">Categories List</h2>
-        <ul class="user-list">
-        <?php
-        foreach ($brands as $brand) {
-            ?>
-            <li class="user-item">
-                <span class="user-name"><?php echo $brand['name'] ?></span>
-                <div class="user-actions">
-                    <button class="edit-button">Edit</button>
-                    <button class="delete-button">Delete</button>
-                </div>
-            </li>
-        <?php } ?>
-        </ul>
-    </div>
-</div> -->
 <div class="container-fluid">
     <div class="row">
         <?php
@@ -52,6 +33,7 @@ try {
             <div
                 class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">Brands</h1>
+                <a href="add-new-brand.php" class="btn btn-primary">Add New Brand</a>
             </div>
             <table class="table">
                 <thead>
@@ -70,8 +52,7 @@ try {
                         echo '<td>' . $brand['name'] . '</td>';
                         echo '<td>' . $brand['description'] . '</td>';
                         echo '<td>
-                        <a href="#" class="btn btn-primary">Edit</a>
-                        <a href="#" class="btn btn-danger">Delete</a>
+                        <a href="edit-brand.php?id=' . $brand['id'] . '" class="btn btn-primary">Edit</a>
                         </td>';
                         echo '</tr>';
                     }
