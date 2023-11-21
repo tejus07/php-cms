@@ -148,3 +148,59 @@ a:hover {
 .btn:hover {
     background-color: #ffcc66;
 }
+
+
+nav {
+    background-color: #333; /* Background color */
+}
+
+.navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Display as a flex container */
+}
+
+.navbar li {
+    margin: 0;
+}
+
+.navbar a {
+    display: block;
+    padding: 1em 1.5em;
+    text-decoration: none;
+    color: white; /* Link text color */
+    transition: background-color 0.3s; /* Smooth color transition on hover */
+}
+
+.navbar a:hover {
+    background-color: #555; /* Background color on hover */
+}
+
+/* Dropdown styles */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #333;
+    min-width: 470px;
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown:hover .dropdown-content {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 130px;
+    left: -100%;
+    justify-content: space-evenly;
+}
