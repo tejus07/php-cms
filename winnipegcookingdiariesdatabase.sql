@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2023 at 09:45 PM
+-- Generation Time: Nov 21, 2023 at 04:07 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -68,7 +68,7 @@ CREATE TABLE `recipes` (
   `recipe_id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `description` text DEFAULT NULL,
-  `image_url` varchar(400) NOT NULL,
+  `image_url` varchar(400) DEFAULT NULL,
   `preparation_time` int(11) DEFAULT NULL,
   `cooking_time` int(11) DEFAULT NULL,
   `servings` int(11) DEFAULT NULL,
