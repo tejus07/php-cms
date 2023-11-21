@@ -258,8 +258,13 @@ button.add-new-recipe-btn.edit-button a {
     justify-content: space-between;
 }
 
-.form-group input, .form-group textarea, .form-group select, .form-group .image-container {
+.form-group input, .form-group textarea, .form-group select, .form-group .image-container, .form-group .delete-checkbox {
     width: 70%;
+}
+
+.form-group input#delete_image {
+    display: flex;
+    width: unset;
 }
 
 .form-group span.image-container {

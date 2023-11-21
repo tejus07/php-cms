@@ -51,12 +51,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $image_url = $data['image_url'];
 
-    if (!empty($_FILES['uploadFile'])) {
+    if (!empty($_FILES['uploadFile']) && !isset($_POST['delete_image'])) {
 
         $returned_value = $imageHandler->upload_image($_FILES['uploadFile']);
         if($returned_value) {
             $image_url = $returned_value;
         }
+    } else {
+        $image_path = "../" . $image_url;
+        if (file_exists($image_path)) {
+            unlink($image_path);
+            echo "Image deleted successfully!";
+        } else {
+            echo "Image not found.";
+        }
+
+        $image_url = null;
     }
 
     $recipe_id = $_GET['id'];
@@ -164,6 +174,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="form-group">
             <label for="image_url">Uploaded Image:</label>
             <span class="image-container"><img src="../<?php echo $data['image_url']?>" width="100"></span>
+        </div>
+        <div class="form-group">
+            <label for="delete_image">Delete Image: </label>
+            <span class="delete-checkbox">
+                <input type="checkbox" id="delete_image" name="delete_image" value="delete">
+            </span>            
         </div>
         <?php }?>
 
