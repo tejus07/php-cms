@@ -23,6 +23,9 @@ $directoryPath = dirname($currentFilePath);
 $parts = explode('/', $directoryPath);
 $projectName = $parts[3];
 $search = isset($_GET['search']) ? $_GET['search'] : '';
+$sortOrder = isset($_GET['sort']) ? $_GET['sort'] : 'name-ASC';
+$brandFilter = isset($_GET['brandFilter']) ? $_GET['brandFilter'] : '';
+$page = 1;
 
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -51,7 +54,7 @@ $search = isset($_GET['search']) ? $_GET['search'] : '';
                     <?php
                     if (count($brands) > 0) {
                         foreach ($brands as $brand) {
-                            echo "<a class=\"dropdown-item\" href=\"/". $projectName."/brands.php?id=" . $brand['id'] . "\">" . $brand['name'] . "</a>";
+                            echo "<a class=\"dropdown-item\" href=\"/" . $projectName . "/brands.php?id=" . $brand['id'] . "\">" . $brand['name'] . "</a>";
                         }
                     } else {
                         echo "No records found.";
@@ -70,7 +73,11 @@ $search = isset($_GET['search']) ? $_GET['search'] : '';
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0" method="GET" action="search-results.php">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" value="<?php echo htmlspecialchars($search, ENT_QUOTES, 'UTF-8'); ?>">
+            <input type="hidden" name="sort" value="<?php echo $sortOrder; ?>">
+            <input type="hidden" name="brandFilter" value="<?php echo $brandFilter; ?>">
+            <input type="hidden" name="page" value="<?php echo $page; ?>">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search"
+                value="<?php echo htmlspecialchars($search, ENT_QUOTES, 'UTF-8'); ?>">
             <button class="btn btn-outline-success my-2 mr-sm-2" type="submit">Search</button>
         </form>
 

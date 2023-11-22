@@ -37,4 +37,31 @@ function file_is_an_image($temporary_path, $new_path)
 
     return $file_extension_is_valid && $mime_type_is_valid;
 }
+
+function generateLink($link, $search, $sortOrder, $brandFilter = '', $page = 1)
+{
+    $link .= '?';
+
+    // Check if search parameter is present
+    $hasSearch = !empty($search);
+
+    // Add search parameter if available
+    if ($hasSearch) {
+        $link .= 'search=' . urlencode($search);
+    }
+
+    // Add sort parameter
+    $link .= '&sort=' . $sortOrder;
+
+    // Add brand filter parameter if available
+    if (!empty($brandFilter)) {
+        $link .= '&brandFilter=' . $brandFilter;
+    }
+
+    // Add pagination parameter
+    $link .= '&page=' . $page;
+
+    return $link;
+}
+
 ?>

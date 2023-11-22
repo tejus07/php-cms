@@ -1,28 +1,41 @@
 <?php
 $title = 'Search';
-require_once 'includes/header.php';
-require 'db.php';
-require 'navbar.php';
+require_once './includes/header.php';
+require './includes/db.php';
+require './functions/function.php';
+require './navbar.php';
 try {
     $search = isset($_GET['search']) ? trim(filter_input(INPUT_GET, 'search', FILTER_SANITIZE_STRING)) : '';
+
+    // Fetch sort parameters
     $sortOrder = isset($_GET['sort']) ? $_GET['sort'] : 'name-ASC';
     $sort = explode('-', $sortOrder);
     $sortColumn = isset($sort[0]) ? $sort[0] : 'name';
     $sortDirection = isset($sort[1]) ? $sort[1] : 'ASC';
-    $resultsPerPage = 1;
+
+    // Fetch filter parameters
+    // $phoneFilter = isset($_GET['phoneFilter']) ? $_GET['phoneFilter'] : '';
+    $brandFilter = isset($_GET['brandFilter']) ? $_GET['brandFilter'] : '';
+
+
+    $resultsPerPage = 10;
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
     $offset = ($page - 1) * $resultsPerPage;
 
     $stmt = $pdo->prepare("SELECT phones.*, brands.name AS brand_name 
                         FROM phones 
                         INNER JOIN brands ON phones.brand_id = brands.id 
-                        WHERE phones.name LIKE :search OR brands.name LIKE :search
-                        ORDER BY $sortColumn " . ($sortDirection === 'ASC' ? 'ASC' : 'DESC') . "
+                        WHERE (phones.name LIKE :search OR brands.name LIKE :search)
+                        " . ($brandFilter ? 'AND (brands.id = :brandFilter)' : '') .
+        "ORDER BY $sortColumn " . ($sortDirection === 'ASC' ? 'ASC' : 'DESC') . "
                         LIMIT :offset, :limit");
 
     $stmt->bindValue(':search', '%' . $search . '%');
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->bindValue(':limit', $resultsPerPage, PDO::PARAM_INT);
+    if ($brandFilter):
+        $stmt->bindValue(':brandFilter', $brandFilter, PDO::PARAM_INT);
+    endif;
     $stmt->execute();
 
     $phones = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -38,6 +51,9 @@ try {
         $brands[$row['id']] = $row['name'];
     }
 
+    $paginationLink = 'search-results.php?search=' . urlencode($search) . '&sort=' . $sortOrder;
+    $filterLink = $paginationLink . '&brandFilter=' . $brandFilter;
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -45,7 +61,10 @@ try {
 <div class="container">
     <div class="row">
         <div class="col">
-            <form method="GET">
+            <form method="GET" action="search-results.php">
+            <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
+            <input type="hidden" name="brandFilter" value="<?php echo $brandFilter; ?>">
+            <input type="hidden" name="page" value="<?php echo $page; ?>">
                 <label for="sort">Sort by:</label>
                 <select name="sort" id="sort">
                     <?php
@@ -72,26 +91,23 @@ try {
     </div>
     <div class="row">
         <div class="col">
-            <form method="GET" action="search-results.php">
-                <!-- <label for="phoneFilter">Filter by Phone:</label> -->
-                <!-- <select name="phoneFilter" id="phoneFilter"> -->
-
-                <!-- Add more options as needed -->
-                <!-- </select> -->
-                <!-- <br> -->
+            <form method="GET" action="<?php echo generateLink('search-results.php',$search, $sortOrder, $brandFilter, $page) ?>">
+                <input type="hidden" name="search" value="<?php echo htmlentities($search); ?>">
                 <label for="brandFilter">Filter by Brand:</label>
                 <select name="brandFilter" id="brandFilter">
                     <?php
+                    echo "<option value='' " . ($brandFilter === '' ? 'selected' : '') . ">All</option>"; // All option
                     foreach ($brands as $id => $brandName) {
-                        echo "<option value='" . $id . "'>$brandName</option>";
+                        $selected = ($id == $brandFilter) ? 'selected' : ''; // Highlight selected option
+                        echo "<option value='" . $id . "' $selected>$brandName</option>";
                     }
                     ?>
                 </select>
                 <br>
-                <button type="submit">Search</button>
+                <button type="submit">Apply Filter</button>
             </form>
-
         </div>
+
         <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
             <?php
             foreach ($phones as $phone) {
@@ -118,22 +134,25 @@ try {
             ?>
         </div>
     </div>
-    <div class="row">
+    <!-- <div class="row"> -->
         <div class="col">
             <div class="pagination">
-                <?php if ($page > 1): ?>
-                    <a href="?page=<?php echo $page - 1; ?>">Previous</a>
-                <?php endif; ?>
+                <?php
+                // Previous page link
+                if ($page > 1) {
+                    echo '<a href="' . $paginationLink . '&page=' . ($page - 1) . '">Previous</a>';
+                }
 
-                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                    <a href="?page=<?php echo $i; ?>">
-                        <?php echo $i; ?>
-                    </a>
-                <?php endfor; ?>
+                // Page numbers
+                for ($i = 1; $i <= $totalPages; $i++) {
+                    echo '<a href="' . $paginationLink . '&page=' . $i . '">' . $i . '</a>';
+                }
 
-                <?php if ($page < $totalPages): ?>
-                    <a href="?page=<?php echo $page + 1; ?>">Next</a>
-                <?php endif; ?>
+                // Next page link
+                if ($page < $totalPages) {
+                    echo '<a href="' . $paginationLink . '&page=' . ($page + 1) . '">Next</a>';
+                }
+                ?>
             </div>
         </div>
     </div>
