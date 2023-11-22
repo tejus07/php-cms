@@ -22,6 +22,7 @@ $currentFilePath = $_SERVER['SCRIPT_FILENAME'];
 $directoryPath = dirname($currentFilePath);
 $parts = explode('/', $directoryPath);
 $projectName = $parts[3];
+$search = isset($_GET['search']) ? $_GET['search'] : '';
 
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -50,7 +51,7 @@ $projectName = $parts[3];
                     <?php
                     if (count($brands) > 0) {
                         foreach ($brands as $brand) {
-                            echo "<a class=\"dropdown-item\" href=\"brands.php?id=" . $brand['id'] . "\">" . $brand['name'] . "</a>";
+                            echo "<a class=\"dropdown-item\" href=\"/". $projectName."/brands.php?id=" . $brand['id'] . "\">" . $brand['name'] . "</a>";
                         }
                     } else {
                         echo "No records found.";
@@ -68,22 +69,20 @@ $projectName = $parts[3];
                 </div>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="form-inline my-2 my-lg-0" method="GET" action="search-results.php">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" value="<?php echo htmlspecialchars($search, ENT_QUOTES, 'UTF-8'); ?>">
             <button class="btn btn-outline-success my-2 mr-sm-2" type="submit">Search</button>
-            <?php
-            session_start();
-
-            // Check if the 'user_id' session variable is set and not empty
-            if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
-                $logoutPath = '/' . $projectName . '/index.php?action=logout';
-                echo '<a href="' . $logoutPath . '" class="btn btn-primary my-2 mr-sm-2">Log out</a>';
-            } else {
-                echo '<a href="/' . $projectName . '/sign-in.php" class="btn btn-primary my-2 mr-sm-2">Sign In</a>
-                <a href="/' . $projectName . '/sign-up.php" class="btn btn-primary my-2 mr-sm-2">Sign Up</a>';
-            }
-            ?>
-
         </form>
+
+        <!-- Session check and buttons -->
+        <?php session_start();
+        if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
+            $logoutPath = '/' . $projectName . '/index.php?action=logout';
+            echo '<a href="' . $logoutPath . '" class="btn btn-primary my-2 mr-sm-2">Log out</a>';
+        } else {
+            echo '<a href="/' . $projectName . '/sign-in.php" class="btn btn-primary my-2 mr-sm-2">Sign In</a>
+            <a href="/' . $projectName . '/sign-up.php" class="btn btn-primary my-2 mr-sm-2">Sign Up</a>';
+        }
+        ?>
     </div>
 </nav>

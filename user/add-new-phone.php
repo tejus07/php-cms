@@ -206,3 +206,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </main>
     </div>
 </div>
+<?php
+require_once '../includes/footer.php';
+?>

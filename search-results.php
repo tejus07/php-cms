@@ -4,25 +4,39 @@ require_once 'includes/header.php';
 require 'db.php';
 require 'navbar.php';
 try {
-    $search = isset($_GET['search']) ? $_GET['search'] : ''; // Get the search query
-
-    // if (!$search):
-    // header("Location: index.php");
-    // endif;
-
-    $sortOrder = isset($_GET['sort']) ? $_GET['sort'] : 'name-ASC'; // Get the selected sorting option or default to 'name_ASC'
+    $search = isset($_GET['search']) ? trim(filter_input(INPUT_GET, 'search', FILTER_SANITIZE_STRING)) : '';
+    $sortOrder = isset($_GET['sort']) ? $_GET['sort'] : 'name-ASC';
     $sort = explode('-', $sortOrder);
-    $sortColumn = isset($sort[0]) ? $sort[0] : 'name'; // Get sort column or default to 'name'
-    $sortDirection = isset($sort[1]) ? $sort[1] : 'ASC'; // Get sort direction or default to 'ASC'
+    $sortColumn = isset($sort[0]) ? $sort[0] : 'name';
+    $sortDirection = isset($sort[1]) ? $sort[1] : 'ASC';
+    $resultsPerPage = 1;
+    $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+    $offset = ($page - 1) * $resultsPerPage;
 
     $stmt = $pdo->prepare("SELECT phones.*, brands.name AS brand_name 
-                            FROM phones 
-                            INNER JOIN brands ON phones.brand_id = brands.id 
-                            ORDER BY $sortColumn " . ($sortDirection === 'ASC' ? 'ASC' : 'DESC')); // Order by the selected column and direction
-    // $stmt->bindValue(':brandId', $brand_id);
+                        FROM phones 
+                        INNER JOIN brands ON phones.brand_id = brands.id 
+                        WHERE phones.name LIKE :search OR brands.name LIKE :search
+                        ORDER BY $sortColumn " . ($sortDirection === 'ASC' ? 'ASC' : 'DESC') . "
+                        LIMIT :offset, :limit");
+
+    $stmt->bindValue(':search', '%' . $search . '%');
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmt->bindValue(':limit', $resultsPerPage, PDO::PARAM_INT);
     $stmt->execute();
 
     $phones = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $totalResults = count($phones);
+    $totalPages = ceil($totalResults / $resultsPerPage);
+
+    $brands = [];
+    $brands_sql = "SELECT id, name FROM brands";
+    $brands_stmt = $pdo->query($brands_sql);
+
+    while ($row = $brands_stmt->fetch(PDO::FETCH_ASSOC)) {
+        $brands[$row['id']] = $row['name'];
+    }
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
@@ -58,21 +72,20 @@ try {
     </div>
     <div class="row">
         <div class="col">
-            <form method="GET" action="search.php">
-                <label for="phoneFilter">Filter by Phone:</label>
-                <select name="phoneFilter" id="phoneFilter">
-                    <!-- Populate options dynamically based on phone attributes or criteria -->
-                    <option value="phone_criteria_1">Phone Criteria 1</option>
-                    <option value="phone_criteria_2">Phone Criteria 2</option>
-                    <!-- Add more options as needed -->
-                </select>
-                <br>
+            <form method="GET" action="search-results.php">
+                <!-- <label for="phoneFilter">Filter by Phone:</label> -->
+                <!-- <select name="phoneFilter" id="phoneFilter"> -->
+
+                <!-- Add more options as needed -->
+                <!-- </select> -->
+                <!-- <br> -->
                 <label for="brandFilter">Filter by Brand:</label>
                 <select name="brandFilter" id="brandFilter">
-                    <!-- Populate options dynamically based on available brands -->
-                    <option value="brand_criteria_1">Brand Criteria 1</option>
-                    <option value="brand_criteria_2">Brand Criteria 2</option>
-                    <!-- Add more options as needed -->
+                    <?php
+                    foreach ($brands as $id => $brandName) {
+                        echo "<option value='" . $id . "'>$brandName</option>";
+                    }
+                    ?>
                 </select>
                 <br>
                 <button type="submit">Search</button>
@@ -95,8 +108,7 @@ try {
                 echo '<div class="card-body">';
                 echo '<div class="card-body">';
                 echo '<h5 class="card-title">' . $phone['name'] . '</h5>';
-                echo '<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card\'s
-    content.</p>';
+                echo '<p class="card-text">' . $phone['description'] . '</p>';
                 echo '<p>Release Date: ' . $phone['release_date'] . '</p>';
                 echo '<p>Brand: ' . $phone['brand_name'] . '</p>';
                 echo '<a href="view-phone.php?id=' . $phone['id'] . '" class="btn btn-primary">View</a>';
@@ -104,6 +116,25 @@ try {
                 echo '</div></div>';
             }
             ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="pagination">
+                <?php if ($page > 1): ?>
+                    <a href="?page=<?php echo $page - 1; ?>">Previous</a>
+                <?php endif; ?>
+
+                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                    <a href="?page=<?php echo $i; ?>">
+                        <?php echo $i; ?>
+                    </a>
+                <?php endfor; ?>
+
+                <?php if ($page < $totalPages): ?>
+                    <a href="?page=<?php echo $page + 1; ?>">Next</a>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </div>
