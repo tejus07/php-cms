@@ -53,6 +53,10 @@
         <section class="vehicle-list">
             <h2>Available Vehicles</h2>
             <form method="GET" action="brands.php">
+            <input type="hidden" name="brand_id" value="<?php
+                $brandId = $_GET['brand_id'] ?? 0;
+                echo htmlspecialchars($brandId);
+                    ?>">
                 <label for="sort">Sort by:</label>
                 <select id="sort" name="sort">
                     <option value="model_asc" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'model_asc')
@@ -68,10 +72,6 @@
                     <option value="created_at_desc" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'created_at_asc')
                         echo 'selected'; ?>>Created At (High to Low)</option>
                 </select>
-                <input type="hidden" name="brand_id" value="<?php
-                $brand_id = $_GET['brand_id'] ?? 0;
-                echo htmlspecialchars($brandId)
-                    ?>">
                 <button type="submit">Sort</button>
             </form>
             <div class="vehicles-container">
