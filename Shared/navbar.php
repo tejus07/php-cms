@@ -19,8 +19,8 @@ $stmt = $pdo->query("SELECT * FROM categories");
                 <?php } ?>
             </div>
         </li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a>About</a></li>
+        <li><a>Contact</a></li>
         <li><a href="admin/login.php">Login</a></li>
     </ul>
 </nav>

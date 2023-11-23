@@ -151,14 +151,14 @@ a:hover {
 
 
 nav {
-    background-color: #333; /* Background color */
+    background-color: #333;
 }
 
 .navbar {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    display: flex; /* Display as a flex container */
+    display: flex;
 }
 
 .navbar li {
@@ -169,15 +169,14 @@ nav {
     display: block;
     padding: 1em 1.5em;
     text-decoration: none;
-    color: white; /* Link text color */
-    transition: background-color 0.3s; /* Smooth color transition on hover */
+    color: white;
+    transition: background-color 0.3s;
 }
 
 .navbar a:hover {
-    background-color: #555; /* Background color on hover */
+    background-color: #555;
 }
 
-/* Dropdown styles */
 .dropdown {
     position: relative;
 }
