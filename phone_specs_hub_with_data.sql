@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 17, 2023 at 06:11 AM
+-- Generation Time: Nov 23, 2023 at 04:09 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -41,7 +41,7 @@ CREATE TABLE `brands` (
 --
 
 INSERT INTO `brands` (`id`, `name`, `description`, `logo_url`, `created_at`, `updated_at`) VALUES
-(1, 'Apple', 'Known for its iPhone series and other innovative tech products.', 'https://example.com/apple_logo.png', '2023-11-15 03:28:19', '2023-11-15 03:28:19'),
+(1, 'Apple', 'Known for its iPhone series and other innovative tech products.', 'https://example.com/apple_logo.png', '2023-11-15 03:28:19', '2023-11-21 03:40:06'),
 (2, 'Samsung', 'Produces a wide range of smartphones and electronic devices.', 'https://example.com/samsung_logo.png', '2023-11-15 03:28:19', '2023-11-15 03:28:19'),
 (3, 'Google', 'Develops the Pixel series of smartphones and other technology products.', 'https://example.com/google_logo.png', '2023-11-15 03:28:19', '2023-11-15 03:28:19'),
 (4, 'Huawei', 'A global provider of information and communications technology (ICT) infrastructure and smart devices.', 'https://example.com/huawei_logo.png', '2023-11-15 03:28:19', '2023-11-15 03:28:19'),
@@ -88,12 +88,12 @@ INSERT INTO `phones` (`id`, `brand_id`, `name`, `description`, `release_date`, `
 (1, 1, 'iPhone 13', '<p><em>The latest iPhone with advanced features.s</em></p>', '2022-09-15', '6556edae6a308_iphone 13.jpg', 1, '2023-11-15 03:29:35', '2023-11-17 04:35:58'),
 (2, 2, 'Galaxy S21', '<p>Flagship smartphone with powerful performance.</p>', '2021-01-29', NULL, 1, '2023-11-15 03:29:35', '2023-11-17 04:37:45'),
 (3, 3, 'Pixel 6', '<p>Google\'s latest Pixel phone with impressive camera capabilities.</p>', '2021-10-19', '6556edf07613e_pixel6.png', 1, '2023-11-15 03:29:35', '2023-11-17 04:37:04'),
-(4, 4, 'Mate 40 Pro', 'Huawei\'s flagship with cutting-edge technology.', '2020-10-22', 'https://example.com/mate40pro_image.png', 1, '2023-11-15 03:29:35', '2023-11-15 03:29:35'),
-(5, 5, 'OnePlus 9', 'High-performance smartphone for enthusiasts.', '2021-03-23', 'https://example.com/oneplus9_image.png', 1, '2023-11-15 03:29:35', '2023-11-15 03:29:35'),
-(6, 1, 'iPhone 14', 'The next generation iPhone with advanced features.', '2023-09-20', 'https://example.com/iphone14_image.png', 1, '2023-11-15 03:29:35', '2023-11-15 03:29:35'),
+(4, 4, 'Mate 40 Pro', 'Huawei\'s flagship with cutting-edge technology.', '2020-10-22', NULL, 1, '2023-11-15 03:29:35', '2023-11-21 03:53:48'),
+(5, 5, 'OnePlus 9', 'High-performance smartphone for enthusiasts.', '2021-03-23', NULL, 1, '2023-11-15 03:29:35', '2023-11-21 03:53:51'),
+(6, 1, 'iPhone 14', 'The next generation iPhone with advanced features.', '2023-09-20', NULL, 1, '2023-11-15 03:29:35', '2023-11-21 03:53:54'),
 (7, 2, 'Galaxy S22', '<p>Flagship smartphone with enhanced performance.</p>', '2023-01-30', '6556ee13c0755_s22.jpg', 1, '2023-11-15 03:29:35', '2023-11-17 04:37:39'),
-(8, 3, 'Pixel 7', 'Google\'s latest Pixel phone with cutting-edge technology.', '2023-10-25', 'https://example.com/pixel7_image.png', 1, '2023-11-15 03:29:35', '2023-11-15 03:29:35'),
-(9, 4, 'Mate 50 Pro', 'Huawei\'s flagship with innovative features.', '2023-11-01', 'https://example.com/mate50pro_image.png', 1, '2023-11-15 03:29:35', '2023-11-15 03:29:35');
+(8, 3, 'Pixel 7', 'Google\'s latest Pixel phone with cutting-edge technology.', '2023-10-25', NULL, 1, '2023-11-15 03:29:35', '2023-11-21 03:53:56'),
+(9, 4, 'Mate 50 Pro', 'Huawei\'s flagship with innovative features.', '2023-11-01', NULL, 1, '2023-11-15 03:29:35', '2023-11-21 03:53:58');
 
 -- --------------------------------------------------------
 
@@ -200,7 +200,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `brands`
 --
 ALTER TABLE `brands`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `comments`
