@@ -121,7 +121,7 @@
                     $stmt->bindParam(':brandId', $brand_id, PDO::PARAM_INT);
                     $stmt->execute();
 
-                    if ($stmt->rowCount() > 0) {
+                    if ($stmt->rowCount() > 0) :
                         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             echo "<div class='vehicle'>
                         <h3>" . $row["model"] . "</h3>
@@ -129,15 +129,15 @@
                         <p>Rental Rate: $" . $row["rental_rate"] . " per day</p>
                         <p>Availability: " . $row["availability_status"] . "</p>";
 
-                            if (!empty($row["image_url"])) {
+                            if (!empty($row["image_url"])) :
                                 echo "<img src='" . $row["image_url"] . "' alt='Vehicle Image'>";
-                            }
-
+                            endif;
+                            echo "<a href='view-vehicle.php?vehicle_id=" . $row["vehicle_id"] . "' class='view-button'>View Details</a>";
                             echo "</div>";
                         }
-                    } else {
+                    else :
                         echo "0 results";
-                    }
+                    endif;
                 } catch (PDOException $e) {
                     echo "Connection failed: " . $e->getMessage();
                 }

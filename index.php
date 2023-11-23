@@ -10,8 +10,38 @@
         <h1 class="site-logo"><a href="index.php">RentAndGo</a></h1>
         <nav>
             <ul>
-                <li><a>Home</a></li>
+                <li><a href="index.php">Home</a></li>
                 <li><a href="vehicles-listing.php">Vehicles</a></li>
+                <li class="dropdown">
+                    <a class="dropbtn">Brands</a>
+                    <div class="dropdown-content">
+                        <?php
+                        try {
+                            $servername = "localhost";
+                            $username = "root";
+                            $password = "";
+                            $dbname = "rentandgodb";
+
+                            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+                            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                            $stmt = $conn->prepare("SELECT * FROM brands");
+                            $stmt->execute();
+                            $brands = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                            if (count($brands) > 0):
+                                foreach ($brands as $brand):
+                                    echo "<a href='brands.php?brand_id=" . $brand["brand_id"] . "'>" . $brand["brand_name"] . "</a>";
+                                endforeach;
+                            else:
+                                echo "0 results";
+                            endif;
+                        } catch (PDOException $e) {
+                            echo "Connection failed: " . $e->getMessage();
+                        }
+                        ?>
+                    </div>
+                </li>
                 <li><a href="about-us.php">About Us</a></li>
                 <li><a href="admin/login.php">Login</a></li>
             </ul>

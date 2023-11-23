@@ -122,7 +122,7 @@
                             if (!empty($row["image_url"])) {
                                 echo "<img src='" . $row["image_url"] . "' alt='Vehicle Image'>";
                             }
-
+                            echo "<a href='view-vehicle.php?vehicle_id=" . $row["vehicle_id"] . "' class='view-button'>View Details</a>";
                             echo "</div>";
                         }
                     } else {
