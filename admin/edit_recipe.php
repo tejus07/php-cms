@@ -38,7 +38,7 @@ while ($row = $category_stmt->fetch(PDO::FETCH_ASSOC)) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $image_url = $data['image_url'];
 
-    if (!empty($_FILES['uploadFile']['name'])) {
+    if (!empty($_FILES['uploadFile']['name']) && !isset($_POST['delete_image'])) {
         try {
             $returned_value = $imageHandler->upload_image($_FILES['uploadFile']);
             if ($returned_value) {
@@ -49,6 +49,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo 'Error: ' . $e->getMessage();
         }
     }
+    else {
+        $image_path = "../" . $image_url;
+        if (file_exists($image_path)) {
+            unlink($image_path);
+            echo "Image deleted successfully!";
+        } else {
+            echo "Image not found.";
+        }
+
+        $image_url = null;
+        header("Location: recipes.php");
+        exit;
+    }	    
     // Extract data from the form
     $recipe_id = $_GET['id'];
     $title = $_POST['title'];
@@ -152,16 +165,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <textarea id="instructions" name="instructions" value="<?php echo $data['instructions']?>"></textarea>
         </div>
         <?php if (!empty($data['image_url'])) {?>
-        <div class="form-group">
+            <div class="form-group">
             <label for="image_url">Uploaded Image:</label>
-            <span class="image-container"><img src="../<?php echo $data['image_url']?>" width="100"></span>
+            <span class="modify-Image">
+            <input type="checkbox" id="delete_image" name="delete_image" value="delete">
+            <span class="modify-image-text">Remove Image</span>
+            <span class="image-container"><img src="../<?php echo $data['image_url']?>" width="100"></span></span>
         </div>
         <?php }?>
         <div class="form-group">
             <label for="image_url">Upload Image:</label>
             <input type="file" id="image_url" name="uploadFile" class="form-input">
         </div>
-
+            
         <script>
             document.addEventListener('DOMContentLoaded', ()=>{
                 document.getElementById('image_url').addEventListener('change', function() {

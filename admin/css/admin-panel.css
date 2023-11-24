@@ -313,12 +313,24 @@ button.add-new-recipe-btn.edit-button a {
     border: 0;
     padding: 10px 10px;
 }
-
+span.modify-image-text {
+    display: flex;
+    width: -webkit-fill-available;
+    padding: 0 20px 0 10px;
+}
 .tox.tox-tinymce {
     width: 60%;
     min-height: 250px;
 }
-
+.modify-Image {
+    display: flex;
+    align-items: center;
+  }
+  #delete_image {
+    width: auto;
+    height: auto;
+    margin: 0 5px; /* Adjust as needed */
+  }
 .form-input {
     width: 100%;
     padding: 8px;
