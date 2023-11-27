@@ -62,8 +62,12 @@ try {
 			$message = str_replace("\n\r", "<br><br>", $post['description']);
 			?>
 			<div class="col-md-10 blogShort">
+        	
+			<?php if (!empty($post['image_url'])) {?>
 			<img src="<?php echo $post['image_url'] ?>" width="250">
-			<h3><a href="view_post.php?id=<?php echo $post['recipe_id']; ?>"><?php echo $post['title']; ?></a></h3>		
+        	<?php } ?>
+			
+				<h3><a href="view_post.php?id=<?php echo $post['recipe_id']; ?>"><?php echo $post['title']; ?></a></h3>		
 			<em><strong>Published on</strong>: <?php echo date_format($date, "d F Y");	?></em>
 			<em><strong>Category:</strong> <a href="#" target="_blank"><?php echo $post['difficulty_level']; ?></a></em>
 			<br><br>

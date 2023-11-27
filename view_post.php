@@ -54,7 +54,11 @@ $recipe = $stmt->fetch(PDO::FETCH_ASSOC);
 <main>
 <div class="container">
         <h1 class="recipe-title"><?php echo $recipe['recipe_title']; ?></h1>
-		<img src="<?php echo $recipe['image_url'] ?>" width="500">
+        
+        <?php if (!empty($recipe['image_url'])) { ?>
+		    <img src="<?php echo $recipe['image_url'] ?>" width="500">
+        <?php } ?>
+
         <p class="recipe-description"><?php echo $recipe['recipe_description']; ?></p>
 
         <h2 class="section-title">Recipe Details</h2>
