@@ -37,10 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $release_date = $_POST['release_date'];
     $brand_id = $_POST['brand_id'];
     $user_id = $_POST['user_id'];
-    // todo: fix if user not uploaded image, it will get reset.
-    $image_url = null;
-    $image_file = $_FILES['image_url'];
-
+    $image_url = isset($_FILES['uploadFile']) ? upload_image($_FILES['uploadFile']) : null;
     $processor = $_POST['processor'];
     $RAM = $_POST['RAM'];
     $storage = $_POST['storage'];
@@ -49,23 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $battery = $_POST['battery'];
     $operating_system = $_POST['operating_system'];
     try {
-        if ($image_file['error'] === UPLOAD_ERR_OK) {
-            $file_type = exif_imagetype($image_file['tmp_name']);
-
-            if (file_is_an_image($image_file['tmp_name'], $image_file['name'])) {
-                $uploads_dir = '../uploads/';
-                $image_filename = uniqid() . '_' . basename($image_file['name']);
-                $target_file = $uploads_dir . $image_filename;
-
-                if (move_uploaded_file($image_file['tmp_name'], $target_file)) {
-                    $image_url = $image_filename;
-                } else {
-                    throw new Exception("Failed to move the uploaded file.");
-                }
-            } else {
-                throw new Exception("Invalid file format. Please upload a valid image file.");
-            }
-        }
         // ensure data consistency
         $pdo->beginTransaction();
 
@@ -144,13 +124,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="form-group">
                         <label for="image_url">Upload Image:</label>
-                        <?php if (!empty($data['image_url'])): ?>
-                            <img src="../uploads/<?php echo $data['image_url']; ?>" alt="Uploaded Image" width="200">
-                        <?php else: ?>
-                            <p>No image uploaded</p>
-                        <?php endif; ?>
-                        <input type="file" id="image_url" name="image_url" class="form-input">
+                        <input type="file" id="image_url" name="uploadFile" class="form-input">
                     </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                            document.getElementById('image_url').addEventListener('change', function () {
+                                const fileInput = document.getElementById('image_url');
+                                const filePath = fileInput.value;
+                                const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+
+                                if (!allowedExtensions.exec(filePath)) {
+                                    alert('Please upload files having extensions .jpg/.jpeg/.png/.gif only.');
+                                    fileInput.value = '';
+                                    throw new Error('Incorrect file format');
+                                }
+                            });
+                        });
+                    </script>
                     <div class="form-group">
                         <label for="processor">Processor:</label>
                         <input type="text" id="processor" name="processor" class="form-input" required>

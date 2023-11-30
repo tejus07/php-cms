@@ -60,28 +60,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $operating_system = $_POST['operating_system'];
     $brand_id = $_POST['brand_id'];
     $user_id = $_POST['user_id'];
-    $image_file = $_FILES['image_url'];
-    // todo: fix if user not uploaded image, it will get reset.
-    $image_url = null;
+    $image_url = $data['image_url'];
+
     try {
 
-        if ($image_file['error'] === UPLOAD_ERR_OK) {
-            $file_type = exif_imagetype($image_file['tmp_name']);
+        if (!empty($_FILES['uploadFile']) && !isset($_POST['delete_image'])):
 
-            if (file_is_an_image($image_file['tmp_name'], $image_file['name'])) {
-                $uploads_dir = '../uploads/';
-                $image_filename = uniqid() . '_' . basename($image_file['name']);
-                $target_file = $uploads_dir . $image_filename;
+            $returned_value = upload_image($_FILES['uploadFile']);
+            if ($returned_value):
+                $image_url = $returned_value;
+            endif;
+            
+        else:
+            $image_path = "../" . $image_url;
+            if (file_exists($image_path)):
+                unlink($image_path);
+                echo "Image deleted successfully!";
+            else:
+                echo "Image not found.";
+            endif;
 
-                if (move_uploaded_file($image_file['tmp_name'], $target_file)) {
-                    $image_url = $image_filename;
-                } else {
-                    throw new Exception("Failed to move the uploaded file.");
-                }
-            } else {
-                throw new Exception("Invalid file format. Please upload a valid image file.");
-            }
-        }
+            $image_url = null;
+        endif;
 
         $sql = "UPDATE phones SET 
         name = :name,
@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     } catch (Exception $e) {
-        $error_message = $e->getMessage(); 
+        $error_message = $e->getMessage();
         echo "<div class='error-message'>$error_message</div>";
     }
 }
@@ -167,15 +167,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="date" id="release_date" name="release_date" class="form-input"
                             value="<?php echo $data['release_date'] ?>" required>
                     </div>
-                    <div class="form-group">
-                        <label for="image_url">Upload Image:</label>
+                    <!-- <div class="form-group">
+                        <label for="image_url">Uploaded Image:</label>
                         <?php if (!empty($data['image_url'])): ?>
                             <img src="../uploads/<?php echo $data['image_url']; ?>" alt="Uploaded Image" width="200">
                         <?php else: ?>
                             <p>No image uploaded</p>
                         <?php endif; ?>
-                        <input type="file" id="image_url" name="image_url" class="form-input">
                     </div>
+                    <div class="form-group">
+                        <label for="image_url">Upload Image:</label>
+                        <input type="file" id="image_url" name="image_url" class="form-input">
+                    </div> -->
+                    <?php if (!empty($data['image_url'])): ?>
+                        <div class="form-group">
+                            <label for="image_url">Uploaded Image:</label>
+                            <span class="image-container"><img src="../<?php echo $data['image_url'] ?>" width="100"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="delete_image">Delete Image: </label>
+                            <span class="delete-checkbox">
+                                <input type="checkbox" id="delete_image" name="delete_image" value="delete">
+                            </span>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="form-group">
+                        <label for="image_url">Upload Image:</label>
+                        <input type="file" id="image_url" name="uploadFile" class="form-input">
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                            document.getElementById('image_url').addEventListener('change', function () {
+                                const fileInput = document.getElementById('image_url');
+                                const filePath = fileInput.value;
+                                const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+
+                                if (!allowedExtensions.exec(filePath)) {
+                                    alert('Please upload files having extensions .jpg/.jpeg/.png/.gif only.');
+                                    fileInput.value = '';
+                                    throw new Error('Incorrect file format');
+                                }
+                            });
+                        });
+                    </script>
                     <div class="form-group">
                         <label for="processor">Processor:</label>
                         <input type="text" id="processor" name="processor" class="form-input"
