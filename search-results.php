@@ -7,18 +7,15 @@ require './navbar.php';
 try {
     $search = isset($_GET['search']) ? trim(filter_input(INPUT_GET, 'search', FILTER_SANITIZE_STRING)) : '';
 
-    // Fetch sort parameters
     $sortOrder = isset($_GET['sort']) ? $_GET['sort'] : 'name-ASC';
     $sort = explode('-', $sortOrder);
     $sortColumn = isset($sort[0]) ? $sort[0] : 'name';
     $sortDirection = isset($sort[1]) ? $sort[1] : 'ASC';
 
-    // Fetch filter parameters
-    // $phoneFilter = isset($_GET['phoneFilter']) ? $_GET['phoneFilter'] : '';
     $brandFilter = isset($_GET['brandFilter']) ? $_GET['brandFilter'] : '';
 
+    $resultsPerPage = 2;
 
-    $resultsPerPage = 10;
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
     $offset = ($page - 1) * $resultsPerPage;
 
@@ -40,7 +37,19 @@ try {
 
     $phones = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $totalResults = count($phones);
+    $countQuery = "SELECT COUNT(*) AS total FROM phones 
+    INNER JOIN brands ON phones.brand_id = brands.id 
+    WHERE (phones.name LIKE :search OR brands.name LIKE :search)
+    " . ($brandFilter ? 'AND (brands.id = :brandFilter)' : '');
+
+    $stmtCount = $pdo->prepare($countQuery);
+    $stmtCount->bindValue(':search', '%' . $search . '%');
+    if ($brandFilter) {
+        $stmtCount->bindValue(':brandFilter', $brandFilter, PDO::PARAM_INT);
+    }
+    $stmtCount->execute();
+
+    $totalResults = $stmtCount->fetch(PDO::FETCH_ASSOC)['total'];
     $totalPages = ceil($totalResults / $resultsPerPage);
 
     $brands = [];
@@ -62,9 +71,9 @@ try {
     <div class="row">
         <div class="col">
             <form method="GET" action="search-results.php">
-            <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
-            <input type="hidden" name="brandFilter" value="<?php echo $brandFilter; ?>">
-            <input type="hidden" name="page" value="<?php echo $page; ?>">
+                <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
+                <input type="hidden" name="brandFilter" value="<?php echo $brandFilter; ?>">
+                <input type="hidden" name="page" value="<?php echo $page; ?>">
                 <label for="sort">Sort by:</label>
                 <select name="sort" id="sort">
                     <?php
@@ -91,7 +100,8 @@ try {
     </div>
     <div class="row">
         <div class="col">
-            <form method="GET" action="<?php echo generateLink('search-results.php',$search, $sortOrder, $brandFilter, $page) ?>">
+            <form method="GET"
+                action="<?php echo generateLink('search-results.php', $search, $sortOrder, $brandFilter, $page) ?>">
                 <input type="hidden" name="search" value="<?php echo htmlentities($search); ?>">
                 <label for="brandFilter">Filter by Brand:</label>
                 <select name="brandFilter" id="brandFilter">
@@ -113,7 +123,7 @@ try {
             foreach ($phones as $phone) {
                 echo '<div class="card">';
                 if ($phone['image_url']) {
-                    echo '<img src="./uploads/' . $phone['image_url'] . '" class="bd-placeholder-img card-img-top" width="100%" height="180" alt="' . $phone['name'] . '">';
+                    echo '<img src="./' . $phone['image_url'] . '" class="bd-placeholder-img card-img-top" width="100%" height="180" alt="' . $phone['name'] . '">';
                 } else {
                     echo '<svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img"
     aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
@@ -134,28 +144,36 @@ try {
             ?>
         </div>
     </div>
-    <!-- <div class="row"> -->
-        <div class="col">
-            <div class="pagination">
-                <?php
-                // Previous page link
-                if ($page > 1) {
-                    echo '<a href="' . $paginationLink . '&page=' . ($page - 1) . '">Previous</a>';
-                }
+    <?php
+    if ($totalResults > $resultsPerPage) {
+        echo '<nav>';
+        echo '<ul class="pagination justify-content-center mt-2">';
 
-                // Page numbers
-                for ($i = 1; $i <= $totalPages; $i++) {
-                    echo '<a href="' . $paginationLink . '&page=' . $i . '">' . $i . '</a>';
-                }
+        // Previous page link
+        if ($page > 1) {
+            echo '<li class="page-item">';
+            echo '<a class="page-link" href="' . $paginationLink . '&page=' . ($page - 1) . '">Previous</a>';
+            echo '</li>';
+        }
 
-                // Next page link
-                if ($page < $totalPages) {
-                    echo '<a href="' . $paginationLink . '&page=' . ($page + 1) . '">Next</a>';
-                }
-                ?>
-            </div>
-        </div>
-    </div>
+        // Page numbers
+        for ($i = 1; $i <= $totalPages; $i++) {
+            echo '<li class="page-item ' . (($page == $i) ? "active" : "") . '">';
+            echo '<a class="page-link" href="' . $paginationLink . '&page=' . $i . '">' . $i . '</a>';
+            echo '</li>';
+        }
+
+        // Next page link
+        if ($page < $totalPages) {
+            echo '<li class="page-item">';
+            echo '<a class="page-link" href="' . $paginationLink . '&page=' . ($page + 1) . '">Next</a>';
+            echo '</li>';
+        }
+
+        echo '</ul>';
+        echo '</nav>';
+    }
+    ?>
 </div>
 <?php
 require_once 'includes/footer.php';
