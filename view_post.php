@@ -31,8 +31,7 @@ $stmt->bindParam(':recipeId', $recipe_id, PDO::PARAM_INT);
 $stmt->execute();
 
 
-$data = $stmt->fetch(PDO::FETCH_ASSOC);
-
+$recipe_data = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
 
 <?php include('shared/header.php');?>
@@ -44,26 +43,27 @@ $data = $stmt->fetch(PDO::FETCH_ASSOC);
 <div class="container view-recipe">
 
     <div class="image-container">   
-    <?php if (!empty($data['image_url'])) { ?>     
-        <img src="<?php echo $data['image_url'] ?>" width="500">
+    <?php if (!empty($recipe_data['image_url'])) { ?>     
+        <img src="<?php echo $recipe_data['image_url'] ?>" width="500">
     <?php } ?>
     </div>
     <div class="details-container">
-        <h1 class="recipe-title"><?php echo $data['recipe_title']; ?></h1>
+        <?php echo $recipe_data['recipe_title'];?>
+        <h1 class="recipe-title"><?php echo $recipe_data['recipe_title']; ?></h1>
         
             
-        <div class="detail-item">Pizza reciepe by: <?php echo $data['user_username']; ?></div>
-        <p class="user-info">Email: <?php echo $data['user_email']; ?></p>
+        <div class="detail-item">Pizza reciepe by: <?php echo $recipe_data['user_username']; ?></div>
+        <p class="user-info">Email: <?php echo $recipe_data['user_email']; ?></p>
         
 
         <h2 class="section-title">Instructions</h2>
-        <p class="instructions"><?php echo $data['instructions']; ?></p>
+        <p class="instructions"><?php echo $recipe_data['instructions']; ?></p>
 
         <h2 class="section-title">Ingredients</h2>
-        <p class="ingredients"><?php echo $data['ingredients']; ?></p>
+        <p class="ingredients"><?php echo $recipe_data['ingredients']; ?></p>
 
         <h2 class="section-title">Category</h2>
-        <p class="category"><?php echo $data['title']; ?></p>
+        <p class="category"><?php echo $recipe_data['title']; ?></p>
 
         
     </div>

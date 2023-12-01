@@ -216,3 +216,32 @@ a:hover {
     max-width: 130px;
     justify-content: space-evenly;
 }
+main.searchpage-main {
+    padding: 50px;
+    margin-bottom: 100px;
+}
+.search-section {
+    width: 40%;
+    padding: 0 50px;
+}
+form.searchbar {
+    display: flex;
+    height: 40px;
+}
+.search-category-container select {
+    height: 40px;
+    padding: 0 5px;
+    background: #131b5d;
+    color: #fff;
+}
+.search-bar-container {
+    width: 100%;
+}
+.search-bar-container input[type="text"] {
+    height: 37px;
+    width: 100%;
+    padding: 0 5px !important;
+}
+button.search-btn {
+    padding: 0 20px;
+}

@@ -8,6 +8,7 @@
 <body>
     <header>
     <h3>PizzaPals</h3>
+    <?php include_once('searchbar.php'); ?>
     <?php include_once('navbar.php'); ?>
     
 </header>

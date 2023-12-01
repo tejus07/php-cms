@@ -66,7 +66,6 @@ $isUserLoggedIn = isset($_SESSION['user_id']);
         <?php
         foreach ($recipesList as $post) {
 			$date = date_create($post['created_at']);					
-			$instructions = str_replace("\n\r", "<br><br>", $post['instructions']);
 			?>
 			<div class="col-md-10 blogShort">
 			<?php if (!empty($post['image_url'])) {?>
