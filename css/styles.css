@@ -203,3 +203,94 @@ nav {
     left: -100%;
     justify-content: space-evenly;
 }
+
+.pagination {
+    padding: 25px 0;
+}
+
+.pagination a.page-item {
+    border: 1px solid;
+    border-radius: 7px;
+    padding: 10px 15px;
+    margin: 0 5px;
+    box-shadow: 0 0px 5px #ddd;
+}
+
+.pagination a.page-item.active {
+    background-color: #ff6600;
+    color: #fff;
+}
+
+form.searchbar {
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 2px;
+    max-width: 600px;
+    margin: 0 auto;
+    --bg-cl-form: #fafafa;
+    background-color: #fff;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(-1 * var(--ts-gutter-y));
+    margin-inline-end: calc(-.5 * var(--ts-gutter-x));
+    margin-inline-start: calc(-.5 * var(--ts-gutter-x));
+    flex-direction: row;
+    align-items: center;
+}
+
+.searchbar select {
+    width: 100%;
+    height: 40px;
+    vertical-align: middle;
+    transition: border-color .5s;
+    -moz-appearance: none;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNSIgaGVpZ2h0PSIyNSIgZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2U9IiNiYmIiPjxwYXRoIGQ9Ik02IDlsNiA2IDYtNiIvPjwvc3ZnPg==);
+    background-position: right 10px top 50%;
+    background-size: auto 18px;
+    background-repeat: no-repeat;
+    border: 0;
+    max-width: 100%;
+    padding: 0 45px 0 15px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-size: 14px;
+    display: inline-block;
+    background-color: transparent;
+    box-shadow: none;
+    color: #000;
+    border-radius: 60px;
+    cursor: pointer;
+}
+
+.searchbar *:focus-visible {
+    outline: none;
+}
+
+.searchbar input[type="text"] {
+    background-color: transparent;
+    padding: 0 15px;
+    height: 40px;
+    border: 0;
+    width: 100%;
+    line-height: 18px;
+    color: #000;
+    border-radius: 60px;
+    font-size: 13px;
+}
+
+.searchbar button.search-btn {
+    min-width: 130px;
+    border: none;
+    background-color: #000;
+    color: #fff;
+    border-radius: 10px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.searchbar .partition-bar {
+    height: 18px;
+    background-color: #ddd;
+    width: 1.5px;
+}

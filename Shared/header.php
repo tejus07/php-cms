@@ -8,5 +8,6 @@
 <body>
     <header>
     <h3>Winniepeg cooking diaries</h3>
+    <?php include_once('searchbar.php'); ?>
     <?php include_once('navbar.php'); ?>
 </header>
