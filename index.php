@@ -69,7 +69,9 @@ $isUserLoggedIn = isset($_SESSION['user_id']);
 			$instructions = str_replace("\n\r", "<br><br>", $post['instructions']);
 			?>
 			<div class="col-md-10 blogShort">
-			<img src="<?php echo $post['image_url'] ?>" width="250">
+			<?php if (!empty($post['image_url'])) {?>
+				<img src="<?php echo $post['image_url'] ?>" width="250">
+			<?php } ?>
 			<h3><a href="view_post.php?id=<?php echo $post['recipe_id']; ?>"><?php echo $post['title']; ?></a></h3>	
 			<em><strong>Published on</strong>: <?php echo date_format($date, "d F Y");	?></em>
 			<br><br>

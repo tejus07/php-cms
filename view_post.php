@@ -33,7 +33,6 @@ $stmt->execute();
 
 $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-
 ?>
 
 <?php include('shared/header.php');?>
@@ -44,8 +43,10 @@ $data = $stmt->fetch(PDO::FETCH_ASSOC);
     </div>
 <div class="container view-recipe">
 
-    <div class="image-container">        
-    <img src="<?php echo $data['image_url'] ?>" width="500">
+    <div class="image-container">   
+    <?php if (!empty($data['image_url'])) { ?>     
+        <img src="<?php echo $data['image_url'] ?>" width="500">
+    <?php } ?>
     </div>
     <div class="details-container">
         <h1 class="recipe-title"><?php echo $data['recipe_title']; ?></h1>
