@@ -46,6 +46,46 @@
                 </li>
                 <li><a href="about-us.php">About Us</a></li>
                 <li><a href="admin/login.php">Login</a></li>
+                <li>
+                    <?php
+                    $servername = "localhost";
+                    $username = "root";
+                    $password = "";
+                    $dbname = "rentandgodb";
+
+                    $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+
+                    $categories = [];
+                    $category_sql = "SELECT category_id, category_name FROM Categories";
+                    $category_stmt = $pdo->query($category_sql);
+
+                    while ($row = $category_stmt->fetch(PDO::FETCH_ASSOC)) {
+                        $categories[$row['category_id']] = $row['category_name'];
+                    }
+
+                    $keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
+                    $category_id = isset($_GET['category']) ? $_GET['category'] : 'all';
+                    ?>
+
+                    <form class="searchbar" action="searchpage.php" method="GET">
+                        <div class="search-category-container">
+                            <select name="category">
+                                <option value="all">All Categories</option>
+                                <?php foreach ($categories as $categoryId => $categoryName): ?>
+                                    <option value="<?php echo $categoryId; ?>" <?php echo $category_id == $categoryId ? 'selected' : '' ?>>
+                                        <?php echo $categoryName; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="partition-bar"></div>
+                        <div class="search-bar-container">
+                            <input type="text" name="keyword" placeholder="Enter keyword"
+                                value="<?php echo $keyword; ?>">
+                        </div>
+                        <button class="search-btn" type="submit">Search</button>
+                    </form>
+                </li>
             </ul>
         </nav>
     </header>
@@ -53,10 +93,10 @@
         <section class="vehicle-list">
             <h2>Available Vehicles</h2>
             <form method="GET" action="brands.php">
-            <input type="hidden" name="brand_id" value="<?php
+                <input type="hidden" name="brand_id" value="<?php
                 $brandId = $_GET['brand_id'] ?? 0;
                 echo htmlspecialchars($brandId);
-                    ?>">
+                ?>">
                 <label for="sort">Sort by:</label>
                 <select id="sort" name="sort">
                     <option value="model_asc" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'model_asc')
@@ -121,7 +161,7 @@
                     $stmt->bindParam(':brandId', $brand_id, PDO::PARAM_INT);
                     $stmt->execute();
 
-                    if ($stmt->rowCount() > 0) :
+                    if ($stmt->rowCount() > 0):
                         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             echo "<div class='vehicle'>
                         <h3>" . $row["model"] . "</h3>
@@ -129,13 +169,13 @@
                         <p>Rental Rate: $" . $row["rental_rate"] . " per day</p>
                         <p>Availability: " . $row["availability_status"] . "</p>";
 
-                            if (!empty($row["image_url"])) :
+                            if (!empty($row["image_url"])):
                                 echo "<img src='" . $row["image_url"] . "' alt='Vehicle Image'>";
                             endif;
                             echo "<a href='view-vehicle.php?vehicle_id=" . $row["vehicle_id"] . "' class='view-button'>View Details</a>";
                             echo "</div>";
                         }
-                    else :
+                    else:
                         echo "0 results";
                     endif;
                 } catch (PDOException $e) {

@@ -161,54 +161,61 @@
     ?>
 
     <main>
-        <h1>Search Results</h1>
-        <small>Showing <strong>"
-                <?php echo $totalCount; ?>"
-            </strong> results.</small><br><br>
-        <?php
-        if (empty($searchResults)) {
-            echo '<center><h1>Sorry no results were found for the query</h1></center>';
-        } else {
-            foreach ($searchResults as $post) {
-                $date = date_create($post['created_at']);
-                $message = str_replace("\n\r", "<br><br>", $post['description']);
-                ?>
-                <div class="col-md-10 blogShort">
-                    <img src="<?php echo $post['image_url'] ?>" width="250">
-                    <h3><a href="view_post.php?id=<?php echo $post['vehicle_id']; ?>">
+        <section class="vehicle-list">
+            <h1>Search Results</h1>
+            <small>Showing <strong>"
+                    <?php echo $totalCount; ?>"
+                </strong> results.</small><br><br>
+            <?php
+            if (empty($searchResults)) {
+                echo '<center><h1>Sorry no results were found for the query</h1></center>';
+            } else {
+                echo '<div class="vehicles-container">';
+                foreach ($searchResults as $post) {
+                    $date = date_create($post['created_at']);
+                    $message = str_replace("\n\r", "<br><br>", $post['description']);
+                    ?>
+                    <div class="vehicle">
+                        <h3>
                             <?php echo $post['model']; ?>
-                        </a></h3>
-                    <em><strong>Published on</strong>:
-                        <?php echo date_format($date, "d F Y"); ?>
-                    </em>
-                    <em><strong>Category:</strong> <a href="#" target="_blank">
-                            <?php echo $post['difficulty_level']; ?>
-                        </a></em>
-                    <br><br>
-                    <article>
-                        <p>
-                            <?php echo $message; ?>
+                        </h3>
+                        <p>Description:
+                            <?php echo $post['description']; ?>
                         </p>
-                    </article>
-                    <a class="btn btn-blog pull-right" href="view_post.php?id=<?php echo $post['recipe_id']; ?>">READ MORE</a>
-                </div>
-            <?php }
-        }
-        $totalPages = ceil($totalCount / $perPage);
-        if ($totalPages > 1) {
-            echo '<center><div class="pagination">';
-            if ($currentPage > 1) {
-                echo '<a href="searchpage.php?keyword=' . urlencode($keyword) . '&category=' . urlencode($category) . '&page=' . ($currentPage - 1) . '" class="page-item prev-link">Prev</a>';
+                        <p>Rental Rate: $
+                            <?php echo $post["rental_rate"]; ?> per day
+                        </p>
+                        <p>Availability:
+                            <?php echo $post["availability_status"]; ?>
+                        </p>
+                        <?php
+                        if (!empty($post["image_url"])) {
+                            echo "<img src='" . $post["image_url"] . "' alt='Vehicle Image'>";
+                        } 
+                        echo "<a href='view-vehicle.php?vehicle_id=" . $post["vehicle_id"] . "' class='view-button'>View Details</a>"; ?>
+                    </div>
+                <?php }
+                echo '</div>';
             }
-            for ($i = 1; $i <= $totalPages; $i++) {
-                echo '<a href="searchpage.php?keyword=' . urlencode($keyword) . '&category=' . urlencode($category) . '&page=' . $i . '" class="page-item ' . (($currentPage == $i) ? 'active' : '') . '">' . $i . '</a>';
-            }
+            ?>
 
-            if ($currentPage < $totalPages) {
-                echo '<a href="searchpage.php?keyword=' . urlencode($keyword) . '&category=' . urlencode($category) . '&page=' . ($currentPage + 1) . '" class="page-item next-link">Next</a>';
-            }
-            echo '</div></center>';
-        } ?>
+            <?php
+            $totalPages = ceil($totalCount / $perPage);
+            if ($totalPages > 1) {
+                echo '<center><div class="pagination">';
+                if ($currentPage > 1) {
+                    echo '<a href="searchpage.php?keyword=' . urlencode($keyword) . '&category=' . urlencode($category) . '&page=' . ($currentPage - 1) . '" class="page-item prev-link">Prev</a>';
+                }
+                for ($i = 1; $i <= $totalPages; $i++) {
+                    echo '<a href="searchpage.php?keyword=' . urlencode($keyword) . '&category=' . urlencode($category) . '&page=' . $i . '" class="page-item ' . (($currentPage == $i) ? 'active' : '') . '">' . $i . '</a>';
+                }
+
+                if ($currentPage < $totalPages) {
+                    echo '<a href="searchpage.php?keyword=' . urlencode($keyword) . '&category=' . urlencode($category) . '&page=' . ($currentPage + 1) . '" class="page-item next-link">Next</a>';
+                }
+                echo '</div></center>';
+            } ?>
+        </section>
     </main>
     <footer>
         <p>&copy; 2023 RentAndGo. All rights reserved.</p>
