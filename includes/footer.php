@@ -1,11 +1,8 @@
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <p>&copy; <?php echo date("Y"); ?> Phone Specs Hub. All rights reserved.</p>
-            </div>
-        </div>
-    </div>
+
+<footer class="footer mt-auto py-3">
+  <div class="container">
+    <span class="text-muted">&copy; <?php echo date("Y"); ?> Phone Specs Hub. All rights reserved.</p></span>
+  </div>
 </footer>
 
 <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->

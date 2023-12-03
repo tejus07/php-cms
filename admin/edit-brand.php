@@ -15,10 +15,16 @@ if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])):
 endif;
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])):
+    $brandId = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : null;
+
+    if (!$brandId) {
+        header("Location: brands.php");
+        exit();
+    } 
+
     try {
-        $brandId = $_GET['id'];
         $stmt = $pdo->prepare("SELECT * FROM brands WHERE id = :id");
-        $stmt->bindValue(':id', $brandId);
+        $stmt->bindValue(':id', $brandId, PDO::PARAM_INT);
         $stmt->execute();
 
         $brand = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -59,7 +65,7 @@ endif;
 
 <div class="container-fluid">
     <div class="row">
-    <?php
+        <?php
         require 'admin-sidebar.php'
             ?>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
@@ -84,3 +90,6 @@ endif;
         </main>
     </div>
 </div>
+<?php
+require_once '../includes/footer.php';
+?>

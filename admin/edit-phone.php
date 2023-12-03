@@ -14,14 +14,28 @@ if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
     exit();
 }
 
-$phone_id = (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : '0';
+if (isset($_GET['error'])):
+    $error_message = $_GET['error'];
+    echo "<div class='row'><div class='col-md-9 ml-sm-auto col-lg-10 px-md-4'>
+    <div class='error-message'>$error_message</div>
+    </div></div>";
+endif;
+
+
+$phone_id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : null;
+
+if (!$phone_id) :
+    header("Location: phones.php");
+    exit();
+endif;
+
 $query = "SELECT phones.*, 
-phone_specs.processor, phone_specs.RAM, phone_specs.storage, phone_specs.camera, phone_specs.display, phone_specs.battery, phone_specs.operating_system,
-brands.name AS brand_name
-FROM phones
-INNER JOIN phone_specs ON phone_specs.phone_id = phones.id
-INNER JOIN brands ON brands.id = phones.brand_id 
-WHERE phones.id = :phoneId";
+    phone_specs.processor, phone_specs.RAM, phone_specs.storage, phone_specs.camera, 
+    phone_specs.display, phone_specs.battery, phone_specs.operating_system,
+    brands.name AS brand_name FROM phones
+    INNER JOIN phone_specs ON phone_specs.phone_id = phones.id
+    INNER JOIN brands ON brands.id = phones.brand_id 
+    WHERE phones.id = :phoneId";
 
 $stmt = $pdo->prepare($query);
 $stmt->bindParam(':phoneId', $phone_id, PDO::PARAM_INT);
@@ -45,44 +59,68 @@ while ($row = $brands_stmt->fetch(PDO::FETCH_ASSOC)) {
     $brands[$row['id']] = $row['name'];
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST'):
 
-    $phone_id = $_GET['id'];
-    $name = $_POST['name'];
-    $description = $_POST['description-hidden'];
-    $release_date = $_POST['release_date'];
-    $processor = $_POST['processor'];
-    $RAM = $_POST['RAM'];
-    $storage = $_POST['storage'];
-    $camera = $_POST['camera'];
-    $display = $_POST['display'];
-    $battery = $_POST['battery'];
-    $operating_system = $_POST['operating_system'];
-    $brand_id = $_POST['brand_id'];
-    $user_id = $_POST['user_id'];
+    $phone_id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : null;
+
+    if (!$phone_id) {
+        header("Location: phones.php");
+        exit();
+    }
+
+    $name = isset($_POST['name']) ? filter_var($_POST['name'], FILTER_SANITIZE_STRING) : null;
+    $description = isset($_POST['description-hidden']) && validateString($_POST['description-hidden'], 1, 1000) ? $_POST['description-hidden'] : null;
+    $release_date = isset($_POST['release_date']) ? $_POST['release_date'] : null;
+    $brand_id = isset($_POST['brand_id']) && is_numeric($_POST['brand_id']) ? (int) $_POST['brand_id'] : null;
+    $user_id = isset($_POST['user_id']) && is_numeric($_POST['user_id']) ? (int) $_POST['user_id'] : null;
+    $processor = isset($_POST['processor']) ? $_POST['processor'] : null;
+    $RAM = isset($_POST['RAM']) ? $_POST['RAM'] : null;
+    $storage = isset($_POST['storage']) ? $_POST['storage'] : null;
+    $camera = isset($_POST['camera']) ? $_POST['camera'] : null;
+    $display = isset($_POST['display']) ? $_POST['display'] : null;
+    $battery = isset($_POST['battery']) ? $_POST['battery'] : null;
+    $operating_system = isset($_POST['operating_system']) ? $_POST['operating_system'] : null;
+    $imageUpdated = isset($_FILES['uploadFile']) && $_FILES['uploadFile']['error'] !== UPLOAD_ERR_NO_FILE;
     $image_url = $data['image_url'];
 
-    try {
 
-        if (!empty($_FILES['uploadFile']) && !isset($_POST['delete_image'])):
+    if ($release_date && !validateDate($release_date, 'Y-m-d')):
+        header("Location: add-new-phone.php?error=Invalid release date");
+        exit();
+    endif;
 
+    if (
+        empty($name) || empty($description) || empty($brand_id) ||
+        empty($user_id) || empty($processor) || empty($RAM) || empty($RAM) ||
+        empty($storage) || empty($camera) || empty($display) || empty($battery) || empty($operating_system)
+    ):
+        $error_message = "Please enter all required fields";
+        header("Location: edit-phone.php?error=" . urlencode($error_message) . "&name=" . urlencode($name) . "&brand_id=" . urlencode($brand_id) . "&user_id=" . urlencode($user_id) . "&processor=" . urlencode($processor) . "&RAM=" . urlencode($RAM) . "&storage=" . urlencode($storage) . "&camera=" . urlencode($camera) . "&display=" . urlencode($display) . "&battery=" . urlencode($battery) . "&operating_system=" . urlencode($operating_system));
+        exit();
+    endif;
+
+    if ($imageUpdated) {
+
+        if (!empty($_FILES['uploadFile']) && !isset($_POST['delete_image'])) {
             $returned_value = upload_image($_FILES['uploadFile']);
-            if ($returned_value):
+            if ($returned_value) {
                 $image_url = $returned_value;
-            endif;
-            
-        else:
+            }
+        } else {
             $image_path = "../" . $image_url;
-            if (file_exists($image_path)):
+            if (file_exists($image_path)) {
                 unlink($image_path);
                 echo "Image deleted successfully!";
-            else:
+            } else {
                 echo "Image not found.";
-            endif;
+            }
 
             $image_url = null;
-        endif;
+        }
+    }
 
+
+    try {
         $sql = "UPDATE phones SET 
         name = :name,
         description = :description,
@@ -99,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindValue(':image_url', $image_url);
         $stmt->bindValue(':brand_id', $brand_id);
         $stmt->bindValue(':user_id', $user_id);
-        $stmt->bindValue(':phone_id', $phone_id);
+        $stmt->bindValue(':phone_id', $phone_id, PDO::PARAM_INT);
         $stmt->execute();
 
         $sql1 = "UPDATE phone_specs SET 
@@ -131,7 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error_message = $e->getMessage();
         echo "<div class='error-message'>$error_message</div>";
     }
-}
+endif;
 ?>
 <div class="container-fluid">
     <div class="row">
@@ -274,3 +312,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </main>
     </div>
 </div>
+<?php
+require_once '../includes/footer.php';
+?>

@@ -56,3 +56,6 @@ if (isset($_GET['error']) && $_GET['error'] === '1') {
         </div>
     </div>
 </div>
+<?php
+require_once '../includes/footer.php';
+?>

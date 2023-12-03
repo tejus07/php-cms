@@ -38,6 +38,6 @@ if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
   </div>
 </div>
 
-<!-- <?php
+<?php
 require_once '../includes/footer.php';
-?> -->
+?>

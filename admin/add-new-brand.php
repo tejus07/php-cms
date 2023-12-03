@@ -5,42 +5,56 @@ require_once '../includes/initialize.php';
 require_once '../functions/function.php';
 require_once 'admin-navbar.php';
 
-if (session_status() == PHP_SESSION_NONE) :
+if (session_status() == PHP_SESSION_NONE):
     session_start();
 endif;
 
-if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) :
+if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])):
     header("Location: ./login.php");
     exit();
 endif;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
-    try {
-        // Validate and sanitize form input
-        $brandName = trim($_POST['brand_name']);
-        $brandDescription = trim($_POST['brand_description']);
+if (isset($_GET['error'])):
+    $error_message = $_GET['error'];
+    echo "<div class='row'><div class='col-md-9 ml-sm-auto col-lg-10 px-md-4'>
+    <div class='error-message'>$error_message</div>
+    </div></div>";
+endif;
 
-        // Insert new brand into the database
-        $stmt = $pdo->prepare("INSERT INTO brands (name, description) VALUES (:name, :description)");
-        $stmt->bindValue(':name', $brandName);
-        $stmt->bindValue(':description', $brandDescription);
-        $stmt->execute();
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])):
+    $brandName = isset($_POST['brand_name']) ? filter_var($_POST['brand_name'], FILTER_SANITIZE_STRING) : null;
+    $brandDescription = isset($_POST['brand_description']) && validateString($_POST['brand_description'], 1, 1000) ? $_POST['brand_description'] : null;
 
-        // Redirect to brands.php after successful addition
-        header("Location: brands.php");
+    if (
+        empty($brandName) || empty($brandDescription)
+    ):
+        $error_message = "Please enter all required fields and brand description cannot be exceed 1000 characters";
+        header("Location: add-new-brand.php?error=" . urlencode($error_message) . "&brandName=" . urlencode($brandName) . "&brandDescription=" . urlencode($brandDescription));
         exit();
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-        exit();
-    }
-}
+    else:
+        try {
+
+            $stmt = $pdo->prepare("INSERT INTO brands (name, description) VALUES (:name, :description)");
+            $stmt->bindValue(':name', $brandName);
+            $stmt->bindValue(':description', $brandDescription);
+            $stmt->execute();
+            header("Location: brands.php");
+            exit();
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            exit();
+        }
+    endif;
+
+endif;
 ?>
 
 <div class="container-fluid">
     <div class="row">
         <?php require 'admin-sidebar.php'; ?>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <div
+                class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">Add New Brand</h1>
             </div>
             <form method="post">
@@ -57,3 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         </main>
     </div>
 </div>
+<?php
+require_once '../includes/footer.php';
+?>

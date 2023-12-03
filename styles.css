@@ -108,3 +108,13 @@
   display: none;
   visibility: hidden;
 }
+
+.container {
+  width: auto;
+  max-width: 680px;
+  padding: 0 15px;
+}
+
+.footer {
+  background-color: #f5f5f5;
+}
