@@ -1,37 +1,18 @@
 <?php
-include_once '../shared/database.php';
-?>
-<?php
+include_once 'shared/categoryHandler.php';
+
 if(empty($_SESSION['user_id'])) {
     header('Location: login.php');
 }
-?>
-<?php
 
-$database = new Database();
-
-$pdo = $database->getConnection();
+$categoryHandler = new CategoryHandler();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $category_name = $_POST['category_name'];
+    $categoryHandler->category_name = $_POST['category_name'];
 
-    try {
-        $sql = "INSERT INTO categories (category_name) VALUES (:category_name)";
+    $categoryHandler->addCategory();
 
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':category_name', $category_name);
-
-        
-        echo $sql;
-        $stmt->execute();
-
-        echo "Category added successfully!";
-        
-        header("Location: categories.php");
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-    }
 }
 ?>
 

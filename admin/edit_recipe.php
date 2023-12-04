@@ -1,63 +1,43 @@
 <?php 
-include_once '../shared/database.php';
+
 include_once 'shared/image_handler.php';
+include_once 'shared/recipeHandler.php';
+include_once 'shared/categoryHandler.php';
+include_once 'shared/userHandler.php';
 
-$database = new Database();
-$imageHandler = new ImageHandler();
-
-$pdo = $database->getConnection();
-
-$recipe_id = (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : '0';
-$query = "SELECT * FROM Recipes WHERE recipe_id = :recipeId";
-
-$stmt1 = $pdo->prepare($query);
-
-$stmt1->bindParam(':recipeId', $recipe_id, PDO::PARAM_INT);
-
-$stmt1->execute();
-
-$data = $stmt1->fetch(PDO::FETCH_ASSOC);
-
-    // $stmt = $pdo->prepare($sqlQuery);
-    // $stmt->execute([$query]);
-    // $data = $stmt->fetchAll();
-
-?>
-
-<?php
 if(empty($_SESSION['user_id'])) {
     header('Location: login.php');
 }
-?>
-<?php
 
-$users = [];
-$user_sql = "SELECT user_id, username FROM Users";
-$user_stmt = $pdo->query($user_sql);
+$imageHandler = new ImageHandler();
+$recipeHandler = new RecipeHandler();
+$categoryHandler = new CategoryHandler();
+$userHandler = new UserHandler();
 
-while ($row = $user_stmt->fetch(PDO::FETCH_ASSOC)) {
-    $users[$row['user_id']] = $row['username'];
-}
+$users = $userHandler->getUsers();
 
-$categories = [];
-$category_sql = "SELECT category_id, category_name FROM Categories";
-$category_stmt = $pdo->query($category_sql);
+$categories = $categoryHandler->getCategories();
 
-while ($row = $category_stmt->fetch(PDO::FETCH_ASSOC)) {
-    $categories[$row['category_id']] = $row['category_name'];
-}
+$recipe_id = (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : '0';
+
+$data = $recipeHandler->getSingleRecipe($recipe_id);
+
+
+$users = $userHandler->getUsers();
+
+$categories = $categoryHandler->getCategories();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $image_url = $data['image_url'];
 
-    if (!empty($_FILES['uploadFile']) && !isset($_POST['delete_image'])) {
+    if (isset($_FILES['uploadFile']) && $_FILES['uploadFile']['error'] !== UPLOAD_ERR_NO_FILE && !isset($_POST['delete_image'])) {
 
         $returned_value = $imageHandler->upload_image($_FILES['uploadFile']);
         if($returned_value) {
             $image_url = $returned_value;
         }
-    } else {
+    } else if(isset($_POST['delete_image'])) {
         $image_path = "../" . $image_url;
         if (file_exists($image_path)) {
             unlink($image_path);
@@ -70,61 +50,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $recipe_id = $_GET['id'];
-    $title = $_POST['title'];
-    $description = $_POST['description-hidden'];
-    $preparation_time = $_POST['preparation_time'];
-    $cooking_time = $_POST['cooking_time'];
-    $servings = $_POST['servings'];
-    $difficulty_level = $_POST['difficulty_level'];
-    $cuisine = $_POST['cuisine'];
-    $course = $_POST['course'];
-    $instructions = $_POST['instructions'];
-    $ingredients = $_POST['ingredients'];
-    $category_id = $_POST['category_id'];
-    $user_id = $_POST['user_id'];
+    $recipeHandler->title = $_POST['title'];
+    $recipeHandler->description = $_POST['description-hidden'];
+    $recipeHandler->preparation_time = $_POST['preparation_time'];
+    $recipeHandler->cooking_time = $_POST['cooking_time'];
+    $recipeHandler->servings = $_POST['servings'];
+    $recipeHandler->difficulty_level = $_POST['difficulty_level'];
+    $recipeHandler->cuisine = $_POST['cuisine'];
+    $recipeHandler->course = $_POST['course'];
+    $recipeHandler->instructions = $_POST['instructions'];
+    $recipeHandler->ingredients = $_POST['ingredients'];
+    $recipeHandler->category_id = $_POST['category_id'];
+    $recipeHandler->user_id = $_POST['user_id'];
+    $recipeHandler->image_url = $image_url;
 
-    try {
-        $sql = "UPDATE Recipes SET 
-        title = :title,
-        description = :description,
-        preparation_time = :preparation_time,
-        cooking_time = :cooking_time,
-        servings = :servings,
-        difficulty_level = :difficulty_level,
-        cuisine = :cuisine,
-        course = :course,
-        instructions = :instructions,
-        ingredients = :ingredients,
-        category_id = :category_id,
-        user_id = :user_id,
-        image_url = :image_url
-        WHERE recipe_id = :recipe_id";
+    $recipeHandler->editRecipe($recipe_id);
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':title', $title);
-    $stmt->bindParam(':description', $description);
-    $stmt->bindParam(':image_url', $image_url);
-    $stmt->bindParam(':preparation_time', $preparation_time);
-    $stmt->bindParam(':cooking_time', $cooking_time);
-    $stmt->bindParam(':servings', $servings);
-    $stmt->bindParam(':difficulty_level', $difficulty_level);
-    $stmt->bindParam(':cuisine', $cuisine);
-    $stmt->bindParam(':course', $course);
-    $stmt->bindParam(':instructions', $instructions);
-    $stmt->bindParam(':ingredients', $ingredients);
-    $stmt->bindParam(':category_id', $category_id);
-    $stmt->bindParam(':user_id', $user_id);
-    $stmt->bindParam(':recipe_id', $recipe_id);
-
-        
-        echo $sql;
-        $stmt->execute();
-
-        echo "Recipe added successfully!";
-        header("Location: recipes.php");
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-    }
 }
 ?>
 
