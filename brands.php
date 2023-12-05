@@ -30,11 +30,12 @@ try {
 }
 ?>
 <div class="container">
-    <div class="row">
+    <div class="row my-2">
         <div class="col">
             <form method="GET">
-                <label for="sort">Sort by:</label>
-                <select name="sort" id="sort">
+            <div class="form-row justify-content-end">
+                <div class="form-group col-md-4 d-flex">
+                <select class="form-control mr-2" name="sort" id="sort">
                     <?php
                     $selectedSort = isset($_GET['sort']) ? $_GET['sort'] : '';
 
@@ -53,17 +54,19 @@ try {
                     }
                     ?>
                 </select>
-                <button type="submit">Sort</button>
+                <button type="submit" class="btn btn-outline-primary">Sort</button>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
-    <div class="row">
-        <div class="col">
+    <div class="row row-cols-2">
+        
             <?php
             foreach ($phones as $phone) {
-                echo '<div class="card">';
+                echo '<div class="col"><div class="card">';
                 if ($phone['image_url']) {
-                    echo '<img src="./uploads/' . $phone['image_url'] . '" class="bd-placeholder-img card-img-top" width="100%" height="180" alt="' . $phone['name'] . '">';
+                    echo '<img src="./' . $phone['image_url'] . '" class="bd-placeholder-img card-img-top" width="100%" height="180" alt="' . $phone['name'] . '">';
                 } else {
                     echo '<svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img"
     aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
@@ -79,8 +82,7 @@ try {
                 echo '<p>Release Date: ' . $phone['release_date'] . '</p>';
                 echo '<p>Brand: ' . $phone['brand_name'] . '</p>';
                 echo '<a href="view-phone.php?id=' . $phone['id'] . '" class="btn btn-primary">View</a>';
-                echo '</div>';
-                echo '</div></div>';
+                echo '</div></div></div></div>';
             }
             ?>
         </div>

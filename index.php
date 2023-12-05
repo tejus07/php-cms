@@ -6,11 +6,9 @@ require 'navbar.php';
 ?>
 
 <div class="container">
-    <div class="row">
-        <div class="col">
-            <?php require_once 'phone-list.php' ?>
-        </div>
-    </div>
+
+    <?php require_once 'phone-list.php' ?>
+
 </div>
 
 <?php

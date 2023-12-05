@@ -67,44 +67,47 @@ try {
     echo "Error: " . $e->getMessage();
 }
 ?>
-<div class="container">
-    <div class="row">
+<div class="search-container">
+    <div class="row my-2">
         <div class="col">
             <form method="GET" action="search-results.php">
-                <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
-                <input type="hidden" name="brandFilter" value="<?php echo $brandFilter; ?>">
-                <input type="hidden" name="page" value="<?php echo $page; ?>">
-                <label for="sort">Sort by:</label>
-                <select name="sort" id="sort">
-                    <?php
-                    $selectedSort = isset($_GET['sort']) ? $_GET['sort'] : '';
+                <div class="form-row justify-content-end">
+                <div class="form-group col-md-4 d-flex">
+                    <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
+                    <input type="hidden" name="brandFilter" value="<?php echo $brandFilter; ?>">
+                    <input type="hidden" name="page" value="<?php echo $page; ?>">
+                    <select class="form-control mr-2" name="sort" id="sort">
+                        <?php
+                        $selectedSort = isset($_GET['sort']) ? $_GET['sort'] : '';
 
-                    $options = [
-                        'name-ASC' => 'Name (Ascending)',
-                        'name-DESC' => 'Name (Descending)',
-                        'created_at-ASC' => 'Created At (Ascending)',
-                        'created_at-DESC' => 'Created At (Descending)',
-                        'release_date-ASC' => 'Released At (Ascending)',
-                        'release_date-DESC' => 'Released At (Descending)'
-                    ];
+                        $options = [
+                            'name-ASC' => 'Name (Ascending)',
+                            'name-DESC' => 'Name (Descending)',
+                            'created_at-ASC' => 'Created At (Ascending)',
+                            'created_at-DESC' => 'Created At (Descending)',
+                            'release_date-ASC' => 'Released At (Ascending)',
+                            'release_date-DESC' => 'Released At (Descending)'
+                        ];
 
-                    foreach ($options as $value => $label) {
-                        $selected = ($value === $selectedSort) ? 'selected' : '';
-                        echo "<option value=\"$value\" $selected>$label</option>";
-                    }
-                    ?>
-                </select>
-                <button type="submit">Sort</button>
+                        foreach ($options as $value => $label) {
+                            $selected = ($value === $selectedSort) ? 'selected' : '';
+                            echo "<option value=\"$value\" $selected>$label</option>";
+                        }
+                        ?>
+                    </select>
+                    <button type="submit" class="btn btn-outline-primary">Sort</button>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col-2">
             <form method="GET"
                 action="<?php echo generateLink('search-results.php', $search, $sortOrder, $brandFilter, $page) ?>">
                 <input type="hidden" name="search" value="<?php echo htmlentities($search); ?>">
                 <label for="brandFilter">Filter by Brand:</label>
-                <select name="brandFilter" id="brandFilter">
+                <select name="brandFilter" class="form-control mr-2" id="brandFilter">
                     <?php
                     echo "<option value='' " . ($brandFilter === '' ? 'selected' : '') . ">All</option>"; // All option
                     foreach ($brands as $id => $brandName) {
@@ -114,34 +117,36 @@ try {
                     ?>
                 </select>
                 <br>
-                <button type="submit">Apply Filter</button>
+                <button type="submit" class="btn btn-primary">Apply Filter</button>
             </form>
         </div>
 
-        <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-            <?php
-            foreach ($phones as $phone) {
-                echo '<div class="card">';
-                if ($phone['image_url']) {
-                    echo '<img src="./' . $phone['image_url'] . '" class="bd-placeholder-img card-img-top" width="100%" height="180" alt="' . $phone['name'] . '">';
-                } else {
-                    echo '<svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img"
+        <div class="col-10">
+            <div class="row row-cols-2">
+                <?php
+                foreach ($phones as $phone) {
+                    echo '<div class="col"><div class="card">';
+                    if ($phone['image_url']) {
+                        echo '<img src="./' . $phone['image_url'] . '" class="bd-placeholder-img card-img-top" width="100%" height="180" alt="' . $phone['name'] . '">';
+                    } else {
+                        echo '<svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img"
     aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
     <title>Placeholder</title>
     <rect width="100%" height="100%" fill="#6c757d"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">' . $phone['name'] . '</text>
 </svg>';
+                    }
+                    echo '<div class="card-body">';
+                    echo '<div class="card-body">';
+                    echo '<h5 class="card-title">' . $phone['name'] . '</h5>';
+                    echo '<p class="card-text">' . $phone['description'] . '</p>';
+                    echo '<p>Release Date: ' . $phone['release_date'] . '</p>';
+                    echo '<p>Brand: ' . $phone['brand_name'] . '</p>';
+                    echo '<a href="view-phone.php?id=' . $phone['id'] . '" class="btn btn-primary">View</a>';
+                    echo '</div>';
+                    echo '</div></div></div>';
                 }
-                echo '<div class="card-body">';
-                echo '<div class="card-body">';
-                echo '<h5 class="card-title">' . $phone['name'] . '</h5>';
-                echo '<p class="card-text">' . $phone['description'] . '</p>';
-                echo '<p>Release Date: ' . $phone['release_date'] . '</p>';
-                echo '<p>Brand: ' . $phone['brand_name'] . '</p>';
-                echo '<a href="view-phone.php?id=' . $phone['id'] . '" class="btn btn-primary">View</a>';
-                echo '</div>';
-                echo '</div></div>';
-            }
-            ?>
+                ?>
+            </div>
         </div>
     </div>
     <?php
