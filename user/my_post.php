@@ -1,4 +1,6 @@
 <?php include('shared/header.php'); ?>
+
+<link rel="stylesheet" type="text/css" href="../css/styles.css">
 <style>
 .sidebar {
     width: 250px;
@@ -55,25 +57,27 @@
 </style>
 
 <?php
-    include_once 'shared/database.php';
-    include_once 'admin/shared/recipeHandler.php';
+    include_once '../shared/database.php';
+    include_once '../admin/shared/recipeHandler.php';
 
     $conn = new Database();
     $recipeHandler = new RecipeHandler($conn);
 
     $user_id = $_SESSION['user_id'];
 
+    $recipesList = [];
+
     $recipesList = $recipeHandler->getAllRecipes($user_id);
+
 ?>
 
     <div class="user-dashboard">
         <aside class="sidebar">
             <h2>Sidebar</h2>
             <ul>
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#">Messages</a></li>
-                <li><a href="#">Notifications</a></li>
-                <li><a href="#">Settings</a></li>
+                <li><a href="user_dashboard.php">Dashboard</a></li>
+                <li><a href="my_post.php">My Post</a></li>
+                <li><a href="add_new_post.php">Add New Post</a></li>
             </ul>
         </aside>
 
@@ -93,7 +97,7 @@
 			    <div class="col-md-10 blogShort">
         	
 			        <?php if (!empty($post['image_url'])) {?>
-			            <img src="<?php echo $post['image_url'] ?>" width="250">
+			            <img src="../<?php echo $post['image_url'] ?>" width="250">
         	        <?php } ?>
 			
 				    <h3><a href="view_post.php?id=<?php echo $post['recipe_id']; ?>"><?php echo $post['title']; ?></a></h3>		
@@ -103,7 +107,14 @@
 			        <article>
 			            <p><?php echo $message; ?> 	</p>
 			        </article>
-			        <a class="btn btn-blog pull-right" href="view_post.php?id=<?php echo $post['recipe_id']; ?>">READ MORE</a> 
+                    <div class="recipe-actions">
+                    <button class="edit-button"><a href="edit_post.php?id=<?php echo $post['recipe_id']?>">Edit</a></button>
+                    <form method="post" action="delete_post.php">
+                        <input type="hidden" name="recipe_id" value="<?php echo $post['recipe_id']?>">
+                        <input type="submit" class="delete-button" name="delete_recipe" value="Delete Recipe" onclick="return confirm('Are you sure you want to delete this recipe?');">
+                    </form>
+                    <!-- <button class="delete-button"><a href="delete_recipe.php?id=">Delete</a></button> -->
+                </div> 
 			    </div>
 		    <?php } ?>  
             </section>

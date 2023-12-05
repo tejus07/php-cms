@@ -1,11 +1,13 @@
 <?php
+include_once '../Shared/database.php';
 include_once 'shared/categoryHandler.php';
 
 if(empty($_SESSION['user_id'])) {
     header('Location: login.php');
 }
 
-$categoryHandler = new CategoryHandler();
+$conn = new Database();
+$categoryHandler = new CategoryHandler($conn);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 

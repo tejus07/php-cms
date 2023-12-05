@@ -1,10 +1,11 @@
-<?php 
 
-include_once '../Shared/database.php';
-include_once 'shared/image_handler.php';
-include_once 'shared/recipeHandler.php';
-include_once 'shared/categoryHandler.php';
-include_once 'shared/userHandler.php';
+<?php include('shared/header.php'); ?>
+<?php 
+include_once '../shared/database.php';
+include_once '../admin/shared/image_handler.php';
+include_once '../admin/shared/recipeHandler.php';
+include_once '../admin/shared/categoryHandler.php';
+include_once '../admin/shared/userHandler.php';
 
 if(empty($_SESSION['user_id'])) {
     header('Location: login.php');
@@ -23,7 +24,7 @@ $categories = $categoryHandler->getCategories();
 $recipe_id = (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : '0';
 
 $data = $recipeHandler->getSingleRecipe($recipe_id);
-
+echo $data['recipe_id'];
 
 $users = $userHandler->getUsers();
 
@@ -69,44 +70,90 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $requestStatus = $recipeHandler->editRecipe($recipe_id);
 
     if ($requestStatus === true) {
-        header("Location: recipes.php");
+        header("Location: my_post.php");
     }
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
-    <link rel="stylesheet" href="css/admin-panel.css">
-    <title>Admin Panel</title>
-</head>
-<body>
-    <div class="admin-panel">
-        <div class="sidebar">
-            <h1>Admin Panel</h1>
+
+<link rel="stylesheet" type="text/css" href="../css/styles.css">
+<style>
+.sidebar {
+    width: 250px;
+    background-color: #fff; /* White sidebar background */
+    padding: 15px;
+    border-right: 1px solid #ccc; /* Light border */
+}
+
+.sidebar h2 {
+    margin-bottom: 15px;
+    color: #333; /* Dark text color */
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    color: #333; /* Dark text color */
+    text-decoration: none;
+    display: block;
+    padding: 8px 0;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+    background-color: #f0f0f0; /* Hover background color */
+}
+
+.main-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.user-dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    padding: 20px;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+}
+
+</style>
+
+    <div class="user-dashboard">
+        <aside class="sidebar">
+            <h2>Sidebar</h2>
             <ul>
-                <li><a href="./">Dashboard</a></li>
-                <li><a href="users.php">Users</a></li>
-                <li><a href="recipes.php">Recipes</a></li>
-                <li><a href="categories.php">Categories</a></li>
-                <!-- <li><a href="#">Comments</a></li> -->
+                <li><a href="user_dashboard.php">Dashboard</a></li>
+                <li><a href="my_post.php">My Post</a></li>
+                <li><a href="add_new_post.php">Add New Post</a></li>
             </ul>
-        </div>
-<script>
-    tinymce.init({
-        selector: 'textarea#description-hidden',
-        plugins: 'advlist autolink lists link image charmap print preview anchor',
-        toolbar_mode: 'floating',
-    });
-</script>
+        </aside>
+
+        <main class="main-container">
+            <script>
+                tinymce.init({
+                    selector: 'textarea#description-hidden',
+                    plugins: 'advlist autolink lists link image charmap print preview anchor',
+                    toolbar_mode: 'floating',
+                });
+            </script>
 
     <div class="add-recipe-container">
         <h2 class="add-recipe-title">Add Recipe</h2>
-        <form class="recipe-form" action="edit_recipe.php?id=<?php echo $data['recipe_id']?>" method="post" enctype="multipart/form-data">
+        <form class="recipe-form" action="edit_post.php?id=<?php echo $data['recipe_id']?>" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="title">Title:</label>
             <input type="text" id="title" name="title" class="form-input" value="<?php echo $data['title']?>" required>
@@ -204,6 +251,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
             <input type="submit" value="Add Recipe" class="submit-button">
         </form>
+    </div>
+        </main>
     </div>
 
 <?php include('shared/footer.php');?>

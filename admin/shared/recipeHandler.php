@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 class RecipeHandler {
     private $database;
@@ -51,7 +51,7 @@ class RecipeHandler {
                 $stmt->execute();
 
                 echo "Recipe added successfully!";
-                header("Location: recipes.php");
+                return true;
             } catch (PDOException $e) {
                 echo "Error: " . $e->getMessage();
             }
@@ -101,7 +101,7 @@ class RecipeHandler {
                 $stmt->execute();
 
                 echo "Recipe updated successfully!";
-                header("Location: recipes.php");
+                return true;
             } catch (PDOException $e) {
                 echo "Error: " . $e->getMessage();
             }
@@ -119,7 +119,7 @@ class RecipeHandler {
         
         $stmt1->execute();
         
-        $recipe = $stmt1->fetch(PDO::FETCH_ASSOC);
+        $recipe = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
         return $recipe;
     }
@@ -139,6 +139,7 @@ class RecipeHandler {
 
         return $recipe;
     }
+
 }
 
 ?>

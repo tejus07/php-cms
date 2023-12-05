@@ -33,7 +33,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $_SESSION['user_id'] = $user['user_id'];
         
-        header('Location: index.php');
+        if ($user['role'] === "admin") {
+            header('Location: index.php');
+        } else {
+            header('Location: ../user/user_dashboard.php');
+        }
         exit;
     } else {
         echo 'in else';

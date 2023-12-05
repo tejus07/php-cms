@@ -1,12 +1,11 @@
 <?php 
-include_once '../shared/database.php';
 
 class UserHandler {
     private $database;
     public $user_name;
 
-    public function __construct() {
-        $this->database = new Database();
+    public function __construct($conn) {
+        $this->database = $conn;
     }
 
     public function addUser() {
@@ -44,6 +43,21 @@ class UserHandler {
         }
 
         return $users;
+    }    
+    public function getUserInfo($user_id) {
+        $pdo = $this->database->getConnection();
+
+        $query = "SELECT * FROM Users WHERE user_id = :userId";
+        $stmt1 = $pdo->prepare($query);
+        
+        $stmt1->bindParam(':userId', $user_id, PDO::PARAM_INT);
+        
+        $stmt1->execute();
+        
+        $user = $stmt1->fetch(PDO::FETCH_ASSOC);
+
+        return $user;
+
     }
 }
 

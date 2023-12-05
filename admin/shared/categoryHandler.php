@@ -1,12 +1,11 @@
 <?php 
-include_once '../shared/database.php';
 
 class CategoryHandler {
     private $database;
     public $category_name;
 
-    public function __construct() {
-        $this->database = new Database();
+    public function __construct($conn) {
+        $this->database = $conn;
     }
 
     public function addCategory() {
