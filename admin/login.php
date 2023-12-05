@@ -10,6 +10,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
+     if (empty($username) || empty($password)) {
+        echo "Username and password are required.";
+        exit();
+    }
+
     $host = 'localhost';
     $dbname = 'rentandgodb';
     $username_db = 'root';

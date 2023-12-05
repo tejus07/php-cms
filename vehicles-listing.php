@@ -24,7 +24,6 @@
             <?php
             $selectedSort = $_GET['sort'] ?? 'model_asc';
 
-            // Define sorting conditions based on the selected option
             switch ($selectedSort) {
                 case 'model_asc':
                     $orderBy = 'model ASC';
@@ -48,14 +47,7 @@
                     $orderBy = 'model ASC';
             }
 
-            // database connection and query execution
-            $servername = "localhost";
-            $username = "root";
-            $password = "";
-            $dbname = "rentandgodb";
-
             try {
-                $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
                 $stmt = $conn->prepare("SELECT * FROM Vehicles ORDER BY $orderBy");

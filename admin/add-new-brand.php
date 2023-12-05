@@ -9,19 +9,27 @@ $password = '';
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
 
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        // Validate
+        $brand_name = isset($_POST['brand_name']) ? $_POST['brand_name'] : '';
+        if (empty($brand_name) || strlen($brand_name) < 2 || strlen($brand_name) > 50) {
+            echo "Invalid brand name! Please provide a brand name between 2 to 50 characters.";
+            exit();
+        }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        // Sanitize
+        $brand_name = htmlspecialchars($brand_name);
 
-    $stmt = $pdo->prepare("INSERT INTO brands (brand_name) VALUES (:brand_name)");
+        $stmt = $pdo->prepare("INSERT INTO brands (brand_name) VALUES (:brand_name)");
 
-    $stmt->bindParam(':brand_name', $_POST['brand_name']);
+        $stmt->bindParam(':brand_name', $brand_name);
 
-    $stmt->execute();
+        $stmt->execute();
 
-    echo "New brand added successfully!";
-    header("Location: manage-brands.php");
-} 
+        echo "New brand added successfully!";
+        header("Location: manage-brands.php");
+    }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -30,17 +38,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Add New Brand</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
     <header>
         <h1>Add New Brand</h1>
     </header>
     <main class="admin-container">
-	<?php include('common/navbar.php');?>
+        <?php include('common/navbar.php'); ?>
         <section class="admin-content">
             <form class="add-new-form" action="add-new-brand.php" method="post">
                 <label for="brand_name">Brand Name:</label>
@@ -54,4 +64,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p>&copy; 2023 RentAndGo. All rights reserved.</p>
     </footer>
 </body>
+
 </html>

@@ -58,8 +58,9 @@ $conn = $database->getConnection();
                         $categories[$row['category_id']] = $row['category_name'];
                     }
 
-                    $keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
-                    $category_id = isset($_GET['category']) ? $_GET['category'] : 'all';
+                    $keyword = isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword'], ENT_QUOTES) : '';
+                    $category_id = isset($_GET['category']) ? ($_GET['category'] === 'all' ? 'all' : intval($_GET['category'])) : 'all';
+
                     ?>
 
                     <form class="searchbar" action="searchpage.php" method="GET">

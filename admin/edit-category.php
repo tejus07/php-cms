@@ -9,7 +9,8 @@ $password = '';
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
 
-    $category_id = (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : '0';
+    $category_id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : 0;
+
     $query = "SELECT * FROM Categories WHERE category_id = :category_id";
 
     $stmt1 = $pdo->prepare($query);
@@ -20,19 +21,27 @@ try {
 
     $data = $stmt1->fetch(PDO::FETCH_ASSOC);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $stmt = $pdo->prepare("UPDATE categories SET  category_name = :category_name WHERE category_id = :category_id");
+        // Sanitize
+        $category_name = filter_input(INPUT_POST, 'category_name', FILTER_SANITIZE_STRING);
 
-    $stmt->bindParam(':category_id', $category_id);
-    $stmt->bindParam(':category_name', $_POST['category_name']);
+        // Validate
+        if (empty($category_name)) {
+            echo "Category Name is required.";
+            exit();
+        }
 
-    $stmt->execute();
+        $stmt = $pdo->prepare("UPDATE categories SET  category_name = :category_name WHERE category_id = :category_id");
 
-    echo "New category added successfully!";
-    header("Location: manage-categories.php");
-} 
+        $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
+        $stmt->bindParam(':category_name', $category_name, PDO::PARAM_STR);
+        $stmt->execute();
+
+        echo "New category added successfully!";
+        header("Location: manage-categories.php");
+    }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -41,21 +50,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Add New Brand</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
     <header>
         <h1>Add New Brand</h1>
     </header>
     <main class="admin-container">
-	<?php include('common/navbar.php');?>
+        <?php include('common/navbar.php'); ?>
         <section class="admin-content">
-            <form class="add-new-form" action="edit-category.php?id=<?php echo $data['category_id']?>" method="post">
+            <form class="add-new-form" action="edit-category.php?id=<?php echo $data['category_id'] ?>" method="post">
                 <label for="category_name">Category Name:</label>
-                <input type="text" id="category_name" name="category_name" value="<?php echo $data['category_name']?>" required><br><br>
+                <input type="text" id="category_name" name="category_name" value="<?php echo $data['category_name'] ?>"
+                    required><br><br>
 
                 <input type="submit" value="Submit">
             </form>
@@ -65,4 +77,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p>&copy; 2023 RentAndGo. All rights reserved.</p>
     </footer>
 </body>
+
 </html>

@@ -27,8 +27,10 @@
         </form>
         <div class="vehicles-container">
             <?php
-            $selectedSort = $_GET['sort'] ?? 'model_asc';
-            $brand_id = $_GET['brand_id'] ?? 0;
+            $selectedSort = isset($_GET['sort']) ? $_GET['sort'] : 'model_asc';
+            $brand_id = isset($_GET['brand_id']) ? intval($_GET['brand_id']) : 0;
+            $validSortOptions = ['model_asc', 'model_desc', 'rate_asc', 'rate_desc', 'created_at_asc', 'created_at_desc'];
+            $orderBy = in_array($selectedSort, $validSortOptions) ? $selectedSort : 'model_asc';
 
             // Define sorting conditions based on the selected option
             switch ($selectedSort) {
@@ -85,8 +87,6 @@
             } catch (PDOException $e) {
                 echo "Connection failed: " . $e->getMessage();
             }
-
-            $conn = null;
             ?>
         </div>
     </section>

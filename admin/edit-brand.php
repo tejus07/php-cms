@@ -9,7 +9,7 @@ $password = '';
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
 
-    $brand_id = (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : '0';
+    $brand_id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : 0;
     $query = "SELECT * FROM Brands WHERE brand_id = :brand_id";
 
     $stmt1 = $pdo->prepare($query);
@@ -20,19 +20,27 @@ try {
 
     $data = $stmt1->fetch(PDO::FETCH_ASSOC);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $stmt = $pdo->prepare("UPDATE brands SET brand_name = :brand_name WHERE brand_id = :brand_id");
+        // Sanitize
+        $brand_name = filter_input(INPUT_POST, 'brand_name', FILTER_SANITIZE_STRING);
 
-    $stmt->bindParam(':brand_id', $brand_id);
-    $stmt->bindParam(':brand_name', $_POST['brand_name']);
+        // Validate
+        if (empty($brand_name)) {
+            echo "Brand Name is required.";
+            exit();
+        }
 
-    $stmt->execute();
+        $stmt = $pdo->prepare("UPDATE brands SET brand_name = :brand_name WHERE brand_id = :brand_id");
 
-    echo "New brand added successfully!";
-    header("Location: manage-brands.php");
-} 
+        $stmt->bindParam(':brand_id', $brand_id, PDO::PARAM_INT);
+        $stmt->bindParam(':brand_name', $brand_name, PDO::PARAM_STR);
+        $stmt->execute();
+
+        echo "New brand added successfully!";
+        header("Location: manage-brands.php");
+    }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -41,21 +49,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Edit Brand</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
     <header>
         <h1>Edit Brand</h1>
     </header>
     <main class="admin-container">
-	<?php include('common/navbar.php');?>
+        <?php include('common/navbar.php'); ?>
         <section class="admin-content">
-            <form class="add-new-form" action="edit-brand.php?id=<?php echo $data['brand_id']?>" method="post">
+            <form class="add-new-form" action="edit-brand.php?id=<?php echo $data['brand_id'] ?>" method="post">
                 <label for="brand_name">Brand Name:</label>
-                <input type="text" id="brand_name" name="brand_name" value="<?php echo $data['brand_name']?>" required><br><br>
+                <input type="text" id="brand_name" name="brand_name" value="<?php echo $data['brand_name'] ?>"
+                    required><br><br>
 
                 <input type="submit" value="Submit">
             </form>
@@ -65,4 +76,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p>&copy; 2023 RentAndGo. All rights reserved.</p>
     </footer>
 </body>
+
 </html>

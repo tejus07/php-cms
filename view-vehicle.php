@@ -1,5 +1,5 @@
 <?php require 'header.php'; 
-$vehicle_id = $_GET['vehicle_id'] ?? 0;
+$vehicle_id = isset($_GET['vehicle_id']) ? intval($_GET['vehicle_id']) : 0;
 
 try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -35,7 +35,6 @@ try {
                 <p><strong>Status:</strong>
                     <?php echo isset($vehicleData['availability_status']) ? $vehicleData['availability_status'] : ''; ?>
                 </p>
-                <!-- Display other details as needed -->
             </div>
         <?php else: ?>
             <p>No vehicle details found</p>

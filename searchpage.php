@@ -4,8 +4,14 @@ function searchPages($keyword, $category = null, $limit = 10, $offset = 0)
 {
     global $conn;
 
+    $keyword = '%' . htmlspecialchars($keyword, ENT_QUOTES) . '%';
+
+    if ($category !== null && $category != 'all') {
+        $category = intval($category);
+    }
+
     $sql = "SELECT * FROM vehicles WHERE (model LIKE :keyword OR description LIKE :keyword)";
-    $params = array(':keyword' => '%' . $keyword . '%');
+    $params = array(':keyword' => $keyword);
 
     if ($category !== null && $category != 'all') {
         $sql .= " AND category_id = :category";
@@ -13,7 +19,6 @@ function searchPages($keyword, $category = null, $limit = 10, $offset = 0)
     }
 
     $sql .= " LIMIT " . intval($limit) . " OFFSET " . intval($offset);
-
     try {
         $stmt = $conn->prepare($sql);
         $stmt->execute($params);
@@ -28,6 +33,12 @@ function searchPages($keyword, $category = null, $limit = 10, $offset = 0)
 function getTotalCount($keyword, $category = null)
 {
     global $conn;
+
+    $keyword = '%' . htmlspecialchars($keyword, ENT_QUOTES) . '%';
+
+    if ($category !== null && $category != 'all') {
+        $category = intval($category);
+    }
 
     $sql = "SELECT COUNT(*) AS total FROM vehicles WHERE (model LIKE :keyword OR description LIKE :keyword)";
     $params = array(':keyword' => '%' . $keyword . '%');
