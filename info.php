@@ -1,8 +1,8 @@
 <?php
 $title = 'Info';
-require_once '../includes/header.php';
-require '../db.php';
-require '../navbar.php';
+require_once 'includes/header.php';
+require 'db.php';
+require 'navbar.php';
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -53,5 +53,5 @@ try {
 
 
 <?php
-require_once '../includes/footer.php';
+require_once 'includes/footer.php';
 ?>
