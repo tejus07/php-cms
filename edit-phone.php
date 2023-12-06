@@ -194,7 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php if (!empty($data['image_url'])): ?>
                         <div class="form-group">
                             <label for="image_url">Uploaded Image:</label>
-                            <span class="image-container"><img src="../<?php echo $data['image_url'] ?>" width="100"></span>
+                            <span class="image-container"><img src="<?php echo $data['image_url'] ?>" width="100"></span>
                         </div>
                         <div class="form-group">
                             <label for="delete_image">Delete Image: </label>

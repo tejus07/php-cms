@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2023 at 05:21 AM
+-- Generation Time: Dec 06, 2023 at 04:59 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -45,7 +45,8 @@ INSERT INTO `brands` (`id`, `name`, `description`, `logo_url`, `created_at`, `up
 (2, 'Samsung', 'Produces a wide range of smartphones and electronic devices.', 'https://example.com/samsung_logo.png', '2023-11-15 03:28:19', '2023-11-15 03:28:19'),
 (3, 'Google', 'Develops the Pixel series of smartphones and other technology products.', 'https://example.com/google_logo.png', '2023-11-15 03:28:19', '2023-11-15 03:28:19'),
 (4, 'Huawei', 'A global provider of information and communications technology (ICT) infrastructure and smart devices.', 'https://example.com/huawei_logo.png', '2023-11-15 03:28:19', '2023-11-15 03:28:19'),
-(5, 'OnePlus', 'Focuses on high-performance smartphones with a loyal fan base.', 'https://example.com/oneplus_logo.png', '2023-11-15 03:28:19', '2023-11-15 03:28:19');
+(5, 'OnePlus', 'Focuses on high-performance smartphones with a loyal fan base.', 'https://example.com/oneplus_logo.png', '2023-11-15 03:28:19', '2023-11-15 03:28:19'),
+(8, 'Apple1', 'asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasd', NULL, '2023-12-03 08:52:13', '2023-12-03 08:52:13');
 
 -- --------------------------------------------------------
 
@@ -85,7 +86,7 @@ CREATE TABLE `phones` (
 --
 
 INSERT INTO `phones` (`id`, `brand_id`, `name`, `description`, `release_date`, `image_url`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 'iPhone 13', '<p><em>The latest iPhone with advanced features.s</em></p>', '2022-09-15', 'uploads/6568bff29ef24_71GLMJ7TQiL._SX679_.jpg', 1, '2023-11-15 03:29:35', '2023-11-30 17:01:38'),
+(1, 1, 'iPhone 13', '<p><em>The latest iPhone with advanced features.s</em></p>', '2022-09-15', 'uploads/6568bff29ef24_71GLMJ7TQiL._SX679_.jpg', 1, '2023-11-15 03:29:35', '2023-12-03 17:16:08'),
 (2, 2, 'Galaxy S21', '<p>Flagship smartphone with powerful performance.</p>', '2021-01-29', 'uploads/6568cce5e85e6_samsung-galaxy-s21-5g-r.jpg', 1, '2023-11-15 03:29:35', '2023-11-30 17:56:53'),
 (3, 3, 'Pixel 6', '<p>Google\'s latest Pixel phone with impressive camera capabilities.</p>', '2021-10-19', 'uploads/6568ccf182fd0_pixel6.png', 1, '2023-11-15 03:29:35', '2023-11-30 17:57:05'),
 (4, 4, 'Mate 40 Pro', '<p>Huawei\'s flagship with cutting-edge technology.</p>', '2020-10-22', 'uploads/6568cd248e6cc_huaweimate40pro.jpg', 1, '2023-11-15 03:29:35', '2023-11-30 17:57:56'),
@@ -200,7 +201,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `brands`
 --
 ALTER TABLE `brands`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `comments`
@@ -212,13 +213,13 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `phones`
 --
 ALTER TABLE `phones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `phone_specs`
 --
 ALTER TABLE `phone_specs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `users`

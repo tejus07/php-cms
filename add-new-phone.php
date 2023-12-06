@@ -1,9 +1,9 @@
 <?php
 $title = 'Add New Phone';
-require_once '../includes/header.php';
-require '../db.php';
-require_once '../functions/function.php';
-require '../navbar.php';
+require_once 'includes/header.php';
+require 'db.php';
+require_once 'functions/function.php';
+require 'navbar.php';
 
 if (session_status() == PHP_SESSION_NONE):
     session_start();
@@ -204,5 +204,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </div>
 <?php
-require_once '../includes/footer.php';
+require_once 'includes/footer.php';
 ?>

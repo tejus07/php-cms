@@ -22,7 +22,7 @@ try {
     $stmt = $pdo->prepare("SELECT phones.*, brands.name AS brand_name 
                         FROM phones 
                         INNER JOIN brands ON phones.brand_id = brands.id 
-                        WHERE (phones.name LIKE :search OR brands.name LIKE :search)
+                        WHERE (phones.name LIKE :search)
                         " . ($brandFilter ? 'AND (brands.id = :brandFilter)' : '') .
         "ORDER BY $sortColumn " . ($sortDirection === 'ASC' ? 'ASC' : 'DESC') . "
                         LIMIT :offset, :limit");
