@@ -31,7 +31,8 @@ class Vehicle {
         JOIN 
             " . $this->categoryTable . " C ON V.category_id = C.category_id
         JOIN 
-            " . $this->brandTable . " B ON V.brand_id = B.brand_id;
+            " . $this->brandTable . " B ON V.brand_id = B.brand_id
+            ORDER BY V.vehicle_id;
         ";
         $stmt = $this->conn->query($query);
 

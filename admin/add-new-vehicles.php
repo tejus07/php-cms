@@ -6,6 +6,7 @@ include_once 'class/vehicle.php';
 include_once 'class/brand.php';
 include_once 'class/category.php';
 include_once 'class/user.php';
+$error_message = "";
 
 try {
 
@@ -23,7 +24,7 @@ try {
     $category_stmt = $category_obj->getListOfCategories();
     $user_stmt = $user_obj->getListOfUsers();
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') :
+    if($_SERVER['REQUEST_METHOD'] === 'POST'):
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         // Validate and sanitize 
@@ -36,37 +37,42 @@ try {
         $availability_status = htmlspecialchars($_POST['availability_status']);
 
         $image_url = null;
-        if (isset($_FILES['file_upload'])) :
+        if(isset($_FILES['file_upload'])):
             $image_obj = new Manage_image();
-            $image_url = $image_obj->get_image_url($_FILES['file_upload']);
+            try {
+                $image_url = $image_obj->get_image_url($_FILES['file_upload']);
+            } catch (Exception $error) {
+                $error_message .= $error->getMessage();
+            }
         endif;
 
-        if (
+        if(
             $user_id === false || $category_id === false || $brand_id === false || $rental_rate === false ||
-            empty($model) || empty($description) || !empty($availability_status)
-        ) :
-            echo "Invalid input data. Please check the provided information.";
-            exit();
-        endif;
+            empty($model) || empty($description) || empty($availability_status)
+        ) {
+            $error_message .= "Invalid input data. Please check the provided information.";
+        } elseif ($error_message === "") {
+            // Your existing code to add a new vehicle
+            $stmt = $pdo->prepare("INSERT INTO Vehicles (owner_id, brand_id, category_id, model, description, rental_rate, availability_status, created_at, image_url) VALUES (:owner_id, :brand_id, :category_id, :model, :description, :rental_rate, :availability_status, NOW(), :image_url)");
 
-        $stmt = $pdo->prepare("INSERT INTO Vehicles (owner_id, brand_id, category_id, model, description, rental_rate, availability_status, created_at, image_url) VALUES (:owner_id, :brand_id, :category_id, :model, :description, :rental_rate, :availability_status, NOW(), :image_url)");
+            $stmt->bindParam(':owner_id', $_POST['user_id']);
+            $stmt->bindParam(':category_id', $_POST['category_id']);
+            $stmt->bindParam(':brand_id', $_POST['brand_id']);
+            $stmt->bindParam(':model', $_POST['model']);
+            $stmt->bindParam(':description', $_POST['description']);
+            $stmt->bindParam(':rental_rate', $_POST['rental_rate']);
+            $stmt->bindParam(':availability_status', $_POST['availability_status']);
+            $stmt->bindParam(':image_url', $image_url);
 
-        $stmt->bindParam(':owner_id', $_POST['user_id']);
-        $stmt->bindParam(':category_id', $_POST['category_id']);
-        $stmt->bindParam(':brand_id', $_POST['brand_id']);
-        $stmt->bindParam(':model', $_POST['model']);
-        $stmt->bindParam(':description', $_POST['description']);
-        $stmt->bindParam(':rental_rate', $_POST['rental_rate']);
-        $stmt->bindParam(':availability_status', $_POST['availability_status']);
-        $stmt->bindParam(':image_url', $image_url);
+            $stmt->execute();
 
-        $stmt->execute();
+            echo "New vehicle added successfully!";
+            header("Location: manage-vehicles.php");
+        }
 
-        echo "New vehicle added successfully!";
-        header("Location: manage-vehicles.php");
     endif;
 } catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
+    echo "Error: ".$e->getMessage();
 }
 ?>
 
@@ -102,6 +108,11 @@ try {
         </script>
         <?php include('common/navbar.php'); ?>
         <section class="admin-content">
+            <?php if(!empty($error_message)) { ?>
+                <div class="error-message">
+                    <?php echo $error_message; ?>
+                </div>
+            <?php } ?>
             <form class="add-new-form" action="add-new-vehicles.php" method="post" enctype="multipart/form-data">
 
                 <label for="file_upload">Upload Image:</label>
@@ -109,7 +120,7 @@ try {
 
                 <label for="owner_id">Select User:</label>
                 <select id="user_id" name="user_id">
-                    <?php while ($row = $user_stmt->fetch(PDO::FETCH_ASSOC)) { ?>
+                    <?php while($row = $user_stmt->fetch(PDO::FETCH_ASSOC)) { ?>
                         <option value="<?php echo $row['user_id']; ?>">
                             <?php echo $row['username']; ?>
                         </option>
@@ -119,7 +130,7 @@ try {
 
                 <label for="category_id">Select Category:</label>
                 <select id="category_id" name="category_id">
-                    <?php while ($row = $category_stmt->fetch(PDO::FETCH_ASSOC)) { ?>
+                    <?php while($row = $category_stmt->fetch(PDO::FETCH_ASSOC)) { ?>
                         <option value="<?php echo $row['category_id']; ?>">
                             <?php echo $row['category_name']; ?>
                         </option>
@@ -129,7 +140,7 @@ try {
 
                 <label for="brand_id">Select Brand:</label>
                 <select id="brand_id" name="brand_id">
-                    <?php while ($row = $brands_stmt->fetch(PDO::FETCH_ASSOC)) { ?>
+                    <?php while($row = $brands_stmt->fetch(PDO::FETCH_ASSOC)) { ?>
                         <option value="<?php echo $row['brand_id']; ?>">
                             <?php echo $row['brand_name']; ?>
                         </option>
