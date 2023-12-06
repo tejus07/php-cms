@@ -61,6 +61,10 @@ class RecipeHandler {
     public function editRecipe($recipe_id) {
         $pdo = $this->database->getConnection();
 
+        if ($recipe_id === false) {
+            throw new Exception('Invalid recipe ID, Please try again');
+        }
+
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -111,6 +115,10 @@ class RecipeHandler {
     public function getAllRecipes($user_id) {
         $pdo = $this->database->getConnection();
 
+        if ($user_id === false) {
+            throw new Exception('Invalid User ID, Please contact admin');
+        }
+
         $query = "SELECT * FROM Recipes WHERE user_id = :userId";
 
         $stmt1 = $pdo->prepare($query);
@@ -126,6 +134,10 @@ class RecipeHandler {
 
     public function getSingleRecipe($recipe_id) {
         $pdo = $this->database->getConnection();
+
+        if ($recipe_id === false) {
+            throw new Exception('Invalid recipe ID, Please try again');
+        }
 
         $query = "SELECT * FROM Recipes WHERE recipe_id = :recipeId";
 

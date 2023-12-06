@@ -2,7 +2,10 @@
 
 class UserHandler {
     private $database;
-    public $user_name;
+    public $username;
+    public $email;
+    public $password;
+    public $role;
 
     public function __construct($conn) {
         $this->database = $conn;
@@ -15,22 +18,49 @@ class UserHandler {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             try {
-                $sql = "INSERT INTO categories (category_name) VALUES (:category_name)";
+                $sql = "INSERT INTO users (username, email, role, password, created_at, updated_at) VALUES (:username, :email, :role, :password, NOW(), NOW())";
         
                 $stmt = $pdo->prepare($sql);
-                $stmt->bindParam(':category_name', $this->user_name);
+                $stmt->bindParam(':username', $this->username);
+                $stmt->bindParam(':email', $this->email);
+                $stmt->bindParam(':role', $this->role);
+                $stmt->bindParam(':password', $this->password);
                 
                 echo $sql;
                 $stmt->execute();
         
-                echo "Category added successfully!";
-                
-                header("Location: categories.php");
+                echo "User added successfully!";
+                header("Location: users.php");
             } catch (PDOException $e) {
                 echo "Error: " . $e->getMessage();
             }
         }
     }
+
+    public function updateUser($user_id) {
+        $pdo = $this->database->getConnection();
+    
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            try {
+                $sql = "UPDATE users SET username = :username, email = :email, role = :role, password = :password, updated_at = NOW() WHERE user_id = :user_id";
+    
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(':username', $this->username);
+                $stmt->bindParam(':email', $this->email);
+                $stmt->bindParam(':role', $this->role);
+                $stmt->bindParam(':password', $this->password);
+                $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    
+                $stmt->execute();
+    
+                echo "User updated successfully!";
+                header("Location: users.php");
+            } catch (PDOException $e) {
+                echo "Error: " . $e->getMessage();
+            }
+        }
+    }
+    
     
     public function getUsers() {
         $pdo = $this->database->getConnection();

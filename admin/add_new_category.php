@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="category_name">Category Name:</label>
             <input type="text" id="category_name" name="category_name" class="form-input" required>
         </div>
-            <input type="submit" value="Add Recipe" class="submit-button">
+            <input type="submit" value="Add Category" class="submit-button">
         </form>
     </div>
 
