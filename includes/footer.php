@@ -1,7 +1,7 @@
 
 <footer class="footer mt-auto py-3">
   <div class="container">
-    <span class="text-muted">&copy; <?php echo date("Y"); ?> Phone Specs Hub. All rights reserved.</p></span>
+    <span class="text-muted">&copy; <?php echo date("Y"); ?> Phone Specs Hub. All rights reserved.</span>
   </div>
 </footer>
 
