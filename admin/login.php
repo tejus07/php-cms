@@ -18,14 +18,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // echo var_dump($user);    
     echo var_dump(password_verify($password, $user['password']));
     if ($user && password_verify($password, $user['password'])) {
-        // Correct credentials; create a user session and redirect to a protected page
         session_start();
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['role'] = 'admin';
         header('Location: ./index.php');
         exit();
     } else {
-        header('Location: ./login.php?error=1'); // You can add an error parameter for displaying an error message
+        header('Location: ./login.php?error=1'); 
         exit();
     }
 }
