@@ -3,28 +3,30 @@
 <main>
     <section class="vehicle-list">
         <h2>Available Vehicles</h2>
-        <form method="GET" action="brands.php">
-            <input type="hidden" name="brand_id" value="<?php
-            $brandId = $_GET['brand_id'] ?? 0;
-            echo htmlspecialchars($brandId);
-            ?>">
-            <label for="sort">Sort by:</label>
-            <select id="sort" name="sort">
-                <option value="model_asc" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'model_asc')
-                    echo 'selected'; ?>>Model (A-Z)</option>
-                <option value="model_desc" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'model_desc')
-                    echo 'selected'; ?>>Model (Z-A)</option>
-                <option value="rate_asc" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'rate_asc')
-                    echo 'selected'; ?>>Rental Rate (Low to High)</option>
-                <option value="rate_desc" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'rate_desc')
-                    echo 'selected'; ?>>Rental Rate (High to Low)</option>
-                <option value="created_at_asc" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'created_at_asc')
-                    echo 'selected'; ?>>Created At (Low to High)</option>
-                <option value="created_at_desc" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'created_at_asc')
-                    echo 'selected'; ?>>Created At (High to Low)</option>
-            </select>
-            <button type="submit">Sort</button>
-        </form>
+        <?php if (isset($_SESSION['user_id'])): ?>
+            <form method="GET" action="brands.php">
+                <input type="hidden" name="brand_id" value="<?php
+                $brandId = $_GET['brand_id'] ?? 0;
+                echo htmlspecialchars($brandId);
+                ?>">
+                <label for="sort">Sort by:</label>
+                <select id="sort" name="sort">
+                    <option value="model_asc" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'model_asc')
+                        echo 'selected'; ?>>Model (A-Z)</option>
+                    <option value="model_desc" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'model_desc')
+                        echo 'selected'; ?>>Model (Z-A)</option>
+                    <option value="rate_asc" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'rate_asc')
+                        echo 'selected'; ?>>Rental Rate (Low to High)</option>
+                    <option value="rate_desc" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'rate_desc')
+                        echo 'selected'; ?>>Rental Rate (High to Low)</option>
+                    <option value="created_at_asc" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'created_at_asc')
+                        echo 'selected'; ?>>Created At (Low to High)</option>
+                    <option value="created_at_desc" <?php if (isset($_GET['sort']) && $_GET['sort'] === 'created_at_asc')
+                        echo 'selected'; ?>>Created At (High to Low)</option>
+                </select>
+                <button type="submit">Sort</button>
+            </form>
+        <?php endif; ?>
         <div class="vehicles-container">
             <?php
             $selectedSort = isset($_GET['sort']) ? $_GET['sort'] : 'model_asc';
