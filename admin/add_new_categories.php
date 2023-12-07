@@ -1,47 +1,19 @@
 <?php
-include_once '../shared/database.php';
+include_once 'shared/categoryHandler.php';
 
 if(empty($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
 }
 
-$database = new Database();
-$pdo = $database->getConnection();
-
-$users = [];
-$user_sql = "SELECT user_id, username FROM users";
-$user_stmt = $pdo->query($user_sql);
-
-while ($row = $user_stmt->fetch(PDO::FETCH_ASSOC)) {
-    $users[$row['user_id']] = $row['username'];
-}
-
-$categories = [];
-$category_sql = "SELECT category_id, title FROM categories";
-$category_stmt = $pdo->query($category_sql);
-
-while ($row = $category_stmt->fetch(PDO::FETCH_ASSOC)) {
-    $categories[$row['category_id']] = $row['title'];
-}
+$categoryHandler = new CategoryHandler();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $title = $_POST['title'];
 
-    try {
-        $sql = "INSERT INTO categories (title) VALUES (:title)";
+    $categoryHandler->title = $_POST['title'];
 
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':title', $title);
+    $categoryHandler->addCategory();
 
-        $stmt->execute();
-
-        echo "Category added successfully!";
-        header("Location: categories.php");
-        exit();
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-    }
 }
 ?>
 

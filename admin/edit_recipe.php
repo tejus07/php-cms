@@ -1,44 +1,34 @@
 <?php 
-include_once '../shared/database.php';
+include_once '../Shared/database.php';
 include_once 'shared/image_handler.php';
+include_once 'shared/recipeHandler.php';
+include_once 'shared/categoryHandler.php';
+include_once 'shared/userHandler.php';
 
-$database = new Database();
-$imageHandler = new ImageHandler();
-$pdo = $database->getConnection();
-
-$recipe_id = (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : '0';
-$query = "SELECT * FROM pizzaRecipes WHERE recipe_id = :recipeId";
-
-$stmt1 = $pdo->prepare($query);
-$stmt1->bindParam(':recipeId', $recipe_id, PDO::PARAM_INT);
-$stmt1->execute();
-$data = $stmt1->fetch(PDO::FETCH_ASSOC);
 
 if (empty($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
 }
+$conn = new Database();
+$recipeHandler = new RecipeHandler($conn);
+$imageHandler = new ImageHandler();
+$categoryHandler = new CategoryHandler();
+$userHandler = new UserHandler();
 
-$users = [];
-$user_sql = "SELECT user_id, username FROM users";
-$user_stmt = $pdo->query($user_sql);
+$users = $userHandler->getUsers();
 
-while ($row = $user_stmt->fetch(PDO::FETCH_ASSOC)) {
-    $users[$row['user_id']] = $row['username'];
-}
+$categories = $categoryHandler->getCategories();
 
-$categories = [];
-$category_sql = "SELECT category_id, title FROM categories";
-$category_stmt = $pdo->query($category_sql);
+$recipe_id = (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : '0';
 
-while ($row = $category_stmt->fetch(PDO::FETCH_ASSOC)) {
-    $categories[$row['category_id']] = $row['title'];
-}
+
+$data = $recipeHandler->getSingleRecipe($recipe_id);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $image_url = $data['image_url'];
 
-    if (!empty($_FILES['uploadFile']['name']) && !isset($_POST['delete_image'])) {
+    if (isset($_FILES['uploadFile']) && $_FILES['uploadFile']['error'] !== UPLOAD_ERR_NO_FILE && !isset($_POST['delete_image'])) {
         try {
             $returned_value = $imageHandler->upload_image($_FILES['uploadFile']);
             if ($returned_value) {
@@ -49,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo 'Error: ' . $e->getMessage();
         }
     }
-    else {
+    else if(isset($_POST['delete_image'])) {
         $image_path = "../" . $image_url;
         if (file_exists($image_path)) {
             unlink($image_path);
@@ -64,43 +54,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }	    
     // Extract data from the form
     $recipe_id = $_GET['id'];
-    $title = $_POST['title'];
-    $ingredients = $_POST['ingredients'];
-    $instructions = $_POST['instructions'];
-    $user_id = $_POST['user_id'];
-    $category_id = $_POST['category_id'];
+    $recipeHandler->title = $_POST['title'];
+    $recipeHandler->ingredients = $_POST['ingredients'];
+    $recipeHandler->instructions = $_POST['instructions'];
+    $recipeHandler->user_id = $_POST['user_id'];
+    $recipeHandler->category_id = $_POST['category_id'];
 
-    try {
-        // Update the recipe in the database
-        $sql = "UPDATE pizzaRecipes SET 
-            title = :title,
-            ingredients = :ingredients,
-            instructions = :instructions,
-            user_id = :user_id,
-            category_id = :category_id";
-        
-        if (!empty($_FILES['uploadFile']['name'])) {
-            $sql .= ", image_url = :image_url";
-        }
-        $sql .= " WHERE recipe_id = :recipe_id";
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':title', $title);
-        $stmt->bindParam(':ingredients', $ingredients);
-        $stmt->bindParam(':instructions', $instructions);
-        $stmt->bindParam(':user_id', $user_id);
-        $stmt->bindParam(':category_id', $category_id);
-        $stmt->bindParam(':recipe_id', $recipe_id);
-        $stmt->bindParam(':image_url', $image_url);
-
-        $stmt->execute();
-
-        echo "Recipe updated successfully!";
-        header("Location: recipes.php");
-        exit();
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-    }
+    $recipeHandler->editRecipe($recipe_id);
+    
 }
 ?>
 
