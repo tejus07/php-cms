@@ -22,6 +22,33 @@ try {
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
+
+if (isset($_POST['delete_brand'])) {
+    $brand_id = $_POST['brand_id'];
+    
+    try {
+        // Check if there are associated records in other tables (example: products table)
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM phones WHERE brand_id = :brand_id");
+        $stmt->bindParam(':brand_id', $brand_id);
+        $stmt->execute();
+        $count = $stmt->fetchColumn();
+
+        if ($count > 0) {
+            echo '<div class="alert alert-danger" role="alert">
+                    Cannot delete this brand as it is associated with other records.
+                  </div>';
+        } else {
+            // No associated records found, proceed with deletion
+            // $stmt = $pdo->prepare("DELETE FROM brands WHERE id = :brand_id");
+            // $stmt->bindParam(':brand_id', $brand_id);
+            // $stmt->execute();
+            // header("Location: brands.php");
+            exit();
+        }
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
 ?>
 <div class="container-fluid">
     <div class="row">
@@ -53,6 +80,10 @@ try {
                         echo '<td>' . $brand['description'] . '</td>';
                         echo '<td>
                         <a href="edit-brand.php?id=' . $brand['id'] . '" class="btn btn-primary">Edit</a>
+                        <form method="post" style="display: inline;" onsubmit="return confirm(\'Are you sure you want to delete this brand?\');">
+                            <input type="hidden" name="brand_id" value="' . $brand['id'] . '">
+                            <button type="submit" name="delete_brand" class="btn btn-danger">Delete</button>
+                        </form>
                         </td>';
                         echo '</tr>';
                     }
