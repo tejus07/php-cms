@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Correct credentials; create a user session and redirect to a protected page
         session_start();
         $_SESSION['user_id'] = $user['id'];
+        $_SESSION['role'] = 'admin';
         header('Location: ./index.php');
         exit();
     } else {
