@@ -35,7 +35,7 @@ class CategoryHandler {
     public function getCategories() {
         $pdo = $this->database->getConnection();
         $categories = [];
-        $category_sql = "SELECT category_id, category_name FROM Categories";
+        $category_sql = "SELECT category_id, category_name FROM categories";
         $category_stmt = $pdo->query($category_sql);
 
         while ($row = $category_stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -48,7 +48,7 @@ class CategoryHandler {
     public function getSingleCategories($category_id) {
         $pdo = $this->database->getConnection();
         
-        $query = "SELECT * FROM Categories WHERE category_id = :categoryID";
+        $query = "SELECT * FROM categories WHERE category_id = :categoryID";
         $stmt1 = $pdo->prepare($query);
         
         $stmt1->bindParam(':categoryID', $category_id, PDO::PARAM_INT);

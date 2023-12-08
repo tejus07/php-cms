@@ -1,6 +1,7 @@
 <?php
 try {
-	include_once 'shared/database.php';
+	include_once './shared/database.php';
+	include('./shared/header.php');
 
 	$database = new Database();
 
@@ -56,8 +57,6 @@ try {
 }
 
 ?>
-    <?php include('shared/header.php');?>
-
     <main class="container-fluid mt-4">
 		<?php
 			if ($isUserLoggedIn) { 

@@ -1,5 +1,5 @@
 <?php
-include_once '../Shared/database.php';
+include_once '../shared/database.php';
 include_once 'shared/userHandler.php';
 
 $conn = new Database();

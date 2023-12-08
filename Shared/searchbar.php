@@ -6,7 +6,7 @@ $database = new Database();
 $pdo = $database->getConnection();
 
 $categories = [];
-$category_sql = "SELECT category_id, category_name FROM Categories";
+$category_sql = "SELECT category_id, category_name FROM categories";
 $category_stmt = $pdo->query($category_sql);
 
 while ($row = $category_stmt->fetch(PDO::FETCH_ASSOC)) {
