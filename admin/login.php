@@ -16,7 +16,7 @@ if(isset($_GET['logout']) && $_GET['logout']) {
 }
 
 if(!empty($_SESSION['user_id'])) {
-    if(!empty($_SESSION['user_role'] && $_SESSION["user_role"] == "admin")) {
+    if(!empty($_SESSION['user_role'])) {
         header('Location: .');
     } else {
         header('Location: ../user/user_dashboard.php');

@@ -5,7 +5,7 @@ include_once 'shared/recipeHandler.php';
 include_once 'shared/categoryHandler.php';
 include_once 'shared/userHandler.php';
 
-if(empty($_SESSION['user_id']) || empty($_SESSION['role'])) {
+if(empty($_SESSION['user_id']) || empty($_SESSION['user_role'])) {
     header('Location: login.php');
 }
 

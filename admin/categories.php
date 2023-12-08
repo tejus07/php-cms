@@ -3,7 +3,7 @@ include_once '../shared/database.php';
 
 $database = new Database();
 
-if(empty($_SESSION['user_id']) || empty($_SESSION['role'])) {
+if(empty($_SESSION['user_id']) || empty($_SESSION['user_role'])) {
     header('Location: login.php');
 }
 

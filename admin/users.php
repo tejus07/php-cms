@@ -3,7 +3,7 @@ include_once '../shared/database.php';
 
 $database = new Database();
 
-if(empty($_SESSION['user_id']) || empty($_SESSION['role'])) {
+if(empty($_SESSION['user_id']) || empty($_SESSION['user_role'])) {
     header('Location: login.php');
 }
 
@@ -23,7 +23,7 @@ $results = $pdo->query('SELECT * FROM users');
     <main>
     <div class="user-list-container">
         <h2 class="user-list-title">User List</h2>
-        <button class="add-new-user-btn edit-button"><a href="add_new_user.php">Add New</a></button>
+        <button class="add-new-recipe-btn add-new-user-btn edit-button"><a href="add_new_user.php">Add New</a></button>
         <ul class="user-list">
             <li class="user-item">
                 <span class="user-name">Username</span>

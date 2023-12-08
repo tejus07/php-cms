@@ -24,6 +24,7 @@ main {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     width: 90%;
     text-align: center;
+    position: relative;
 }
 
 .user-list-title {
@@ -46,6 +47,25 @@ main {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.login-success-message {
+    background-color: #dff0d8;
+    color: #3c763d;
+    padding: 10px 60px;
+    border-radius: 5px;
+    display: block;
+    margin-bottom: 20px;
+    position: absolute;
+    width: fit-content;
+    text-align: center;
+    z-index: 9999;
+    top: 0px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    box-shadow: 0 2px 8px #ddd;
+    font-weight: 600;
 }
 
 .user-name {
