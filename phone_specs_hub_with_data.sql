@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 06, 2023 at 04:59 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Dec 08, 2023 at 10:01 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -45,8 +45,7 @@ INSERT INTO `brands` (`id`, `name`, `description`, `logo_url`, `created_at`, `up
 (2, 'Samsung', 'Produces a wide range of smartphones and electronic devices.', 'https://example.com/samsung_logo.png', '2023-11-15 03:28:19', '2023-11-15 03:28:19'),
 (3, 'Google', 'Develops the Pixel series of smartphones and other technology products.', 'https://example.com/google_logo.png', '2023-11-15 03:28:19', '2023-11-15 03:28:19'),
 (4, 'Huawei', 'A global provider of information and communications technology (ICT) infrastructure and smart devices.', 'https://example.com/huawei_logo.png', '2023-11-15 03:28:19', '2023-11-15 03:28:19'),
-(5, 'OnePlus', 'Focuses on high-performance smartphones with a loyal fan base.', 'https://example.com/oneplus_logo.png', '2023-11-15 03:28:19', '2023-11-15 03:28:19'),
-(8, 'Apple1', 'asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasd', NULL, '2023-12-03 08:52:13', '2023-12-03 08:52:13');
+(5, 'OnePlus', 'Focuses on high-performance smartphones with a loyal fan base.', 'https://example.com/oneplus_logo.png', '2023-11-15 03:28:19', '2023-11-15 03:28:19');
 
 -- --------------------------------------------------------
 
@@ -90,10 +89,10 @@ INSERT INTO `phones` (`id`, `brand_id`, `name`, `description`, `release_date`, `
 (2, 2, 'Galaxy S21', '<p>Flagship smartphone with powerful performance.</p>', '2021-01-29', 'uploads/6568cce5e85e6_samsung-galaxy-s21-5g-r.jpg', 1, '2023-11-15 03:29:35', '2023-11-30 17:56:53'),
 (3, 3, 'Pixel 6', '<p>Google\'s latest Pixel phone with impressive camera capabilities.</p>', '2021-10-19', 'uploads/6568ccf182fd0_pixel6.png', 1, '2023-11-15 03:29:35', '2023-11-30 17:57:05'),
 (4, 4, 'Mate 40 Pro', '<p>Huawei\'s flagship with cutting-edge technology.</p>', '2020-10-22', 'uploads/6568cd248e6cc_huaweimate40pro.jpg', 1, '2023-11-15 03:29:35', '2023-11-30 17:57:56'),
-(5, 5, 'OnePlus 9', 'High-performance smartphone for enthusiasts.', '2021-03-23', NULL, 1, '2023-11-15 03:29:35', '2023-11-21 03:53:51'),
-(6, 1, 'iPhone 14', 'The next generation iPhone with advanced features.', '2023-09-20', NULL, 1, '2023-11-15 03:29:35', '2023-11-21 03:53:54'),
-(7, 2, 'Galaxy S22', '<p>Flagship smartphone with enhanced performance.</p>', '2023-01-30', NULL, 1, '2023-11-15 03:29:35', '2023-11-30 17:55:50'),
-(8, 3, 'Pixel 7', 'Google\'s latest Pixel phone with cutting-edge technology.', '2023-10-25', NULL, 1, '2023-11-15 03:29:35', '2023-11-21 03:53:56'),
+(5, 5, 'OnePlus 9', '<p>High-performance smartphone for enthusiasts.</p>', '2021-03-23', 'uploads/6572c4b000738_OnePlus 9.jpg', 1, '2023-11-15 03:29:35', '2023-12-08 07:24:32'),
+(6, 1, 'iPhone 14', '<p>The next generation iPhone with advanced features.</p>', '2023-09-20', 'uploads/6572c4d1b146f_61b7Ew7kjYL._AC_UF1000,1000_QL80_.jpg', 1, '2023-11-15 03:29:35', '2023-12-08 07:25:05'),
+(7, 2, 'Galaxy S22', '<p>Flagship smartphone with enhanced performance.</p>', '2023-01-30', 'uploads/6572c5305a006_Samsung-Galaxy-S22-SmartPhone-492849199-i-7-1200Wx1200H.jpeg', 1, '2023-11-15 03:29:35', '2023-12-08 07:26:40'),
+(8, 3, 'Pixel 7', '<p>Google\'s latest Pixel phone with cutting-edge technology.</p>', '2023-10-25', 'uploads/6572c565ca2ec_images.jpeg', 1, '2023-11-15 03:29:35', '2023-12-08 07:27:33'),
 (9, 4, 'Mate 50 Pro', '<p>Huawei\'s flagship with innovative features.</p>', '2023-11-01', 'uploads/6568cd4ac59e9_huaweimate50pro.jpg', 1, '2023-11-15 03:29:35', '2023-11-30 17:58:34');
 
 -- --------------------------------------------------------
@@ -152,7 +151,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `role`, `created_at`, `updated_at`) VALUES
-(1, 'john', '$2y$10$NLHbx2n1z8muJE.A0qBPGOWYDdpELiJFTxsS8KNMTH3hD61bFwEJK', 'john@gmail.com', 1, '2023-11-15 03:30:10', '2023-11-17 04:35:20');
+(1, 'john', '$2y$10$NLHbx2n1z8muJE.A0qBPGOWYDdpELiJFTxsS8KNMTH3hD61bFwEJK', 'john@gmail.com', 1, '2023-11-15 03:30:10', '2023-11-17 04:35:20'),
+(7, 'tejus07', '$2y$10$LWtL3tKQLLGmoJ/QdDOcc.c1vmAoTfCOsS47yLUgI9EkkTl6Mc6mG', 'tejussahi07@gmail.com', 2, '2023-12-08 03:38:13', '2023-12-08 03:56:12');
 
 --
 -- Indexes for dumped tables
@@ -213,19 +213,19 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `phones`
 --
 ALTER TABLE `phones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `phone_specs`
 --
 ALTER TABLE `phone_specs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
