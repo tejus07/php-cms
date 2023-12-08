@@ -73,62 +73,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <?php include('shared/header.php'); ?>
 
-<link rel="stylesheet" type="text/css" href="../css/styles.css">
-<style>
-.sidebar {
-    width: 250px;
-    background-color: #fff;
-    padding: 15px;
-    border-right: 1px solid #ccc;
-}
-
-.sidebar h2 {
-    margin-bottom: 15px;
-    color: #333;
-}
-
-.sidebar ul {
-    list-style: none;
-}
-
-.sidebar ul li {
-    margin-bottom: 10px;
-}
-
-.sidebar ul li a {
-    color: #333; /* Dark text color */
-    text-decoration: none;
-    display: block;
-    padding: 8px 0;
-    transition: background-color 0.3s ease;
-}
-
-.sidebar ul li a:hover {
-    background-color: #f0f0f0; /* Hover background color */
-}
-
-.main-container {
-    display: flex;
-    flex-direction: row;
-}
-
-.user-dashboard {
-    display: flex;
-    min-height: 100vh;
-}
-
-.sidebar {
-    width: 250px;
-    padding: 20px;
-}
-
-.content {
-    flex: 1;
-    padding: 20px;
-}
-
-</style>
-
 <?php
     include_once '../shared/database.php';
     include_once '../admin/shared/recipeHandler.php';
@@ -144,18 +88,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 ?>
 
-    <div class="user-dashboard">
-        <aside class="sidebar">
-            <h2>Sidebar</h2>
-            <ul>
-                <li><a href="user_dashboard.php">Dashboard</a></li>
-                <li><a href="my_post.php">My Post</a></li>
-                <li><a href="add_new_post.php">Add New Post</a></li>
-            </ul>
-        </aside>
-
         <main class="main-container">
-        <script>
+                <script>
     tinymce.init({
         selector: 'textarea#description-hidden',
         plugins: 'advlist autolink lists link image charmap print preview anchor',
@@ -174,27 +108,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div class="add-recipe-container">
         
-        <?php if (isset($_GET['error'])) {?>
-            <div class='col-md-9 ml-sm-auto col-lg-10 px-md-4'>
-                <div class='error-message'><?php echo $error_message; ?></div>
-            </div>
-        <?php } ?>
+<div class="add-recipe-container">
+    <?php if (isset($_GET['error'])): ?>
+        <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <div class="error-message"><?php echo $error_message; ?></div>
+        </div>
+    <?php endif; ?>
 
-        <h2 class="add-recipe-title">Add Recipe</h2>
-        <form class="recipe-form" action="add_new_post.php" method="post" enctype="multipart/form-data">
+    <h2 class="mt-4 mb-4">Add Recipe</h2>
+    <form class="recipe-form" action="add_new_post.php" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="title">Title:</label>
-            <input type="text" id="title" name="title" class="form-input" <?php if(isset($_GET['error']) && $title) { echo 'value="' . $title . '"';}?>>
+            <input type="text" id="title" name="title" class="form-control" <?php if(isset($_GET['error']) && $title) { echo 'value="' . $title . '"';}?>>
         </div>
         <div class="form-group">
             <label for="description">Description:</label>
-            <textarea id="description-hidden" name="description-hidden"><?php if(isset($_GET['error']) && $description) { echo $description; }?></textarea>
+            <textarea id="description-hidden" name="description-hidden" class="form-control"><?php if(isset($_GET['error']) && $description) { echo $description; }?></textarea>
+        </div>
 
-        </div>
         <div class="form-group">
-            <label for="image_url">Upload Image:</label>
-            <input type="file" id="image_url" name="uploadFile" class="form-input">
-        </div>
+        <label for="image_url">Upload Image:</label>
+        <input type="file" id="image_url" name="uploadFile" class="form-control">
+    </div>
 
         <script>
             document.addEventListener('DOMContentLoaded', ()=>{
@@ -214,19 +149,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="form-group">
             <label for="preparation_time">Preparation Time (minutes):</label>
-            <input type="number" id="preparation_time" name="preparation_time" class="form-input" <?php if(isset($_GET['error']) && $preparation_time) { echo 'value="' . $preparation_time . '"';}?> required>
+            <input type="number" id="preparation_time" name="preparation_time" class="form-control" <?php if(isset($_GET['error']) && $preparation_time) { echo 'value="' . $preparation_time . '"';}?> required>
         </div>
         <div class="form-group">
             <label for="cooking_time">Cooking Time (minutes):</label>
-            <input type="number" id="cooking_time" name="cooking_time" class="form-input" <?php if(isset($_GET['error']) && $cooking_time) { echo 'value="' . $cooking_time . '"';}?> required>
+            <input type="number" id="cooking_time" name="cooking_time" class="form-control" <?php if(isset($_GET['error']) && $cooking_time) { echo 'value="' . $cooking_time . '"';}?> required>
         </div>
         <div class="form-group">
             <label for="servings">Servings:</label>
-            <input type="number" id="servings" name="servings" class="form-input" <?php if(isset($_GET['error']) && $servings) { echo 'value="' . $servings . '"';}?> required>
+            <input type="number" id="servings" name="servings" class="form-control" <?php if(isset($_GET['error']) && $servings) { echo 'value="' . $servings . '"';}?> required>
         </div>
         <div class="form-group">
             <label for="difficulty_level">Difficulty Level:</label>
-            <select id="difficulty_level" name="difficulty_level" class="form-input" required>
+            <select id="difficulty_level" name="difficulty_level" class="form-control" required>
                 <option value="Easy" <?php if(isset($_GET['error']) && $difficulty_level && $difficulty_level == "Easy") { echo "Selected"; } ?>>Easy</option>
                 <option value="Medium" <?php if(isset($_GET['error']) && $difficulty_level && $difficulty_level == "Medium") { echo "Selected"; } ?>>Medium</option>
                 <option value="Hard" <?php if(isset($_GET['error']) && $difficulty_level && $difficulty_level == "Hard") { echo "Selected"; } ?>>Hard</option>
@@ -234,32 +169,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="form-group">
             <label for="cuisine">Cuisine:</label>
-            <input type="text" id="cuisine" name="cuisine" class="form-input" <?php if(isset($_GET['error']) && $cuisine) { echo 'value="' . $cuisine . '"';}?> required>
+            <input type="text" id="cuisine" name="cuisine" class="form-control" <?php if(isset($_GET['error']) && $cuisine) { echo 'value="' . $cuisine . '"';}?> required>
         </div>
         <div class="form-group">
             <label for="course">Course:</label>
-            <input type="text" id="course" name="course" class="form-input" <?php if(isset($_GET['error']) && $course) { echo 'value="' . $course . '"';}?> required>
+            <input type="text" id="course" name="course" class="form-control" <?php if(isset($_GET['error']) && $course) { echo 'value="' . $course . '"';}?> required>
         </div>
         <div class="form-group">
             <label for="instructions">Instructions:</label>
-            <textarea id="instructions" name="instructions" class="form-input" required><?php if(isset($_GET['error']) && $instructions) { echo $instructions; }?></textarea>
+            <textarea id="instructions" name="instructions" class="form-control" required><?php if(isset($_GET['error']) && $instructions) { echo $instructions; }?></textarea>
         </div>
         <div class="form-group">
             <label for="ingredients">Ingredients:</label>
-            <textarea id="ingredients" name="ingredients" class="form-input" required><?php if(isset($_GET['error']) && $ingredients) { echo $ingredients; }?></textarea>
+            <textarea id="ingredients" name="ingredients" class="form-control" required><?php if(isset($_GET['error']) && $ingredients) { echo $ingredients; }?></textarea>
         </div>
         <div class="form-group">
             <label for="category_id">Select Category</label>
-            <select id="category_id" name="category_id">
-            <?php foreach ($categories as $categoryId => $categoryName) : ?>
-                <option value="<?php echo $categoryId; ?>" <?php if(isset($_GET['error']) && $category_id && $category_id == $categoryId) { echo "Selected"; } ?>><?php echo $categoryName; ?></option>
+            <select id="category_id" name="category_id" class="form-control">
+                <?php foreach ($categories as $categoryId => $categoryName) : ?>
+                    <option value="<?php echo $categoryId; ?>" <?php if(isset($_GET['error']) && $category_id && $category_id == $categoryId) { echo "selected"; } ?>><?php echo $categoryName; ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
-            <input type="submit" value="Add Recipe" class="submit-button">
+
+            <input type="submit" value="Add Recipe" class="submit-button btn btn-primary">
         </form>
     </div>
         </main>
     </div>
 
-<?php include('shared/footer.php');?>
+<?php include('../shared/footer.php');?>

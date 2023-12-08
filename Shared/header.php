@@ -2,12 +2,21 @@
 <html>
 <head>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="css/styles.css">
     <title>Winniepeg cooking diaries</title>
 </head>
 <body>
-    <header>
-    <h3>Winniepeg cooking diaries</h3>
-    <?php include_once('searchbar.php'); ?>
-    <?php include_once('navbar.php'); ?>
+    <header class="container-fluid text-light py-3">
+    <div class="row align-items-center header-container">
+        <div class="col-md-4">
+            <h3 class="site-logo"><a href="./" class="text-dark">Winniepeg cooking diaries</a></h3>
+        </div>
+        <div class="col-md-4">
+            <?php include_once('searchbar.php'); ?>
+        </div>
+        <div class="col-md-4">
+            <?php include_once('navbar.php'); ?>
+        </div>
+    </div>
 </header>

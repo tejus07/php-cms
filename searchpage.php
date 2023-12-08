@@ -67,9 +67,11 @@ $searchResults = searchPages($keyword, $category, $perPage, $offset);
 
 <?php include('shared/header.php');?>
 
-<main>
+<main class="container-fluid mt-4">
     <h1>Search Results</h1>
     <small>Showing <strong>"<?php echo $totalCount; ?>"</strong> results.</small><br><br>
+    
+    <div class="row">
     <?php
     if (empty($searchResults)) {
         echo '<center><h1>Sorry no results were found for the query</h1></center>';
@@ -78,19 +80,28 @@ $searchResults = searchPages($keyword, $category, $perPage, $offset);
             $date = date_create($post['created_at']);					
             $message = str_replace("\n\r", "<br><br>", $post['description']);
             ?>
-            <div class="col-md-10 blogShort">
-                <img src="<?php echo $post['image_url'] ?>" width="250">
-                <h3><a href="view_post.php?id=<?php echo $post['recipe_id']; ?>"><?php echo $post['title']; ?></a></h3>		
-                <em><strong>Published on</strong>: <?php echo date_format($date, "d F Y");	?></em>
-                <em><strong>Category:</strong> <a href="#" target="_blank"><?php echo $post['difficulty_level']; ?></a></em>
-                <br><br>
-                <article>
-                    <p><?php echo $message; ?> 	</p>
-                </article>
-                <a class="btn btn-blog pull-right" href="view_post.php?id=<?php echo $post['recipe_id']; ?>">READ MORE</a> 
-            </div>
-    <?php } 
-        } 
+			<div class="col-md-4 mb-4">
+				<div class="card">
+					<?php if (!empty($post['image_url'])) {?>
+						<img class="card-img-top" src="<?php echo $post['image_url'] ?>" width="250">
+        			<?php } ?>
+					<div class="card-body">
+						<h5 class="card-title"><a href="view_post.php?id=<?php echo $post['recipe_id']; ?>"><?php echo $post['title']; ?></a></h5>
+                        <p class="card-text"><?php echo $message; ?></p>
+                        <a href="view_post.php?id=<?php echo $post['recipe_id']; ?>" class="btn btn-primary">Read More</a>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">
+                            <strong>Difficulty Level</strong>: <a href="#" target="_blank"><?php echo $post['difficulty_level']; ?></a><br>
+                            <strong>Published on</strong>: <?php echo date_format($date, "d F Y"); ?>
+                        </small>
+                    </div>
+				</div>
+			</div>
+    <?php } ?>
+    </div>
+    
+       <?php } 
         $totalPages = ceil($totalCount / $perPage);
         if ($totalPages > 1) {
             echo '<center><div class="pagination">';
@@ -106,7 +117,6 @@ $searchResults = searchPages($keyword, $category, $perPage, $offset);
             }
             echo '</div></center>';
         }?>
-       
 </main>
 
 <?php include('shared/footer.php');?>

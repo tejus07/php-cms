@@ -2,7 +2,7 @@
 include_once '../Shared/database.php';
 include_once 'shared/categoryHandler.php';
 
-if(empty($_SESSION['user_id'])) {
+if(empty($_SESSION['user_id']) || empty($_SESSION['role'])) {
     header('Location: login.php');
 }
 

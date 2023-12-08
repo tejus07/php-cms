@@ -3,6 +3,10 @@ include_once '../shared/database.php';
 
 $database = new Database();
 
+if(empty($_SESSION['user_id']) || empty($_SESSION['role'])) {
+    header('Location: login.php');
+}
+
 $pdo = $database->getConnection();
 
 $results = $pdo->query('SELECT * FROM users');

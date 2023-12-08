@@ -3,6 +3,10 @@ include_once '../shared/database.php';
 
 $database = new Database();
 
+if(empty($_SESSION['user_id']) || empty($_SESSION['role'])) {
+    header('Location: login.php');
+}
+
 $pdo = $database->getConnection();
 
 $category_id = (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : '0';
@@ -19,7 +23,7 @@ $data = $stmt1->fetch(PDO::FETCH_ASSOC);
 ?>
 
 <?php
-if(empty($_SESSION['user_id'])) {
+if(empty($_SESSION['user_id']) || empty($_SESSION['role'])) {
     header('Location: login.php');
 }
 ?>

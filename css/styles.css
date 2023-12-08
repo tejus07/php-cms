@@ -9,14 +9,22 @@ header {
     background-color: #f8f8f8;
     color: #ff6600;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     padding: 10px 20px;
+}
+
+.header-container {
+    width: 100%;
 }
 
 header h3 img {
     width: 100px;
     height: auto;
+}
+
+main.container-fluid {
+    max-width: 80%;
 }
 
 nav {
@@ -149,9 +157,8 @@ a:hover {
     background-color: #ffcc66;
 }
 
-
-nav {
-    background-color: #333;
+header.container-fluid {
+    box-shadow: 0 6px 14px #ddd;
 }
 
 .navbar {
@@ -159,6 +166,7 @@ nav {
     margin: 0;
     padding: 0;
     display: flex;
+    justify-content: center;
 }
 
 .navbar li {
@@ -174,38 +182,41 @@ nav {
 }
 
 .navbar a:hover {
-    background-color: #555;
+    background-color: #ff6600;
+    color: #fff;
 }
 
 .dropdown {
     position: relative;
 }
 
-.dropdown-content {
+.dropdown-menu {
     display: none;
     position: absolute;
-    background-color: #333;
     min-width: 470px;
     z-index: 1;
 }
 
-.dropdown-content a {
-    color: white;
+.nav-item a {
+    color: #343a40;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
+    width: auto;
 }
 
-.dropdown:hover .dropdown-content {
+.navbar-expand .navbar-nav .dropdown:hover .dropdown-menu {
     display: flex;
     flex-wrap: wrap;
     max-width: 130px;
     left: -100%;
     justify-content: space-evenly;
+    margin-top: 0;
 }
 
 .pagination {
     padding: 25px 0;
+    justify-content: center;
 }
 
 .pagination a.page-item {
@@ -293,4 +304,58 @@ form.searchbar {
     height: 18px;
     background-color: #ddd;
     width: 1.5px;
+}
+
+
+.home-user-dashboard .login-success-message {
+    background-color: #dff0d8;
+    color: #3c763d;
+    padding: 10px;
+    border-radius: 5px;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.home-user-dashboard .user-dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+.home-user-dashboard .sidebar {
+    width: 250px;
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.home-user-dashboard .sidebar h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.home-user-dashboard .sidebar ul li a {
+    color: #333;
+    text-decoration: none;
+    display: block;
+    padding: 8px 0;
+    transition: background-color 0.3s ease;
+}
+
+.home-user-dashboard .sidebar ul li a:hover {
+    background-color: #e9ecef;
+}
+
+.home-user-dashboard .main-container {
+    flex: 1;
+    padding: 20px;
+}
+
+.home-user-dashboard .user-info {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+.home-user-dashboard button.edit-button a {
+color: #fff;
 }

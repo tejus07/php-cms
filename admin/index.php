@@ -1,7 +1,23 @@
 <?php
 session_start();
 ?>
-<?php include('shared/sidebar.php');?>
+<?php include('shared/sidebar.php');
+
+if(empty($_SESSION['user_id']) || empty($_SESSION['role'])) {
+    header('Location: login.php');
+}
+
+if (isset($_SESSION['login_success'])) {
+    $login_message = $_SESSION['login_success'];
+    echo '<span class="login-success-message">'. $login_message .'</span>';
+    unset($_SESSION['login_success']);
+}
+
+if(empty($_SESSION['user_id']) || empty($_SESSION['role'])) {
+    header('Location: login.php');
+}
+
+?>
 
 <div class="content">
     <header>

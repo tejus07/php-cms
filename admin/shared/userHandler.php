@@ -18,6 +18,18 @@ class UserHandler {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             try {
+
+                $checkSql = "SELECT COUNT(*) as count FROM users WHERE email = :email";
+                $checkStmt = $pdo->prepare($checkSql);
+                $checkStmt->bindParam(':email', $this->email);
+                $checkStmt->execute();
+                $result = $checkStmt->fetch(PDO::FETCH_ASSOC);
+
+                if ($result['count'] > 0) {
+                    echo "Email already exists. Please use a different email address.";
+                    return;
+                }
+
                 $sql = "INSERT INTO users (username, email, role, password, created_at, updated_at) VALUES (:username, :email, :role, :password, NOW(), NOW())";
         
                 $stmt = $pdo->prepare($sql);
@@ -30,7 +42,7 @@ class UserHandler {
                 $stmt->execute();
         
                 echo "User added successfully!";
-                header("Location: users.php");
+                return true;
             } catch (PDOException $e) {
                 echo "Error: " . $e->getMessage();
             }
@@ -42,6 +54,19 @@ class UserHandler {
     
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
+
+                $checkSql = "SELECT COUNT(*) as count FROM users WHERE email = :email AND user_id != :user_id";
+                $checkStmt = $pdo->prepare($checkSql);
+                $checkStmt->bindParam(':email', $this->email);
+                $checkStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+                $checkStmt->execute();
+                $result = $checkStmt->fetch(PDO::FETCH_ASSOC);
+    
+                if ($result['count'] > 0) {
+                    echo "Email already exists. Please use a different email address.";
+                    return;
+                }
+                
                 $sql = "UPDATE users SET username = :username, email = :email, role = :role, password = :password, updated_at = NOW() WHERE user_id = :user_id";
     
                 $stmt = $pdo->prepare($sql);

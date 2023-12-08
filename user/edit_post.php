@@ -100,73 +100,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-
-<link rel="stylesheet" type="text/css" href="../css/styles.css">
-<style>
-.sidebar {
-    width: 250px;
-    background-color: #fff; /* White sidebar background */
-    padding: 15px;
-    border-right: 1px solid #ccc; /* Light border */
-}
-
-.sidebar h2 {
-    margin-bottom: 15px;
-    color: #333; /* Dark text color */
-}
-
-.sidebar ul {
-    list-style: none;
-}
-
-.sidebar ul li {
-    margin-bottom: 10px;
-}
-
-.sidebar ul li a {
-    color: #333; /* Dark text color */
-    text-decoration: none;
-    display: block;
-    padding: 8px 0;
-    transition: background-color 0.3s ease;
-}
-
-.sidebar ul li a:hover {
-    background-color: #f0f0f0; /* Hover background color */
-}
-
-.main-container {
-    display: flex;
-    flex-direction: row;
-}
-
-.user-dashboard {
-    display: flex;
-    min-height: 100vh;
-}
-
-.sidebar {
-    width: 250px;
-    padding: 20px;
-}
-
-.content {
-    flex: 1;
-    padding: 20px;
-}
-
-</style>
-
-    <div class="user-dashboard">
-        <aside class="sidebar">
-            <h2>Sidebar</h2>
-            <ul>
-                <li><a href="user_dashboard.php">Dashboard</a></li>
-                <li><a href="my_post.php">My Post</a></li>
-                <li><a href="add_new_post.php">Add New Post</a></li>
-            </ul>
-        </aside>
-
         <main class="main-container">
             <script>
                 tinymce.init({
@@ -178,21 +111,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             <div class="add-recipe-container">
     
-                <?php if (isset($_GET['error'])) {?>
-                    <div class='col-md-9 ml-sm-auto col-lg-10 px-md-4'>
-                        <div class='error-message'><?php echo $error_message; ?></div>
-                    </div>
-                <?php } ?>
 
-                <h2 class="add-recipe-title">Edit Recipe</h2>
+
+                <h2 class="mt-4 mb-4">Edit Recipe</h2>
                 <form class="recipe-form" action="edit_post.php?id=<?php echo $recipe_id; ?>" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="title">Title:</label>
-                    <input type="text" id="title" name="title" class="form-input" value="<?php echo $title; ?>">
+                    <input type="text" id="title" name="title" class="form-control" value="<?php echo $title; ?>">
                 </div>
                 <div class="form-group">
                     <label for="description">Description:</label>
-                    <textarea id="description-hidden" name="description-hidden"><?php echo $description; ?></textarea>
+                    <textarea id="description-hidden" name="description-hidden" class="form-control"><?php echo $description; ?></textarea>
         
                 </div>
                 <?php if (!empty($data['image_url'])) {?>
@@ -210,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
                 <div class="form-group">
                     <label for="image_url">Upload Image:</label>
-                    <input type="file" id="image_url" name="uploadFile" class="form-input">
+                    <input type="file" id="image_url" name="uploadFile" class="form-control">
                 </div>
         
                 <script>
@@ -231,19 +160,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
                 <div class="form-group">
                     <label for="preparation_time">Preparation Time (minutes):</label>
-                    <input type="number" id="preparation_time" name="preparation_time" class="form-input" value="<?php echo $preparation_time; ?>" required>
+                    <input type="number" id="preparation_time" name="preparation_time" class="form-control" value="<?php echo $preparation_time; ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="cooking_time">Cooking Time (minutes):</label>
-                    <input type="number" id="cooking_time" name="cooking_time" class="form-input" value="<?php echo $cooking_time; ?>" required>
+                    <input type="number" id="cooking_time" name="cooking_time" class="form-control" value="<?php echo $cooking_time; ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="servings">Servings:</label>
-                    <input type="number" id="servings" name="servings" class="form-input" value="<?php echo $servings; ?>" required>
+                    <input type="number" id="servings" name="servings" class="form-control" value="<?php echo $servings; ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="difficulty_level">Difficulty Level:</label>
-                    <select id="difficulty_level" name="difficulty_level" class="form-input" value="<?php echo $difficulty_level; ?>" required>
+                    <select id="difficulty_level" name="difficulty_level" class="form-control" value="<?php echo $difficulty_level; ?>" required>
                         <option value="Easy" <?php if($difficulty_level == "Easy") { echo "Selected"; } ?>>Easy</option>
                         <option value="Medium" <?php if($difficulty_level == "Medium") { echo "Selected"; } ?>>Medium</option>
                         <option value="Hard" <?php if($difficulty_level == "Hard") { echo "Selected"; } ?>>Hard</option>
@@ -251,32 +180,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="form-group">
                     <label for="cuisine">Cuisine:</label>
-                    <input type="text" id="cuisine" name="cuisine" class="form-input" value="<?php echo $cuisine; ?>" required>
+                    <input type="text" id="cuisine" name="cuisine" class="form-control" value="<?php echo $cuisine; ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="course">Course:</label>
-                    <input type="text" id="course" name="course" class="form-input" value="<?php echo $course; ?>" required>
+                    <input type="text" id="course" name="course" class="form-control" value="<?php echo $course; ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="instructions">Instructions:</label>
-                    <textarea id="instructions" name="instructions" class="form-input" required><?php echo $instructions; ?></textarea>
+                    <textarea id="instructions" name="instructions" class="form-control" required><?php echo $instructions; ?></textarea>
                 </div>
                 <div class="form-group">
                     <label for="ingredients">Ingredients:</label>
-                    <textarea id="ingredients" name="ingredients" class="form-input" required><?php echo $ingredients; ?></textarea>
+                    <textarea id="ingredients" name="ingredients" class="form-control" required><?php echo $ingredients; ?></textarea>
                 </div>
                 <div class="form-group">
                     <label for="category_id">Select Category</label>
-                    <select id="category_id" name="category_id" value="<?php echo $category_id; ?>">
+                    <select id="category_id" name="category_id" class="form-control" value="<?php echo $category_id; ?>">
                     <?php foreach ($categories as $categoryId => $categoryName) : ?>
                         <option value="<?php echo $categoryId; ?>" <?php if($category_id == $categoryId) { echo "Selected"; } ?>><?php echo $categoryName; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
-                    <input type="submit" value="Update Recipe" class="submit-button">
+                    <input type="submit" value="Update Recipe" class="submit-button btn btn-primary">
                 </form>
             </div>
         </main>
     </div>
 
-<?php include('shared/footer.php');?>
+<?php include('../shared/footer.php');?>

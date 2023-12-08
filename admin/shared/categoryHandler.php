@@ -44,6 +44,22 @@ class CategoryHandler {
 
         return $categories;
     }
+
+    public function getSingleCategories($category_id) {
+        $pdo = $this->database->getConnection();
+        
+        $query = "SELECT * FROM Categories WHERE category_id = :categoryID";
+        $stmt1 = $pdo->prepare($query);
+        
+        $stmt1->bindParam(':categoryID', $category_id, PDO::PARAM_INT);
+        
+        $stmt1->execute();
+        
+        $user = $stmt1->fetch(PDO::FETCH_ASSOC);
+
+        return $user;
+    }
+
 }
 
 ?>
