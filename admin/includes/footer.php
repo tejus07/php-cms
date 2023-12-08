@@ -1,6 +1,6 @@
 
-<footer class="footer mt-auto py-3">
-  <div class="container">
+<footer class="footer mt-auto mx-auto py-3">
+  <div class="container mx-auto">
     <span class="text-muted">Admin Phone Specs Hub. All rights reserved.</span>
   </div>
 </footer>

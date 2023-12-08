@@ -23,14 +23,15 @@ try {
     echo "Error: " . $e->getMessage();
 }
 ?>
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col">
             <?php
             echo '<div class="card">';
             if ($phone['image_url']) {
-                echo '<img src="./' . $phone['image_url'] . '" class="card-img-wrapper text-center" width="100%" height="180" alt="' . $phone['name'] . '">';
-            } else {
+                echo '<div class="card-img-wrapper text-center">
+                <img src="./' . $phone['image_url'] . '" class="mx-auto" alt="' . $phone['name'] . '">
+                </div>';            } else {
                 echo '<svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img"
             aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
             <title>Placeholder</title>

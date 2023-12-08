@@ -9,14 +9,14 @@ if (isset($_GET['error']) && $_GET['error'] === '1') {
 }
 ?>
 
-<div class="container">
-    <div class="row">
+<div class="container-fluid">
+    <div class="row text-center mt-5">
         <div class="col">
             <h2>Sign In</h2>
         </div>
     </div>
-    <div class="row">
-        <div class="col">
+    <div class="row mb-5">
+        <div class="col-5 mx-auto">
             <form action="./functions/process_login.php" method="post">
                 <div class="form-group">
                     <label for="username">Username or Email:</label>
@@ -26,7 +26,10 @@ if (isset($_GET['error']) && $_GET['error'] === '1') {
                     <label for="password">Password</label>
                     <input type="password" class="form-control" id="password" name="password" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Sign In</button>
+                <div class="form-group d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                </div>
+
             </form>
         </div>
     </div>

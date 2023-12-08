@@ -33,14 +33,10 @@ if (isset($_GET['error']) && $_GET['error'] === '1') {
 }
 ?>
 
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <h2>Admin Login</h2>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
+<div class="container-fluid">
+    <div class="row align-items-center admin-login">
+        <div class="col-6 mx-auto py-5">
+            <h2 class="text-center">Admin Login</h2>
             <form action="login.php" method="post">
                 <div class="form-group">
                     <label for="username">Username or Email:</label>

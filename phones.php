@@ -31,50 +31,51 @@ try {
 
 ?>
 
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-        <div class="col">
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                <div
-                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Phones</h1>
-                    <a href="add-new-phone.php" class="btn btn-primary">Add New Phone</a>
-                </div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Brand</th>
-                            <th scope="col">Phone</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        foreach ($phones as $phone) {
-                            echo '<tr>';
-                            echo '<th scope="row">' . $phone['id'] . '</th>';
-                            echo '<td>' . $phone['brand_name'] . '</td>';
-                            echo '<td>' . $phone['name'] . '</td>';
-                            echo '<td>' . $phone['description'] . '</td>';
-                            echo '<td>
+        <main role="main" class="col ml-sm-auto px-md-5">
+            <div
+                class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Phones</h1>
+                <a href="add-new-phone.php" class="btn btn-primary">Add New Phone</a>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Brand</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    foreach ($phones as $phone) {
+                        echo '<tr>';
+                        echo '<th scope="row">' . $phone['id'] . '</th>';
+                        echo '<td>' . $phone['brand_name'] . '</td>';
+                        if ($phone['image_url'] === null || empty($phone['image_url'])) {
+                            echo '<td>No Image Available</td>';
+                        } else {
+                            echo '<td><img src="' . $phone['image_url'] . '" alt="Phone Image" style="max-width: 100px;"></td>'; // Display the image
+                        }
+                        echo '<td>' . $phone['name'] . '</td>';
+                        echo '<td>' . $phone['description'] . '</td>';
+                        echo '<td>
                         <a href="edit-phone.php?id=' . $phone['id'] . '" class="btn btn-primary">Edit</a>
                         <form method="post" action="delete-phone.php">
                             <input type="hidden" name="phone_id" value="' . $phone['id'] . '">
                 </form>
                         </td>';
-                            echo '</tr>';
-                        }
-                        ?>
-                    </tbody>
-                </table>
-        </div>
+                        echo '</tr>';
+                    }
+                    ?>
+                </tbody>
+            </table>
         </main>
     </div>
-
-</div>
-
 </div>
 
 <?php

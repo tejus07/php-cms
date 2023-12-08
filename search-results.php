@@ -130,13 +130,15 @@ try {
                 foreach ($phones as $phone) {
                     echo '<div class="col"><div class="card">';
                     if ($phone['image_url']) {
-                        echo '<img src="./' . $phone['image_url'] . '" class="bd-placeholder-img card-img-top" width="100%" height="180" alt="' . $phone['name'] . '">';
+                        echo '<div class="card-img-wrapper text-center">
+                        <img src="./' . $phone['image_url'] . '" class="mx-auto" alt="' . $phone['name'] . '">
+                        </div>';
                     } else {
                         echo '<svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img"
-    aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
-    <title>Placeholder</title>
-    <rect width="100%" height="100%" fill="#6c757d"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">' . $phone['name'] . '</text>
-</svg>';
+                aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
+                <title>Placeholder</title>
+                <rect width="100%" height="100%" fill="#6c757d"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">' . $phone['name'] . '</text>
+            </svg>';
                     }
                     echo '<div class="card-body">';
                     echo '<div class="card-body">';

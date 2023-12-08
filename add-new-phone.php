@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div class="container-fluid">
     <div class="row">
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+        <main role="main" class="col ml-sm-auto px-md-5">
             <script>
                 tinymce.init({
                     selector: 'textarea#description-hidden',
@@ -123,83 +123,84 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 document.querySelector('form').addEventListener('submit', updateHiddenTextarea);
             </script>
-            <div class="container">
-                <h2 class="add-phone-title">Add Phone</h2>
-                <form class="phone-form" action="add-new-phone.php" method="post" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="name">Name:</label>
-                        <input type="text" id="name" name="name" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description:</label>
-                        <textarea id="description-hidden" name="description-hidden"></textarea>
+            <h2 class="add-phone-title my-4">Add Phone</h2>
+            <form class="phone-form" action="add-new-phone.php" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name"  class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description-hidden" name="description-hidden"></textarea>
 
-                    </div>
-                    <div class="form-group">
-                        <label for="release_date">Release Date:</label>
-                        <input type="date" id="release_date" name="release_date" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="image_url">Upload Image:</label>
-                        <input type="file" id="image_url" name="uploadFile" class="form-input">
-                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="release_date">Release Date:</label>
+                    <input type="date" id="release_date" name="release_date" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="image_url">Upload Image:</label>
+                    <input type="file" id="image_url" name="uploadFile" class="form-input">
+                </div>
 
-                    <script>
-                        document.addEventListener('DOMContentLoaded', () => {
-                            document.getElementById('image_url').addEventListener('change', function () {
-                                const fileInput = document.getElementById('image_url');
-                                const filePath = fileInput.value;
-                                const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        document.getElementById('image_url').addEventListener('change', function () {
+                            const fileInput = document.getElementById('image_url');
+                            const filePath = fileInput.value;
+                            const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
 
-                                if (!allowedExtensions.exec(filePath)) {
-                                    alert('Please upload files having extensions .jpg/.jpeg/.png/.gif only.');
-                                    fileInput.value = '';
-                                    throw new Error('Incorrect file format');
-                                }
-                            });
+                            if (!allowedExtensions.exec(filePath)) {
+                                alert('Please upload files having extensions .jpg/.jpeg/.png/.gif only.');
+                                fileInput.value = '';
+                                throw new Error('Incorrect file format');
+                            }
                         });
-                    </script>
-                    <div class="form-group">
-                        <label for="processor">Processor:</label>
-                        <input type="text" id="processor" name="processor" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="RAM">RAM:</label>
-                        <input type="number" id="RAM" name="RAM" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="storage">Storage:</label>
-                        <input type="number" id="storage" name="storage" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="camera">Camera:</label>
-                        <input type="text" id="camera" name="camera" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="display">Display:</label>
-                        <input type="text" id="display" name="display" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="battery">Battery:</label>
-                        <input type="text" id="battery" name="battery" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="operating_system">Operating System:</label>
-                        <input type="text" id="operating_system" name="operating_system" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="brand_id">Select Brand</label>
-                        <select id="brand_id" name="brand_id">
-                            <?php foreach ($brands as $brandId => $brandName): ?>
-                                <option value="<?php echo $brandId; ?>">
-                                    <?php echo $brandName; ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <input type="submit" value="Save" class="submit-button">
-                </form>
-            </div>
+                    });
+                </script>
+                <div class="form-group">
+                    <label for="processor">Processor:</label>
+                    <input type="text" id="processor" name="processor" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="RAM">RAM:</label>
+                    <input type="number" id="RAM" name="RAM" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="storage">Storage:</label>
+                    <input type="number" id="storage" name="storage" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="camera">Camera:</label>
+                    <input type="text" id="camera" name="camera" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="display">Display:</label>
+                    <input type="text" id="display" name="display"  class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="battery">Battery:</label>
+                    <input type="text" id="battery" name="battery" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="operating_system">Operating System:</label>
+                    <input type="text" id="operating_system" name="operating_system"  class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="brand_id">Select Brand</label>
+                    <select id="brand_id" name="brand_id" class="form-control">
+                        <?php foreach ($brands as $brandId => $brandName): ?>
+                            <option value="<?php echo $brandId; ?>">
+                                <?php echo $brandName; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary">
+                </div>
+            </form>
+
         </main>
     </div>
 </div>

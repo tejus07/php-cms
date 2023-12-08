@@ -81,14 +81,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-<div class="container">
-    <div class="row">
+<div class="container-fluid">
+    <div class="row text-center mt-5">
         <div class="col">
             <h2>Sign Up</h2>
         </div>
     </div>
-    <div class="row">
-        <div class="col">
+    <div class="row mb-5">
+        <div class="col-5 mx-auto">
             <form action="sign-up.php" method="post">
                 <div class="form-group">
                     <label for="username">Username:</label>
@@ -109,7 +109,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <label for="re-password">Re-Enter Password:</label>
                     <input type="password" class="form-control" id="re-password" name="re-password" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="form-group d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                </div>
             </form>
         </div>
     </div>

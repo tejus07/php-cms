@@ -31,11 +31,11 @@ try {
 
 ?>
 
-<div class="container mt-4">
+<div class="container-fluid px-5 mt-4">
   <div class="row">
     <div class="col">
-      <h3>User Information</h3>
-      <div class="card">
+      <h3 class="mb-4">User Information</h3>
+      <div class="card my-4">
         <div class="card-body">
           <ul class="list-group list-group-flush">
             <li class="list-group-item"><strong>ID:</strong> <?php echo $data[0]['id']; ?></li>

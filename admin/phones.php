@@ -11,7 +11,7 @@ if (session_status() == PHP_SESSION_NONE) {
 if (
     !isset($_SESSION['user_id']) || empty($_SESSION['user_id'])
     || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin'
-  ) :
+):
     header("Location: ./login.php");
     exit();
 endif;
@@ -62,7 +62,8 @@ try {
                             echo '<td>No Image Available</td>';
                         } else {
                             echo '<td><img src="../' . $phone['image_url'] . '" alt="Phone Image" style="max-width: 100px;"></td>'; // Display the image
-                        }                        echo '<td>' . $phone['name'] . '</td>';
+                        }
+                        echo '<td>' . $phone['name'] . '</td>';
                         echo '<td>' . $phone['description'] . '</td>';
                         echo '<td>
                         <a href="edit-phone.php?id=' . $phone['id'] . '" class="btn btn-primary">Edit</a>
