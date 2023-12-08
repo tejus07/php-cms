@@ -1,6 +1,6 @@
 <?php
 $title = 'Add New Brand';
-require_once '../includes/header.php';
+require_once 'includes/header.php';
 require_once '../includes/initialize.php';
 require_once '../functions/function.php';
 require_once 'admin-navbar.php';
@@ -76,5 +76,5 @@ endif;
     </div>
 </div>
 <?php
-require_once '../includes/footer.php';
+require_once 'includes/footer.php';
 ?>

@@ -1,6 +1,6 @@
 <?php
-$title = 'Admin';
-require_once '../includes/header.php';
+$title = 'Manage Phones';
+require_once 'includes/header.php';
 require_once '../includes/initialize.php';
 require_once 'admin-navbar.php';
 
@@ -46,6 +46,7 @@ try {
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Brand</th>
+                        <th scope="col">Image</th>
                         <th scope="col">Phone</th>
                         <th scope="col">Description</th>
                         <th scope="col">Actions</th>
@@ -57,7 +58,11 @@ try {
                         echo '<tr>';
                         echo '<th scope="row">' . $phone['id'] . '</th>';
                         echo '<td>' . $phone['brand_name'] . '</td>';
-                        echo '<td>' . $phone['name'] . '</td>';
+                        if ($phone['image_url'] === null || empty($phone['image_url'])) {
+                            echo '<td>No Image Available</td>';
+                        } else {
+                            echo '<td><img src="../' . $phone['image_url'] . '" alt="Phone Image" style="max-width: 100px;"></td>'; // Display the image
+                        }                        echo '<td>' . $phone['name'] . '</td>';
                         echo '<td>' . $phone['description'] . '</td>';
                         echo '<td>
                         <a href="edit-phone.php?id=' . $phone['id'] . '" class="btn btn-primary">Edit</a>

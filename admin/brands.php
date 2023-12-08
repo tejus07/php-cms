@@ -1,6 +1,6 @@
 <?php
-$title = 'Admin';
-require_once '../includes/header.php';
+$title = 'Manage Brands';
+require_once 'includes/header.php';
 require_once '../includes/initialize.php';
 require_once 'admin-navbar.php';
 
@@ -11,7 +11,7 @@ if (session_status() == PHP_SESSION_NONE) {
 if (
     !isset($_SESSION['user_id']) || empty($_SESSION['user_id'])
     || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin'
-  ) :
+):
     header("Location: ./login.php");
     exit();
 endif;
@@ -28,9 +28,8 @@ try {
 
 if (isset($_POST['delete_brand'])) {
     $brand_id = $_POST['brand_id'];
-    
+
     try {
-        // Check if there are associated records in other tables (example: products table)
         $stmt = $pdo->prepare("SELECT COUNT(*) FROM phones WHERE brand_id = :brand_id");
         $stmt->bindParam(':brand_id', $brand_id);
         $stmt->execute();
@@ -42,10 +41,10 @@ if (isset($_POST['delete_brand'])) {
                   </div>';
         } else {
             // No associated records found, proceed with deletion
-            // $stmt = $pdo->prepare("DELETE FROM brands WHERE id = :brand_id");
-            // $stmt->bindParam(':brand_id', $brand_id);
-            // $stmt->execute();
-            // header("Location: brands.php");
+            $stmt = $pdo->prepare("DELETE FROM brands WHERE id = :brand_id");
+            $stmt->bindParam(':brand_id', $brand_id);
+            $stmt->execute();
+            header("Location: brands.php");
             exit();
         }
     } catch (PDOException $e) {
@@ -98,5 +97,5 @@ if (isset($_POST['delete_brand'])) {
 </div>
 </div>
 <?php
-require_once '../includes/footer.php';
+require_once 'includes/footer.php';
 ?>

@@ -1,6 +1,6 @@
 <?php
 $title = 'Add New Phone';
-require_once '../includes/header.php';
+require_once 'includes/header.php';
 require_once '../includes/initialize.php';
 require_once '../functions/function.php';
 require_once 'admin-navbar.php';
@@ -72,7 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     else:
         try {
-            // ensure data consistency
             $pdo->beginTransaction();
 
             $stmt = $pdo->prepare("INSERT INTO phones (brand_id, name, description, release_date, image_url, user_id) VALUES (:brand_id, :name, :description, :release_date, :image_url, :user_id)");
@@ -102,7 +101,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "Phone added successfully!";
             header("Location: phones.php");
         } catch (PDOException $e) {
-            // Rollback the transaction in case of an error
             $pdo->rollBack();
             echo "Error: " . $e->getMessage();
         } catch (Exception $e) {
@@ -229,5 +227,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </div>
 <?php
-require_once '../includes/footer.php';
+require_once 'includes/footer.php';
 ?>

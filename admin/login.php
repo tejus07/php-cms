@@ -1,6 +1,6 @@
 <?php
-$title = 'Sign In';
-require_once '../includes/header.php';
+$title = 'Admin Sign In';
+require_once 'includes/header.php';
 require_once '../includes/initialize.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
@@ -56,5 +56,5 @@ if (isset($_GET['error']) && $_GET['error'] === '1') {
     </div>
 </div>
 <?php
-require_once '../includes/footer.php';
+require_once 'includes/footer.php';
 ?>

@@ -1,6 +1,6 @@
 <?php
-$title = 'Admin';
-require_once '../includes/header.php';
+$title = 'Manage Users';
+require_once 'includes/header.php';
 require_once '../includes/initialize.php';
 require_once 'admin-navbar.php';
 
@@ -87,5 +87,5 @@ try {
     </div>
 </div>
 <?php
-require_once '../includes/footer.php';
+require_once 'includes/footer.php';
 ?>

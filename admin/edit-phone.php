@@ -1,6 +1,6 @@
 <?php
 $title = 'Edit Phone';
-require_once '../includes/header.php';
+require_once 'includes/header.php';
 require_once '../includes/initialize.php';
 require_once '../functions/function.php';
 require_once 'admin-navbar.php';
@@ -12,7 +12,7 @@ if (session_status() == PHP_SESSION_NONE) {
 if (
     !isset($_SESSION['user_id']) || empty($_SESSION['user_id'])
     || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin'
-  ) :
+):
     header("Location: ./login.php");
     exit();
 endif;
@@ -27,7 +27,7 @@ endif;
 
 $phone_id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : null;
 
-if (!$phone_id) :
+if (!$phone_id):
     header("Location: phones.php");
     exit();
 endif;
@@ -208,18 +208,6 @@ endif;
                         <input type="date" id="release_date" name="release_date" class="form-input"
                             value="<?php echo $data['release_date'] ?>" required>
                     </div>
-                    <!-- <div class="form-group">
-                        <label for="image_url">Uploaded Image:</label>
-                        <?php if (!empty($data['image_url'])): ?>
-                            <img src="../uploads/<?php echo $data['image_url']; ?>" alt="Uploaded Image" width="200">
-                        <?php else: ?>
-                            <p>No image uploaded</p>
-                        <?php endif; ?>
-                    </div>
-                    <div class="form-group">
-                        <label for="image_url">Upload Image:</label>
-                        <input type="file" id="image_url" name="image_url" class="form-input">
-                    </div> -->
                     <?php if (!empty($data['image_url'])): ?>
                         <div class="form-group">
                             <label for="image_url">Uploaded Image:</label>
@@ -316,5 +304,5 @@ endif;
     </div>
 </div>
 <?php
-require_once '../includes/footer.php';
+require_once 'includes/footer.php';
 ?>
