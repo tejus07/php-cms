@@ -12,11 +12,15 @@ $conn = $database->getConnection();
     <meta charset="UTF-8">
     <title>RentAndGo - Your Car Rental Solution</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
-    <header>
-        <h1 class="site-logo"><a href="index.php">RentAndGo</a></h1>
+    <header class="row align-items-center">
+        <div class="col-md-2 logo-wrapper">
+        <div class="site-logo"><a href="index.php">RentAndGo</a></div>
+        </div>
+        <div class="col-md-4 nav-bar-wrapper">
         <nav>
             <ul>
                 <li><a href="index.php">Home</a></li>
@@ -47,9 +51,13 @@ $conn = $database->getConnection();
                 </li>
                 <li><a href="about-us.php">About Us</a></li>
                 <li><a href="admin/login.php">Login</a></li>
-                <li>
-                    <?php
-
+                
+            </ul>
+        </nav>
+        </div>
+        <div class="col-md-4">
+            <div class="searchbar-wrapper">
+                <?php
                     $categories = [];
                     $category_sql = "SELECT category_id, category_name FROM Categories";
                     $category_stmt = $conn->query($category_sql);
@@ -79,9 +87,8 @@ $conn = $database->getConnection();
                             <input type="text" name="keyword" placeholder="Enter keyword"
                                 value="<?php echo $keyword; ?>">
                         </div>
-                        <button class="search-btn" type="submit">Search</button>
+                        <button class="btn btn-primary search-btn" type="submit">Search</button>
                     </form>
-                </li>
-            </ul>
-        </nav>
+            </div>
+        </div>
     </header>
