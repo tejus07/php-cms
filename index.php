@@ -15,7 +15,7 @@ $offset = ($currentPage - 1) * $perPage;
 
 $sortOrder = 'title__ASC';
 
-$query = "SELECT * FROM pizzaRecipes LIMIT " . intval($perPage) . " OFFSET " . intval($offset);
+$query = "SELECT * FROM pizzaRecipes";
 	
 
 	if ($isUserLoggedIn) {
