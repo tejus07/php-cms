@@ -15,7 +15,7 @@ try {
 	
 	$sortOrder = 'title__ASC';
 
-	$query = "SELECT * FROM recipes LIMIT " . intval($perPage) . " OFFSET " . intval($offset);
+	$query = "SELECT * FROM recipes";
 	
 
 	if ($isUserLoggedIn) {

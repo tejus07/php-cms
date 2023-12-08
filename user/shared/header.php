@@ -12,7 +12,7 @@
     <header class="container-fluid text-light py-3">
     <div class="row align-items-center header-container">
         <div class="col-md-4">
-            <h3 class="site-logo"><a href="./" class="text-dark">Winniepeg cooking diaries</a></h3>
+            <h3 class="site-logo"><a href="../" class="text-dark">Winniepeg cooking diaries</a></h3>
         </div>
         <div class="col-md-4">
             <!-- <?php include_once('searchbar.php'); ?> -->

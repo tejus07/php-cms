@@ -5,10 +5,6 @@ include_once 'shared/userHandler.php';
 $conn = new Database();
 $userHandler = new UserHandler($conn);
 
-if(empty($_SESSION['user_id']) || empty($_SESSION['role'])) {
-    header('Location: login.php');
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $username = htmlspecialchars($_POST['username']);
@@ -124,6 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button class="form-button" type="submit">Register</button>
         </form>
         <p class="form-link">Already have an account? <a href="login.php">Login</a></p>
+        <p class="form-link">Go back to <a href="../">Home</a></p>
     </div>
 </body>
 </html>
