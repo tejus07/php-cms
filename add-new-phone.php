@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = isset($_POST['name']) ? filter_var($_POST['name'], FILTER_SANITIZE_STRING) : null;
     $description = isset($_POST['description-hidden']) && validateString($_POST['description-hidden'], 1, 1000) ? $_POST['description-hidden'] : null;
     $release_date = isset($_POST['release_date']) ? $_POST['release_date'] : null;
-    $image_url = isset($_FILES['uploadFile']) && $_FILES['uploadFile']['error'] !== UPLOAD_ERR_NO_FILE ? upload_image($_FILES['uploadFile']) : null;
+    $image_url = isset($_FILES['uploadFile']) && $_FILES['uploadFile']['error'] !== UPLOAD_ERR_NO_FILE ? upload_image($_FILES['uploadFile'], true, 400, 400, true) : null;
     $brand_id = isset($_POST['brand_id']) && is_numeric($_POST['brand_id']) ? (int) $_POST['brand_id'] : null;
     $user_id = isset($_SESSION['user_id']) && is_numeric($_SESSION['user_id']) ? (int) $_SESSION['user_id'] : null;
     $processor = isset($_POST['processor']) ? $_POST['processor'] : null;

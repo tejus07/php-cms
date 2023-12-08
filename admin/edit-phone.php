@@ -85,6 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'):
     $operating_system = isset($_POST['operating_system']) ? $_POST['operating_system'] : null;
     $imageUpdated = isset($_FILES['uploadFile']) && $_FILES['uploadFile']['error'] !== UPLOAD_ERR_NO_FILE;
     $image_url = $data['image_url'];
+    $delete_image = isset($_POST['delete_image']) && $_POST['delete_image'] === 'delete';
 
 
     if ($release_date && !validateDate($release_date, 'Y-m-d')):
@@ -120,6 +121,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'):
 
             $image_url = null;
         }
+    }
+    elseif ($delete_image) {
+        $image_path = "../" . $image_url;
+        if (file_exists($image_path)) {
+            unlink($image_path);
+            echo "Image deleted successfully!";
+        } else {
+            echo "Image not found.";
+        }
+
+        $image_url = null;
     }
 
 

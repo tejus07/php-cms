@@ -59,9 +59,8 @@ function generateLink($link, $search, $sortOrder, $brandFilter = '', $page = 1)
     return $link;
 }
 
-function upload_image($imageFile, $resize = true, $max_width = 400, $max_height = 250)
+function upload_image($imageFile, $resize = true, $max_width = 400, $max_height = 250, $fromUser = false)
 {
-    echo var_dump($imageFile);
     if ($imageFile['error'] !== UPLOAD_ERR_OK) {
         throw new Exception("File upload error: " . $imageFile['error']);
     }
@@ -74,10 +73,11 @@ function upload_image($imageFile, $resize = true, $max_width = 400, $max_height 
     $image_filename = uniqid() . '_' . basename($imageFile['name']);
     $target_file = $uploads_dir . $image_filename;
 
-    if (move_uploaded_file($imageFile['tmp_name'], "../" . $target_file)) {
+    if (move_uploaded_file($imageFile['tmp_name'], $fromUser ? $target_file : "../" . $target_file)) {
         if ($resize) {
             echo "in here";
-            resize_image("../" . $target_file, "../" . $target_file, $max_width, $max_height);
+            resize_image($fromUser ? $target_file : "../" . $target_file,
+                $fromUser ? $target_file : "../" . $target_file, $max_width, $max_height);
         }
         return $target_file;
     } else {

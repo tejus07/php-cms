@@ -74,9 +74,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $operating_system = isset($_POST['operating_system']) ? $_POST['operating_system'] : null;
     $imageUpdated = isset($_FILES['uploadFile']) && $_FILES['uploadFile']['error'] !== UPLOAD_ERR_NO_FILE;
     $image_url = $data['image_url'];
+    $delete_image = isset($_POST['delete_image']) && $_POST['delete_image'] === 'delete';
+    $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+
 
     if ($release_date && !validateDate($release_date, 'Y-m-d')):
-        header("Location: add-new-phone.php?error=Invalid release date");
+        header("Location: edit-phone.php?id=" . $phone_id . "&error=Invalid release date");
         exit();
     endif;
 
@@ -86,14 +89,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         empty($storage) || empty($camera) || empty($display) || empty($battery) || empty($operating_system)
     ):
         $error_message = "Please enter all required fields";
-        header("Location: edit-phone.php?error=" . urlencode($error_message) . "&name=" . urlencode($name) . "&brand_id=" . urlencode($brand_id) . "&user_id=" . urlencode($user_id) . "&processor=" . urlencode($processor) . "&RAM=" . urlencode($RAM) . "&storage=" . urlencode($storage) . "&camera=" . urlencode($camera) . "&display=" . urlencode($display) . "&battery=" . urlencode($battery) . "&operating_system=" . urlencode($operating_system));
+        // header("Location: edit-phone.php?id=".$phone_id."&error=" . urlencode($error_message) . "&name=" . urlencode($name) . "&brand_id=" . urlencode($brand_id) . "&user_id=" . urlencode($user_id) . "&processor=" . urlencode($processor) . "&RAM=" . urlencode($RAM) . "&storage=" . urlencode($storage) . "&camera=" . urlencode($camera) . "&display=" . urlencode($display) . "&battery=" . urlencode($battery) . "&operating_system=" . urlencode($operating_system));
         exit();
     endif;
 
     if ($imageUpdated):
 
         if (!empty($_FILES['uploadFile']) && !isset($_POST['delete_image'])) {
-            $returned_value = upload_image($_FILES['uploadFile']);
+            $returned_value = upload_image($_FILES['uploadFile'], true, 400, 400, true);
             if ($returned_value) {
                 $image_url = $returned_value;
             }
@@ -108,6 +111,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $image_url = null;
         }
+    elseif ($delete_image):
+        $image_path = "../" . $image_url;
+        if (file_exists($image_path)) {
+            unlink($image_path);
+            echo "Image deleted successfully!";
+        } else {
+            echo "Image not found.";
+        }
+
+        $image_url = null;
     endif;
 
     try {
