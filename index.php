@@ -16,9 +16,22 @@ try {
 	$sortOrder = 'title__ASC';
 
 	$query = "SELECT * FROM recipes";
+	
 
 	if ($isUserLoggedIn) {
-		$query .= " ORDER BY $sortColumn " . ($sortDirection === 'ASC' ? 'ASC' : 'DESC');
+		$sortOrder = isset($_GET['sort']) ? $_GET['sort'] : 'title__ASC';
+
+		$sort = explode('__', $sortOrder);
+
+		$sortColumn = isset($sort[0]) ? $sort[0] : 'created_at';
+		$sortDirection = isset($sort[1]) ? $sort[1] : 'ASC';
+
+		if (!in_array($sortColumn, ['created_at', 'title', "preparation_time"]) || !in_array($sortDirection, ['ASC', 'DESC'])) {
+    		throw new Exception("Invalid sorting parameters.");
+    	}
+		$query = "SELECT * 
+		FROM recipes
+		ORDER BY $sortColumn " . ($sortDirection === 'ASC' ? 'ASC' : 'DESC');
 	}
 
 	$query .= " LIMIT " . intval($perPage) . " OFFSET " . intval($offset);

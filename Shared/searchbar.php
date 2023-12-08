@@ -28,7 +28,7 @@ $category_id = isset($_GET['category']) ? $_GET['category'] : 'all';
         </select>
     </div>
     <div class="form-group mr-2">
-        <input type="text" name="keyword" class="form-control" placeholder="Enter keyword" value="<?php echo $keyword; ?>">
+        <input type="text" name="keyword" class="form-control" placeholder="Enter keyword" value="<?php echo $keyword; ?>" required>
     </div>
     <button class="btn btn-primary" type="submit">Search</button>
 </form>
