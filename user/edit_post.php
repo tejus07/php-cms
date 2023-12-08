@@ -5,7 +5,6 @@ include_once '../shared/database.php';
 include_once '../admin/shared/image_handler.php';
 include_once '../admin/shared/recipeHandler.php';
 include_once '../admin/shared/categoryHandler.php';
-include_once '../admin/shared/userHandler.php';
 
 if(empty($_SESSION['user_id'])) {
     header('Location: login.php');
@@ -15,16 +14,12 @@ $conn = new Database();
 $imageHandler = new ImageHandler();
 $recipeHandler = new RecipeHandler($conn);
 $categoryHandler = new CategoryHandler($conn);
-$userHandler = new UserHandler($conn);
-
-$users = $userHandler->getUsers();
 
 $categories = $categoryHandler->getCategories();
 
 $recipe_id = (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : '0';
 
 $data = $recipeHandler->getSingleRecipe($recipe_id);
-
 
 $error_message = (isset($_GET['error'])) ? $_GET['error'] : null;
 $title = (isset($_GET['error'])) ? $_GET['title'] : $data['title'];
@@ -40,7 +35,6 @@ $ingredients = (isset($_GET['error'])) ? $_GET['ingredients'] : $data['ingredien
 $category_id = (isset($_GET['error'])) ? $_GET['category_id'] : $data['category_id'];
 $user_id = (isset($_GET['error'])) ? $_GET['user_id'] : $data['user_id'];
 
-$users = $userHandler->getUsers();
 
 $categories = $categoryHandler->getCategories();
 
@@ -78,13 +72,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $recipeHandler->instructions = htmlspecialchars($_POST['instructions']);
     $recipeHandler->ingredients = htmlspecialchars($_POST['ingredients']);
     $recipeHandler->category_id = filter_input(INPUT_POST, 'category_id', FILTER_VALIDATE_INT);
-    $recipeHandler->user_id = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
+    $recipeHandler->user_id = $_SESSION['user_id'];
 
     if ($recipeHandler->title && $recipeHandler->description && $recipeHandler->preparation_time !== false &&
         $recipeHandler->cooking_time !== false && $recipeHandler->servings !== false &&
         $recipeHandler->category_id !== false && $recipeHandler->user_id !== false) {
 
-        $recipeHandler->image_url = (isset($_FILES['uploadFile']) && $_FILES['uploadFile']['error'] !== UPLOAD_ERR_NO_FILE) ? $imageHandler->upload_image($_FILES['uploadFile']) : null;
+        $recipeHandler->image_url = $image_url;
 
         $requestStatus = $recipeHandler->editRecipe($recipe_id);
 

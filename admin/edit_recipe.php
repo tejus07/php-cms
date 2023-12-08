@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $recipeHandler->cooking_time !== false && $recipeHandler->servings !== false &&
         $recipeHandler->category_id !== false && $recipeHandler->user_id !== false) {
 
-        $recipeHandler->image_url = (isset($_FILES['uploadFile']) && $_FILES['uploadFile']['error'] !== UPLOAD_ERR_NO_FILE) ? $imageHandler->upload_image($_FILES['uploadFile']) : null;
+        $recipeHandler->image_url = $image_url;
 
         $requestStatus = $recipeHandler->editRecipe($recipe_id);
 
