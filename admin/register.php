@@ -5,9 +5,9 @@ include_once 'shared/userHandler.php';
 $conn = new Database();
 $userHandler = new UserHandler($conn);
 
-if(empty($_SESSION['user_id']) || empty($_SESSION['role'])) {
-    header('Location: login.php');
-}
+// if(empty($_SESSION['user_id']) || empty($_SESSION['role'])) {
+    // header('Location: login.php');
+// }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
