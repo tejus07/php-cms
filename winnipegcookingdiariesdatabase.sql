@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 21, 2023 at 04:07 AM
+-- Generation Time: Dec 08, 2023 at 08:58 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -98,7 +98,11 @@ INSERT INTO `recipes` (`recipe_id`, `title`, `description`, `image_url`, `prepar
 (8, 'Mango Lassi', 'Mango Lassi is a popular Indian yogurt-based drink. It combines ripe mangoes, yogurt, and a touch of cardamom for a refreshing beverage.', 'uploads/images/mango-lassi-2.webp', 10, 0, 2, 'Easy', 'Indian', 'Beverage', '1. Peel and chop ripe mangoes.\r\n      2. Blend mangoes, yogurt, sugar, and cardamom until smooth.\r\n      3. Chill the Mango Lassi and serve in glasses with a pinch of ground cardamom for garnish.', '2 ripe mangoes, 1 cup yogurt, 2 tbsp sugar, 1/4 tsp ground cardamom', 5, 5, '2023-11-09 05:57:53', '2023-11-16 20:33:43'),
 (9, 'Caprese Salad', 'Caprese Salad is a simple and elegant Italian salad made with fresh tomatoes, mozzarella cheese, basil leaves, and a drizzle of balsamic glaze.', 'uploads/images/Caprese-Salad-main-1.webp', 10, 0, 2, 'Easy', 'Italian', 'Salad', '1. Slice tomatoes and mozzarella cheese.\r\n      2. Arrange tomato and mozzarella slices with fresh basil leaves.\r\n      3. Drizzle with balsamic glaze.\r\n      4. Season with salt and black pepper.\r\n      5. Serve as an appetizer or side dish.', '4 ripe tomatoes, 8 oz mozzarella cheese, Fresh basil leaves, Balsamic glaze, Salt, Black pepper', 3, 4, '2023-11-09 05:57:53', '2023-11-16 20:34:09'),
 (10, 'Spaghetti Carbonara', 'Spaghetti Carbonara is a classic Italian pasta dish made with eggs, cheese, pancetta, and black pepper. This creamy and savory pasta is a crowd-pleaser and a go-to recipe for a quick and delicious meal. Follow these steps to make a perfect Spaghetti Carbonara.', 'uploads/images/carbonara-horizontal-threeByTwoMediumAt2X-v2.jpg', 20, 15, 4, 'Easy', 'Italian', 'Main Course', '1. Bring a large pot of salted water to a boil.\r\n      2. Cook spaghetti according to package instructions until al dente. Reserve some pasta water.\r\n      3. In a skillet, cook pancetta until crispy.\r\n      4. In a bowl, whisk eggs and mix in grated Pecorino Romano cheese.\r\n      5. Drain cooked spaghetti and immediately transfer it to the skillet with pancetta.\r\n      6. Toss the spaghetti with pancetta, allowing it to cool slightly.\r\n      7. Quickly pour the egg and cheese mixture over the spaghetti, tossing it continuously.\r\n      8. Add reserved pasta water as needed to create a creamy sauce.\r\n      9. Season with black pepper and serve hot.', '200g spaghetti, 100g pancetta, 2 large eggs, 50g Pecorino Romano cheese, Salt, Black pepper', 1, 1, '2023-11-09 05:58:05', '2023-11-16 20:34:57'),
-(11, 'Chicken Alfredo', 'Chicken Alfredo is a rich and creamy pasta dish that combines fettuccine, chicken, and a luxurious Alfredo sauce. This Italian-American classic is comfort food at its finest. Learn how to make Chicken Alfredo with this easy recipe.', '', 25, 20, 4, 'Medium', 'Italian', 'Main Course', '1. Season chicken breast with salt and pepper.\r\n      2. In a large skillet, heat olive oil and cook chicken until golden brown and cooked through. Set aside.\r\n      3. Cook fettuccine pasta according to package instructions. Drain.\r\n      4. In the same skillet, melt butter and sauté garlic until fragrant.\r\n      5. Stir in heavy cream and Parmesan cheese. Simmer until the sauce thickens.\r\n      6. Slice cooked chicken and add it to the sauce.\r\n      7. Season with salt and pepper.\r\n      8. Serve the creamy Alfredo sauce over cooked fettuccine and garnish with chopped parsley.', '300g fettuccine pasta, 2 boneless chicken breasts, 2 tbsp olive oil, 2 cloves garlic, 1 cup heavy cream, 1 cup grated Parmesan cheese, 2 tbsp butter, Salt, Black pepper, Fresh parsley', 2, 2, '2023-11-09 05:58:05', '2023-11-09 05:58:05');
+(11, 'Chicken Alfredo', 'Chicken Alfredo is a rich and creamy pasta dish that combines fettuccine, chicken, and a luxurious Alfredo sauce. This Italian-American classic is comfort food at its finest. Learn how to make Chicken Alfredo with this easy recipe.', '', 25, 20, 4, 'Medium', 'Italian', 'Main Course', '1. Season chicken breast with salt and pepper.\r\n      2. In a large skillet, heat olive oil and cook chicken until golden brown and cooked through. Set aside.\r\n      3. Cook fettuccine pasta according to package instructions. Drain.\r\n      4. In the same skillet, melt butter and sauté garlic until fragrant.\r\n      5. Stir in heavy cream and Parmesan cheese. Simmer until the sauce thickens.\r\n      6. Slice cooked chicken and add it to the sauce.\r\n      7. Season with salt and pepper.\r\n      8. Serve the creamy Alfredo sauce over cooked fettuccine and garnish with chopped parsley.', '300g fettuccine pasta, 2 boneless chicken breasts, 2 tbsp olive oil, 2 cloves garlic, 1 cup heavy cream, 1 cup grated Parmesan cheese, 2 tbsp butter, Salt, Black pepper, Fresh parsley', 2, 2, '2023-10-11 05:58:05', '2023-11-17 06:47:01'),
+(36, 'mmmmmzzzzzz', '<p>jnsdknskjn</p>', 'uploads/images/656cdc48706ef_Porsche 911.jpg', 9, 9, 9, 'Easy', 'knkjn', 'kjjnkjn', 'kjnkn', 'kjnkjn', 1, 1, '2023-12-03 19:07:29', '2023-12-03 19:51:47'),
+(37, 'jjjjjjjjkkkkkkk', '<p>kjnkjnk</p>', 'uploads/images/656cd8a00ca73_Tesla_Model_S.jpg', 8, 87, 87, 'Easy', 'bnjbjhb', 'jhbjhb', 'jjhbjhbj', 'hbjhb', 1, 1, '2023-12-03 19:36:00', '2023-12-05 15:16:24'),
+(38, 'kjnakskjnaskd', '<p>llkmlkm</p>', NULL, 987, 987, 987, 'Easy', 'kjnkjn', 'kn', 'kjnk', 'kn', 1, 1, '2023-12-05 15:18:37', '2023-12-05 15:18:43'),
+(41, 'lkmaslmd', '<p>amlskmamkmkam</p>', NULL, 989, 989, 9898, 'Hard', 'knkjn', 'kjnkjn', 'knjnkn', 'kjnkjn', 4, 7, '2023-12-06 14:47:29', '2023-12-06 15:11:19');
 
 -- --------------------------------------------------------
 
@@ -110,7 +114,8 @@ CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `role` enum('admin','non-admin') DEFAULT 'non-admin',
+  `password` varchar(500) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -119,17 +124,23 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `created_at`, `updated_at`) VALUES
-(1, 'john_doe', 'john.doe@example.com', 'password1', '2023-11-09 05:57:40', '2023-11-09 05:57:40'),
-(2, 'jane_smith', 'jane.smith@example.com', 'password2', '2023-11-09 05:57:40', '2023-11-09 05:57:40'),
-(3, 'michael_johnson', 'michael.johnson@example.com', 'password3', '2023-11-09 05:57:40', '2023-11-09 05:57:40'),
-(4, 'susan_williams', 'susan.williams@example.com', 'password4', '2023-11-09 05:57:40', '2023-11-09 05:57:40'),
-(5, 'robert_brown', 'robert.brown@example.com', 'password5', '2023-11-09 05:57:40', '2023-11-09 05:57:40'),
-(6, 'lisa_davis', 'lisa.davis@example.com', 'adminpassword1', '2023-11-09 05:57:40', '2023-11-09 05:57:40'),
-(7, 'mark_miller', 'mark.miller@example.com', 'adminpassword2', '2023-11-09 05:57:40', '2023-11-09 05:57:40'),
-(8, 'emily_wilson', 'emily.wilson@example.com', 'editorpassword1', '2023-11-09 05:57:40', '2023-11-09 05:57:40'),
-(9, 'david_martin', 'david.martin@example.com', 'editorpassword2', '2023-11-09 05:57:40', '2023-11-09 05:57:40'),
-(10, 'linda_jackson', 'linda.jackson@example.com', 'contributorpassword1', '2023-11-09 05:57:40', '2023-11-09 05:57:40');
+INSERT INTO `users` (`user_id`, `username`, `email`, `role`, `password`, `created_at`, `updated_at`) VALUES
+(1, 'john_doe', 'john.doe@example.com', 'admin', 'password1', '2023-11-09 05:57:40', '2023-12-05 16:17:29'),
+(2, 'jane_smith', 'jane.smith@example.com', 'non-admin', 'password2', '2023-11-09 05:57:40', '2023-11-09 05:57:40'),
+(3, 'michael_johnson', 'michael.johnson@example.com', 'non-admin', 'password3', '2023-11-09 05:57:40', '2023-11-09 05:57:40'),
+(4, 'susan_williams', 'susan.williams@example.com', 'non-admin', 'password4', '2023-11-09 05:57:40', '2023-11-09 05:57:40'),
+(5, 'robert_brown', 'robert.brown@example.com', 'admin', 'password5', '2023-11-09 05:57:40', '2023-12-05 16:17:39'),
+(6, 'lisa_davis', 'lisa.davis@example.com', 'non-admin', 'adminpassword1', '2023-11-09 05:57:40', '2023-11-09 05:57:40'),
+(7, 'mark_miller', 'mark.miller@example.com', 'non-admin', 'adminpassword2', '2023-11-09 05:57:40', '2023-11-09 05:57:40'),
+(8, 'emily_wilson', 'emily.wilson@example.com', 'non-admin', 'editorpassword1', '2023-11-09 05:57:40', '2023-11-09 05:57:40'),
+(9, 'david_martin', 'david.martin@example.com', 'non-admin', 'editorpassword2', '2023-11-09 05:57:40', '2023-11-09 05:57:40'),
+(10, 'linda_jackson', 'linda.jackson@example.com', 'non-admin', 'contributorpassword1', '2023-11-09 05:57:40', '2023-12-06 23:24:50'),
+(13, 'lkmalms', 'lkmalms', 'non-admin', '$2y$10$uWbNnXB7nI1sSAVU68HoKOd3V6DNaXYuDw4mohjSJhQKuCwI9SyCu', '2023-12-06 17:05:43', '2023-12-06 23:16:51'),
+(14, 'kamran', 'kamran@gmail.com', 'admin', '$2y$10$ZSIak0yW3vmwPmBAnpnASu02OqoRmKguAxS.e4XCS3zY2sMs2GG/G', '2023-12-06 23:25:35', '2023-12-06 23:38:32'),
+(15, 'pjp', 'jpjjp', 'admin', '$2y$10$FG.BbY6iJhSZp/gN9YevcOO.ovF.7fsMmf4rd3gLYNLSS0vv0MjxK', '2023-12-06 23:27:54', '2023-12-06 23:36:18'),
+(16, 'almksdlm', 'kam@gmail.com', 'admin', '$2y$10$Dn7oa5mRMl1Bebwn.xzkw.xOSI8foT6JxjvS2LuLTY1TUfGCv8kK.', '2023-12-07 13:53:54', '2023-12-07 13:53:54'),
+(18, 'kamran', 'kk@gmail.com', 'non-admin', '$2y$10$iZmZE67f0Pc8fZv/BMN4eeO4w9b3w/oCM22fyYmd1ywZxF1p8WMpK', '2023-12-07 15:05:20', '2023-12-07 15:05:20'),
+(19, 'ka', 'km@gmail.com', 'non-admin', '$2y$10$sdl1SK1xHSuy0xVnR0JeiuQ0XqnP67pS9r8CJ4m0NPo0a5jhxfCJK', '2023-12-07 15:09:17', '2023-12-07 15:09:17');
 
 --
 -- Indexes for dumped tables
@@ -183,13 +194,13 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `recipes`
 --
 ALTER TABLE `recipes`
-  MODIFY `recipe_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `recipe_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Constraints for dumped tables
