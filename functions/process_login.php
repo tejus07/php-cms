@@ -1,5 +1,5 @@
 <?php
-require '../db.php';
+require '../includes/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
@@ -13,14 +13,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($user && password_verify($password, $user['password'])) {
-        // Correct credentials; create a user session and redirect to a protected page
         session_start();
-        $_SESSION['user_id'] = $user['id']; 
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['role'] = $user['role'] == 1 ? 'admin' : 'user';
         header('Location: ../index.php');
         exit();
     } else {
-        // Incorrect credentials; show an error message or redirect to the login page
-        header('Location: ../sign-in.php?error=1'); // You can add an error parameter for displaying an error message
+        header('Location: ../sign-in.php?error=1');
         exit();
     }
 }

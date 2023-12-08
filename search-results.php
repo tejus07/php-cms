@@ -1,9 +1,9 @@
 <?php
 $title = 'Search';
-require_once './includes/header.php';
-require './includes/db.php';
-require './functions/function.php';
-require './navbar.php';
+require_once 'includes/header.php';
+require 'includes/db.php';
+require 'functions/function.php';
+require 'navbar.php';
 try {
     $search = isset($_GET['search']) ? trim(filter_input(INPUT_GET, 'search', FILTER_SANITIZE_STRING)) : '';
 
@@ -68,39 +68,42 @@ try {
 }
 ?>
 <div class="search-container">
-    <div class="row my-2">
-        <div class="col">
-            <form method="GET" action="search-results.php">
-                <div class="form-row justify-content-end">
-                <div class="form-group col-md-4 d-flex">
-                    <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
-                    <input type="hidden" name="brandFilter" value="<?php echo $brandFilter; ?>">
-                    <input type="hidden" name="page" value="<?php echo $page; ?>">
-                    <select class="form-control mr-2" name="sort" id="sort">
-                        <?php
-                        $selectedSort = isset($_GET['sort']) ? $_GET['sort'] : '';
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <div class="row my-2">
+            <div class="col">
+                <form method="GET" action="search-results.php">
+                    <div class="form-row justify-content-end">
+                        <div class="form-group col-md-4 d-flex">
+                            <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
+                            <input type="hidden" name="brandFilter" value="<?php echo $brandFilter; ?>">
+                            <input type="hidden" name="page" value="<?php echo $page; ?>">
+                            <select class="form-control mr-2" name="sort" id="sort">
+                                <?php
+                                $selectedSort = isset($_GET['sort']) ? $_GET['sort'] : '';
 
-                        $options = [
-                            'name-ASC' => 'Name (Ascending)',
-                            'name-DESC' => 'Name (Descending)',
-                            'created_at-ASC' => 'Created At (Ascending)',
-                            'created_at-DESC' => 'Created At (Descending)',
-                            'release_date-ASC' => 'Released At (Ascending)',
-                            'release_date-DESC' => 'Released At (Descending)'
-                        ];
+                                $options = [
+                                    'name-ASC' => 'Name (Ascending)',
+                                    'name-DESC' => 'Name (Descending)',
+                                    'created_at-ASC' => 'Created At (Ascending)',
+                                    'created_at-DESC' => 'Created At (Descending)',
+                                    'release_date-ASC' => 'Released At (Ascending)',
+                                    'release_date-DESC' => 'Released At (Descending)'
+                                ];
 
-                        foreach ($options as $value => $label) {
-                            $selected = ($value === $selectedSort) ? 'selected' : '';
-                            echo "<option value=\"$value\" $selected>$label</option>";
-                        }
-                        ?>
-                    </select>
-                    <button type="submit" class="btn btn-outline-primary">Sort</button>
+                                foreach ($options as $value => $label) {
+                                    $selected = ($value === $selectedSort) ? 'selected' : '';
+                                    echo "<option value=\"$value\" $selected>$label</option>";
+                                }
+                                ?>
+                            </select>
+                            <button type="submit" class="btn btn-outline-primary">Sort</button>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
+    <?php endif; ?>
+
     <div class="row">
         <div class="col-2">
             <form method="GET"

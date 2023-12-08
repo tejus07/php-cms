@@ -1,7 +1,7 @@
 <?php
 $title = 'Home';
 require_once 'includes/header.php';
-require 'db.php';
+require 'includes/db.php';
 require 'navbar.php';
 ?>
 

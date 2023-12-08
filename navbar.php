@@ -1,5 +1,5 @@
 <?php
-require 'db.php';
+require 'includes/db.php';
 
 if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     session_start();
@@ -41,15 +41,6 @@ $page = 1;
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <!-- <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact Us</a>
-                </li> -->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                     Categories
@@ -85,15 +76,14 @@ $page = 1;
             <button class="btn btn-outline-success my-2 mr-sm-2" type="submit">Search</button>
         </form>
 
-        <!-- Session check and buttons -->
         <?php session_start();
-        if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
+        if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])):
             $logoutPath = 'index.php?action=logout';
             echo '<a href="' . $logoutPath . '" class="btn btn-primary my-2 mr-sm-2">Log out</a>';
-        } else {
+        else:
             echo '<a href="sign-in.php" class="btn btn-primary my-2 mr-sm-2">Sign In</a>
-            <a href="/sign-up.php" class="btn btn-primary my-2 mr-sm-2">Sign Up</a>';
-        }
+            <a href="sign-up.php" class="btn btn-primary my-2 mr-sm-2">Sign Up</a>';
+        endif;
         ?>
     </div>
 </nav>

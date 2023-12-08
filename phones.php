@@ -1,7 +1,7 @@
 <?php
 $title = 'My Posts';
 require_once 'includes/header.php';
-require 'db.php';
+require 'includes/db.php';
 require 'navbar.php';
 
 if (session_status() == PHP_SESSION_NONE) {
@@ -9,7 +9,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
-    header("Location: ../sign-in.php");
+    header("Location: sign-in.php");
     exit();
 }
 

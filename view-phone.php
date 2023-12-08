@@ -1,8 +1,8 @@
 <?php
 $phone_id = (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : '0';
 
-require './includes/initialize.php';
-require_once './includes/header.php';
+require 'includes/initialize.php';
+require_once 'includes/header.php';
 require 'navbar.php';
 try {
 

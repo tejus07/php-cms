@@ -15,8 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute();
 
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    // echo var_dump($user);    
-    echo var_dump(password_verify($password, $user['password']));
+
     if ($user && password_verify($password, $user['password'])) {
         session_start();
         $_SESSION['user_id'] = $user['id'];
@@ -24,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: ./index.php');
         exit();
     } else {
-        header('Location: ./login.php?error=1'); 
+        header('Location: ./login.php?error=1');
         exit();
     }
 }

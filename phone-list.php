@@ -1,18 +1,18 @@
 <?php
-require './includes/initialize.php';
+require 'includes/initialize.php';
 
 try {
-    $sortOrder = isset($_GET['sort']) ? $_GET['sort'] : 'name-ASC'; // Get the selected sorting option or default to 'name_ASC'
+    $sortOrder = isset($_GET['sort']) ? $_GET['sort'] : 'name-ASC';
     $sort = explode('-', $sortOrder);
-    $search = isset($_GET['search']) ? $_GET['search'] : ''; // Get the search query
+    $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-    $sortColumn = isset($sort[0]) ? $sort[0] : 'name'; // Get sort column or default to 'name'
-    $sortDirection = isset($sort[1]) ? $sort[1] : 'ASC'; // Get sort direction or default to 'ASC'
+    $sortColumn = isset($sort[0]) ? $sort[0] : 'name';
+    $sortDirection = isset($sort[1]) ? $sort[1] : 'ASC';
 
     $stmt = $pdo->prepare("SELECT phones.*, brands.name AS brand_name 
                             FROM phones 
                             INNER JOIN brands ON phones.brand_id = brands.id 
-                            ORDER BY $sortColumn " . ($sortDirection === 'ASC' ? 'ASC' : 'DESC')); // Order by the selected column and direction
+                            ORDER BY $sortColumn " . ($sortDirection === 'ASC' ? 'ASC' : 'DESC'));
 
     $stmt->execute();
 
@@ -22,36 +22,38 @@ try {
     echo "Error: " . $e->getMessage();
 }
 ?>
-<div class="row my-2">
-    <div class="col">
-        <form method="GET">
-            <div class="form-row justify-content-end">
-                <div class="form-group col-md-4 d-flex">
-                    <select class="form-control mr-2" name="sort" id="sort">
-                        <?php
-                        $selectedSort = isset($_GET['sort']) ? $_GET['sort'] : '';
+<?php if (isset($_SESSION['user_id'])): ?>
+    <div class="row my-2">
+        <div class="col">
+            <form method="GET">
+                <div class="form-row justify-content-end">
+                    <div class="form-group col-md-4 d-flex">
+                        <select class="form-control mr-2" name="sort" id="sort">
+                            <?php
+                            $selectedSort = isset($_GET['sort']) ? $_GET['sort'] : '';
 
-                        $options = [
-                            'name-ASC' => 'Name (Ascending)',
-                            'name-DESC' => 'Name (Descending)',
-                            'created_at-ASC' => 'Created At (Ascending)',
-                            'created_at-DESC' => 'Created At (Descending)',
-                            'release_date-ASC' => 'Released At (Ascending)',
-                            'release_date-DESC' => 'Released At (Descending)'
-                        ];
+                            $options = [
+                                'name-ASC' => 'Name (Ascending)',
+                                'name-DESC' => 'Name (Descending)',
+                                'created_at-ASC' => 'Created At (Ascending)',
+                                'created_at-DESC' => 'Created At (Descending)',
+                                'release_date-ASC' => 'Released At (Ascending)',
+                                'release_date-DESC' => 'Released At (Descending)'
+                            ];
 
-                        foreach ($options as $value => $label) {
-                            $selected = ($value === $selectedSort) ? 'selected' : '';
-                            echo "<option value=\"$value\" $selected>$label</option>";
-                        }
-                        ?>
-                    </select>
-                    <button class="btn btn-outline-primary" type="submit">Sort</button>
+                            foreach ($options as $value => $label) {
+                                $selected = ($value === $selectedSort) ? 'selected' : '';
+                                echo "<option value=\"$value\" $selected>$label</option>";
+                            }
+                            ?>
+                        </select>
+                        <button class="btn btn-outline-primary" type="submit">Sort</button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
+<?php endif; ?>
 <div class="row row-cols-2">
     <?php
     foreach ($phones as $phone) {

@@ -9,7 +9,10 @@ if (session_status() == PHP_SESSION_NONE):
     session_start();
 endif;
 
-if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])):
+if (
+    !isset($_SESSION['user_id']) || empty($_SESSION['user_id'])
+    || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin'
+  ) :
     header("Location: ./login.php");
     exit();
 endif;

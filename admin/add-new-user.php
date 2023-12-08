@@ -9,7 +9,10 @@ if (session_status() == PHP_SESSION_NONE):
     session_start();
 endif;
 
-if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])):
+if (
+    !isset($_SESSION['user_id']) || empty($_SESSION['user_id'])
+    || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin'
+):
     header("Location: ./login.php");
     exit();
 endif;
@@ -22,7 +25,6 @@ if (isset($_GET['error'])):
 endif;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])):
-    echo var_dump($_POST);
     $error_message = "";
     $username = isset($_POST['username']) ? filter_var($_POST['username'], FILTER_SANITIZE_STRING) : null;
     $email = isset($_POST['email']) ? filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) : null;
@@ -35,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])):
         header("Location: add-new-user.php?error=" . urlencode($error_message) . "&username=" . urlencode($username));
         exit();
     }
-    
+
     if (empty($username) || empty($password) || empty($reEnteredPassword) || !in_array($role, [1, 2])):
         $error_message = "Please enter all required fields";
         header("Location: add-new-user.php?error=" . urlencode($error_message) . "&username=" . urlencode($username) . "&password=" . urlencode($username));
@@ -58,6 +60,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])):
     }
 
     try {
+        $checkStmt = $pdo->prepare("SELECT * FROM users WHERE username = :username OR email = :email");
+        $checkStmt->bindParam(':username', $username);
+        $checkStmt->bindParam(':email', $email);
+        $checkStmt->execute();
+        $existingUser = $checkStmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($existingUser) {
+            $error_message = "Username or email already exists. Please choose a different one.";
+            header("Location: add-new-user.php?error=" . urlencode($error_message));
+            exit();
+        }
+
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         $stmt = $pdo->prepare("INSERT INTO users (username, password, role) VALUES (:username, :password, :role)");

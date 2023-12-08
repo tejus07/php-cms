@@ -2,11 +2,11 @@
 $title = 'Edit Phone';
 require_once 'includes/header.php';
 require_once 'functions/function.php';
-require 'db.php';
+require 'includes/db.php';
 require 'navbar.php';
 
 if (empty($_SESSION['user_id'])):
-    header("Location: login.php");
+    header("Location: sign-in.php");
     exit();
 endif;
 

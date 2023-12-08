@@ -2,35 +2,73 @@
 $title = 'Sign Up';
 require_once 'includes/header.php';
 require_once 'navbar.php';
+require 'includes/db.php';
+
+if (isset($_GET['error'])):
+    $error_message = $_GET['error'];
+    echo "<div class='row'><div class='col-md-9 ml-sm-auto col-lg-10 px-md-4'>
+    <div class='error-message'>$error_message</div>
+    </div></div>";
+endif;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    include 'db.php';
 
-   $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-   $password1 = password_hash(filter_input(INPUT_POST, 'password1', FILTER_SANITIZE_STRING), PASSWORD_DEFAULT); // Hash the password for security
-   $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-   $role = 2;
+    $username = isset($_POST['username']) ? filter_var($_POST['username'], FILTER_SANITIZE_STRING) : null;
+    $email = isset($_POST['email']) ? filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) : null;
+    $password = isset($_POST['password']) ? $_POST['password'] : null;
+    $reEnteredPassword = isset($_POST['re-password']) ? $_POST['re-password'] : null;
+    $role = 2;
 
-    // Insert the user data into the "users" table
-    $stmt = $pdo->prepare("INSERT INTO users (username, email, password, role) VALUES (:username, :email, :password1, :role)");
+    if (!$email) {
+        $error_message = "Please enter a valid email address.";
+        header("Location: sign-up.php?error=" . urlencode($error_message) . "&username=" . urlencode($username));
+        exit();
+    }
 
-    $stmt->bindParam(':username', $username);
-    $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':password1', $password1);
-    $stmt->bindParam(':role', $role);
+    if (empty($username) || empty($password) || empty($reEnteredPassword) || !in_array($role, [1, 2])):
+        $error_message = "Please enter all required fields";
+        header("Location: sign-up.php?error=" . urlencode($error_message) . "&username=" . urlencode($username) . "&password=" . urlencode($username));
+        exit();
+    endif;
+
+    if (
+        strlen($password) < 8 || // Password should be at least 8 characters long
+        !preg_match('/[A-Z]/', $password) || // Password should contain uppercase letters
+        !preg_match('/[a-z]/', $password) || // Password should contain lowercase letters
+        !preg_match('/[^\w\d\s]/', $password) // Password should contain special characters
+    ) {
+        $error_message = "Password must be at least 8 characters long and include uppercase and lowercase letters, and special characters.";
+        header("Location: sign-up.php?error=" . urlencode($error_message) . "&username=" . urlencode($username) . "&password=" . urlencode($username));
+        exit();
+    } elseif ($password !== $reEnteredPassword) {
+        $error_message = "Passwords do not match.";
+        header("Location: sign-up.php?error=" . urlencode($error_message) . "&username=" . urlencode($username) . "&password=" . urlencode($username));
+        exit();
+    }
 
     try {
-        if ($stmt->execute()) {
-            // Registration successful message with a redirect
-            echo '<div class="container"><div class="row"><div class="col"><h1>Registration successful</h1></div></div></div>';
-            echo '<script>
-                    setTimeout(function(){
-                        window.location.href = "sign-in.php"; // Redirect after 2 seconds
-                    }, 2000);
-                  </script>';
-        } else {
-            echo '<h1>Registration failed</h1>';
+        $checkStmt = $pdo->prepare("SELECT * FROM users WHERE username = :username OR email = :email");
+        $checkStmt->bindParam(':username', $username);
+        $checkStmt->bindParam(':email', $email);
+        $checkStmt->execute();
+        $existingUser = $checkStmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($existingUser) {
+            $error_message = "Username or email already exists. Please choose a different one.";
+            header("Location: sign-up.php?error=" . urlencode($error_message));
+            exit();
         }
+
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        $stmt = $pdo->prepare("INSERT INTO users (username, email, password, role) VALUES (:username, :email, :password, :role)");
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':password', $hashedPassword);
+        $stmt->bindParam(':role', $role);
+        $stmt->execute();
+        header("Location: sign-in.php?register=success");
+        exit();
     } catch (PDOException $e) {
         if ($e->getCode() == '23000') {
             // Check for a duplicate entry error
@@ -53,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="col">
             <form action="sign-up.php" method="post">
                 <div class="form-group">
-                    <label for="username">User Name</label>
+                    <label for="username">Username:</label>
                     <input type="text" class="form-control" id="username" name="username" required>
                 </div>
                 <div class="form-group">
@@ -61,12 +99,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <input type="email" class="form-control" id="email" name="email" required>
                 </div>
                 <div class="form-group">
-                    <label for="password1">Password</label>
-                    <input type="password" class="form-control" id="password1" name="password1" required>
+                    <label for="password">Enter Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" required
+                        aria-describedby="passwordHelp">
+                    <small id="emailHelp" class="form-text text-muted">Password must be at least 8 characters long and
+                        include uppercase and lowercase letters, and special characters.</small>
                 </div>
                 <div class="form-group">
-                    <label for="password2">Re-enter Password</label>
-                    <input type="password" class="form-control" id="password2" name="password2" required>
+                    <label for="re-password">Re-Enter Password:</label>
+                    <input type="password" class="form-control" id="re-password" name="re-password" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
