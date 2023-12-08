@@ -9,32 +9,50 @@ if(empty($_SESSION['user_id'])) {
     header('Location: login.php');
 }
 
+if (isset($_GET['error'])) {
+    $error_message = $_GET['error'];
+    $title = $_GET['title'];
+    $instructions = $_GET['instructions'];
+    $ingredients = $_GET['ingredients'];
+    $category_id = $_GET['category_id'];
+    $user_id = $_GET['user_id'];
+}
+
 $conn = new Database();
 $imageHandler = new ImageHandler();
 $recipeHandler = new RecipeHandler($conn);
-$categoryHandler = new CategoryHandler();
-$userHandler = new UserHandler();
+$categoryHandler = new CategoryHandler($conn);
+$userHandler = new UserHandler($conn);
 
 $users = $userHandler->getUsers();
 
 $categories = $categoryHandler->getCategories();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $image_url = null;
-
-    if (!empty($_FILES['uploadFile']['name'])) {
-        $imageHandler = new ImageHandler();
-        $image_url = $imageHandler->upload_image($_FILES['uploadFile']);
-    }
-
-    $recipeHandler->title = $_POST['title'];
-    $recipeHandler->ingredients = $_POST['ingredients'];
+    $recipeHandler->title = htmlspecialchars($_POST['title']);
     $recipeHandler->instructions = $_POST['instructions'];
-    $recipeHandler->user_id = $_POST['user_id'];
-    $recipeHandler->category_id = $_POST['category_id'];
-    $recipeHandler->image_url = $image_url;
+    $recipeHandler->ingredients = htmlspecialchars($_POST['ingredients']);
+    $recipeHandler->user_id = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
+    $recipeHandler->category_id = filter_input(INPUT_POST, 'category_id', FILTER_VALIDATE_INT);
+    
+    if ($recipeHandler->title && $recipeHandler->category_id !== false && $recipeHandler->user_id !== false) {
+    
+    $recipeHandler->image_url = (isset($_FILES['uploadFile']) && $_FILES['uploadFile']['error'] !== UPLOAD_ERR_NO_FILE) ? $imageHandler->upload_image($_FILES['uploadFile']) : null;
 
-    $recipeHandler->addRecipe();
+    $requestStatus = $recipeHandler->addRecipe();
+
+    if ($requestStatus === true) {
+        header("Location: recipes.php");
+        exit();
+    }
+    } else {
+        $error_message = "Please enter all required fields";
+        header("Location: add_new_recipe.php?error=" . urlencode($error_message) . "&title=" . urlencode($_POST['title']) . "&instructions=" . urlencode($_POST['instructions']) . "&ingredients=" . urlencode($_POST['ingredients']) . "&category_id=" . urlencode($_POST['category_id']) . "&user_id=" . urlencode($_POST['user_id']));
+        exit();
+    }	    
+
+    
+    
 }
 ?>
 
@@ -75,17 +93,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </script>
 
 <div class="add-recipe-container">
+        <?php if (isset($_GET['error'])) {?>
+            <div class='col-md-9 ml-sm-auto col-lg-10 px-md-4'>
+                <div class='error-message'><?php echo $error_message; ?></div>
+            </div>
+        <?php } ?>
         <h2 class="add-recipe-title">Add New Pizza Recipe</h2>
         <form class="recipe-form" action="add_new_recipe.php" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="title">Title:</label>
-            <input type="text" id="title" name="title" class="form-input" required>
+            <input type="text" id="title" name="title" class="form-input" <?php if(isset($_GET['error']) && $title) { echo 'value="' . $title . '"';}?>>
         </div>
         <div class="form-group">
             <label for="category_id">Select Category</label>
             <select id="category_id" name="category_id">
                 <?php foreach ($categories as $categoryId => $categoryName) : ?>
-                    <option value="<?php echo $categoryId; ?>"><?php echo $categoryName; ?></option>
+                    <option value="<?php echo $categoryId; ?>" <?php if(isset($_GET['error']) && $category_id && $category_id == $categoryId) { echo "Selected"; } ?>><?php echo $categoryName; ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -93,17 +116,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="user_id">Select User:</label>
             <select id="user_id" name="user_id">
                 <?php foreach ($users as $userId => $username) : ?>
-                    <option value="<?php echo $userId; ?>"><?php echo $username; ?></option>
+                    <option value="<?php echo $userId; ?>" <?php if(isset($_GET['error']) && $user_id && $user_id == $userId) { echo "Selected"; } ?>><?php echo $username; ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
         <div class="form-group">
             <label for="ingredients">Ingredients:</label>
-            <textarea id="ingredients" name="ingredients" class="form-input" required></textarea>
+            <textarea id="ingredients" name="ingredients" class="form-input" required><?php if(isset($_GET['error']) && $ingredients) { echo $ingredients; }?></textarea>
         </div>        
         <div class="form-group">
             <label for="instructions">Instructions:</label>
-            <textarea id="instructions" name="instructions"></textarea>
+            <textarea id="instructions" name="instructions"><?php if(isset($_GET['error']) && $instructions) { echo $instructions; }?></textarea>
         </div>
         <div class="form-group">
             <label for="image_url">Upload Image:</label>

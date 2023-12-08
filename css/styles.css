@@ -58,7 +58,6 @@ footer {
 .recipe-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 25px;
     max-width: 80vw;
     margin: 50px auto;
 }
@@ -66,8 +65,6 @@ footer {
     background-color: #fff;
     border: 1px solid #ddd;
     padding: 20px;
-    margin-bottom: 20px;
-    width: 20%;
 }
 
 .blogShort h3 {
@@ -75,7 +72,11 @@ footer {
     font-size: 24px;
     margin: 0;
 }
+.recipe-container .col-md-3 {
+    padding: 20px;
+    margin-bottom: 20px;
 
+}
 .blogShort em {
     color: #888;
     font-size: 14px;
@@ -161,7 +162,6 @@ a:hover {
     border-radius: 5px;
     text-decoration: none;
     display: inline-block;
-    margin-top: 10px;
     cursor: pointer;
 }
 
@@ -173,7 +173,9 @@ a:hover {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    display: flex; /* Display as a flex container */
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
 }
 
 .navbar li {
@@ -182,7 +184,7 @@ a:hover {
 
 .navbar a {
     display: block;
-    padding: 1em 1.5em;
+    padding: 1em 1em;
     text-decoration: none;
     color: #131b5d; /* Link text color */
     transition: background-color 0.3s; /* Smooth color transition on hover */
@@ -220,10 +222,7 @@ main.searchpage-main {
     padding: 50px;
     margin-bottom: 100px;
 }
-.search-section {
-    width: 40%;
-    padding: 0 50px;
-}
+
 form.searchbar {
     display: flex;
     height: 40px;
@@ -238,10 +237,67 @@ form.searchbar {
     width: 100%;
 }
 .search-bar-container input[type="text"] {
-    height: 37px;
+    height: 40px;
     width: 100%;
     padding: 0 5px !important;
 }
+.row.align-items-center {
+    width: -webkit-fill-available;
+    padding: 50px;
+}
 button.search-btn {
     padding: 0 20px;
+    border: 1px solid #131b5d;
 }
+.home-user-dashboard .login-success-message {
+    background-color: #dff0d8;
+    color: #3c763d;
+    padding: 10px;
+    border-radius: 5px;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.home-user-dashboard .user-dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+.home-user-dashboard .sidebar {
+    width: 250px;
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.home-user-dashboard .sidebar h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.home-user-dashboard .sidebar ul li a {
+    color: #333;
+    text-decoration: none;
+    display: block;
+    padding: 8px 0;
+    transition: background-color 0.3s ease;
+}
+
+.home-user-dashboard .sidebar ul li a:hover {
+    background-color: #e9ecef;
+}
+
+.home-user-dashboard .main-container {
+    flex: 1;
+    padding: 20px;
+}
+
+.home-user-dashboard .user-info {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+.home-user-dashboard button.edit-button a {
+color: #fff;
+}	}

@@ -5,8 +5,8 @@ class CategoryHandler {
     private $database;
     public $title;
 
-    public function __construct() {
-        $this->database = new Database();
+    public function __construct($conn) {
+        $this->database = $conn;
     }
 
     public function addCategory() {
@@ -75,11 +75,24 @@ class CategoryHandler {
 
             $category = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            return $category; // Return category data or false if not found
+            return $category;
         } catch (PDOException $e) {
-            // Handle the exception if needed
             return false;
         }
+    }
+    public function getSingleCategories($category_id) {
+        $pdo = $this->database->getConnection();
+
+        $query = "SELECT * FROM Categories WHERE category_id = :categoryID";
+        $stmt1 = $pdo->prepare($query);
+
+        $stmt1->bindParam(':categoryID', $category_id, PDO::PARAM_INT);
+
+        $stmt1->execute();
+
+        $user = $stmt1->fetch(PDO::FETCH_ASSOC);
+
+        return $user;
     }
     public function deleteCategory($category_id) {
         $pdo = $this->database->getConnection();
@@ -95,8 +108,5 @@ class CategoryHandler {
             return false;
         }
     }
-    
-
 }
-
 ?>

@@ -2,12 +2,12 @@
 include_once '../Shared/database.php';
 include_once 'shared/userHandler.php';
 
-$conn = new Database();
-$userHandler = new UserHandler($conn);
-
 if(empty($_SESSION['user_id'])) {
     header('Location: login.php');
 }
+
+$conn = new Database();
+$userHandler = new UserHandler($conn);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = htmlspecialchars($_POST['email']);
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
-    $is_admin = 0;
+    $is_admin = $_POST['is_admin'];
 
     if ($password !== $confirm_password) {
         echo "Passwords do not match. Please try again.";
@@ -30,20 +30,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userHandler->is_admin = $is_admin;
 
     $requestStatus = $userHandler->addUser();
-
     if ($requestStatus == true) {
-        $_SESSION['registration_success'] = "Registration was successful";
-        header("Location: login.php");
+        header("Location: users.php");
     }
-
 
 }
 ?>
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Register</title>
-    <link rel="stylesheet" type="text/css" href="css/login_register.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
+    <link rel="stylesheet" href="css/admin-panel.css">
+    <title>Admin Panel</title>
     <script>
         function validateForm() {
             const username = document.getElementById('username').value;
@@ -100,30 +102,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </script>
 </head>
 <body>
-    <div class="form-container">
-        <h2 class="form-title">Register</h2>
-        <form class="form" method="post" action="register.php" onsubmit="return validateForm()">
-            <div class="input-container">
-                <label for="username">Username:</label>
-                <input class="input-field" type="text" name="username" id="username" required>
-            </div>
-            <div class="input-container">
-                <label for="email">Email:</label>
-                <input class="input-field" type="email" name="email" id="email" oninput="return validateEmail()" required>
-                <span id="email_error"></span>
-            </div>
-            <div class="input-container">
-                <label for="password">Password:</label>
-                <input class="input-field" type="password" name="password" id="password" oninput="return validatePassword()" required>
-                <span id="password_strength"></span>
-            </div>
-            <div class="input-container">
-                <label for="confirm_password">Confirm Password:</label>
-                <input class="input-field" type="password" name="confirm_password" id="confirm_password" required>
-            </div>
-            <button class="form-button" type="submit">Register</button>
+    <div class="admin-panel">
+        <div class="sidebar">
+            <h1>Admin Panel</h1>
+            <ul>
+                <li><a href="./">Dashboard</a></li>
+                <li><a href="users.php">Users</a></li>
+                <li><a href="recipes.php">Recipes</a></li>
+                <li><a href="categories.php">Categories</a></li>
+            </ul>
+        </div>
+
+    <div class="add-recipe-container">
+        <h2 class="add-recipe-title">Add User</h2>
+        <form class="recipe-form" action="add_new_user.php" method="post" enctype="multipart/form-data" onsubmit="return validateForm()"> onsubmit="return validateForm()">
+        <div class="form-group">
+            <label for="username">User Name:</label>
+            <input type="text" id="username" name="username" class="form-input" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" class="form-input" oninput="return validateEmail()" required>
+            <span id="email_error"></span>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="text" id="password" name="password" class="form-input" oninput="return validatePassword()" required>
+            <span id="password_strength"></span>
+        </div>
+        <div class="form-group">
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="text" id="confirm_password" name="confirm_password" class="form-input" required>
+        </div>
+        <div class="form-group">
+            <label for="is_admin">Is Admin:</label>
+            <select id="is_admin" name="is_admin" class="form-input" required>
+                <option value="admin">Admin</option>
+                <option value="non-admin">Non-admin</option>
+            </select>
+        </div>
+            <input type="submit" value="Add User" class="submit-button">
         </form>
-        <p class="form-link">Already have an account? <a href="login.php">Login</a></p>
     </div>
-</body>
-</html>
+
+<?php include('shared/footer.php');?>

@@ -155,7 +155,7 @@ $searchResults = searchPages($keyword, $category, $perPage, $offset);
 
 
 
-<main class="searchpage-main">
+<main class="container-fluid mt-4 searchpage-main">
 
     <h1>Search Results</h1>
 

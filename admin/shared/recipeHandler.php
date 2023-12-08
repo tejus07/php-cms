@@ -37,8 +37,7 @@ class RecipeHandler {
                 $stmt->execute();
     
                 echo "Recipe added successfully!";
-                header("Location: recipes.php");
-                exit();
+                return true;
             } catch (PDOException $e) {
                 echo "Error: " . $e->getMessage();
             }
@@ -47,7 +46,9 @@ class RecipeHandler {
     
     public function editRecipe($recipe_id) {
         $pdo = $this->database->getConnection();
-    
+        if ($recipe_id === false) {
+            throw new Exception('Invalid recipe ID, Please try again');
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 $sql = "UPDATE pizzaRecipes SET 
@@ -71,8 +72,7 @@ class RecipeHandler {
                 $stmt->execute();
     
                 echo "Recipe updated successfully!";
-                header("Location: recipes.php");
-                exit(); 
+                return true;
             } catch (PDOException $e) {
                 echo "Error: " . $e->getMessage();
             }
@@ -82,7 +82,9 @@ class RecipeHandler {
 
     public function getAllRecipes($user_id) {
         $pdo = $this->database->getConnection();
-
+        if ($user_id === false) {
+            throw new Exception('Invalid User ID, Please contact admin');
+        }
         $query = "SELECT * FROM pizzaRecipes WHERE user_id = :userId";
 
         $stmt1 = $pdo->prepare($query);
@@ -91,14 +93,16 @@ class RecipeHandler {
 
         $stmt1->execute();
 
-        $recipe = $stmt1->fetch(PDO::FETCH_ASSOC);
+        $recipe = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
         return $recipe;
     }
 
     public function getSingleRecipe($recipe_id) {
-        $pdo = $this->database->getConnection(); // Assuming getConnection() returns the PDO instance
-    
+        $pdo = $this->database->getConnection(); 
+        if ($recipe_id === false) {
+            throw new Exception('Invalid recipe ID, Please try again');
+        }
         try {
             $query = "SELECT * FROM pizzaRecipes WHERE recipe_id = :recipeId";
             $stmt = $pdo->prepare($query);

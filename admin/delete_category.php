@@ -1,21 +1,25 @@
 <?php
 
-include_once 'shared/categoryHandler.php';
+include_once '../shared/database.php';
 
-$categoryHandler = new CategoryHandler();
+$database = new Database();
+
+$pdo = $database->getConnection();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_category'])) {
     $category_id = $_POST['category_id'];
 
-    $deleteResult = $categoryHandler->deleteCategory($category_id); 
+        try {
+            $sql = "DELETE FROM categories WHERE category_id = :category_id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':category_id', $category_id);
+            $stmt->execute();
 
-    if ($deleteResult) {
-        echo "Category deleted successfully!";
-        header("Location: categories.php");
-        exit();
-    } else {
-        echo "Error deleting category.";
-    }
+            echo "Category deleted successfully!";
+            header("Location: categories.php");
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
 }
 
 ?>
