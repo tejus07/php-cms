@@ -1,16 +1,17 @@
 <?php
-include_once 'common/isUserLoggedIn.php';
+session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Handle form submission for adding a new user
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     $host = 'localhost';
     $dbname = 'rentandgodb';
-    $username = 'root';
-    $password = '';
+    $username_db = 'root';
+    $password_db = '';
+
 
     try {
 
-        $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+        $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username_db, $password_db);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $checkSql = "SELECT COUNT(*) as count FROM users WHERE email = :email";
@@ -35,13 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
 
         // Insert new user details into the database
-        $query = "INSERT INTO users (username, email, role, phone_number, password, registration_date) VALUES (:username, :email, :role, :phone_number, :password,  NOW())";
+        $query = "INSERT INTO users (username, email, phone_number, password, registration_date) VALUES (:username, :email, :phone_number, :password,  NOW())";
         $stmt = $pdo->prepare($query);
 
         // Bind parameters
         $stmt->bindParam(':username', $_POST['username']);
         $stmt->bindParam(':email', $_POST['email']);
-        $stmt->bindParam(':role', $_POST['role']);
         $stmt->bindParam(':phone_number', $_POST['phone_number']);
         $stmt->bindParam(':password', $hashed_password);
 
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
 
         // Redirect to manage-users.php after successful addition
-        header("Location: manage-users.php");
+        header("Location: login.php?success");
         exit();
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add New User</title>
+    <title>Sign up - RentAndGo</title>
     <link rel="stylesheet" href="css/styles.css">
     <script>
         function validateForm() {
@@ -140,14 +140,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </script>
 </head>
 <body>
-    <header>
-        <h1>Add New User</h1>
+    <header class="header">
+        <h1 class="header-title">Sign up to <a class="home-page-link" href="..">RentAndGo</a></h1>
     </header>
-    <main class="admin-container">
-        <?php include('common/navbar.php'); ?>
-        <section class="admin-content">
-            <h2>Enter User Details</h2>
-            <form method="post" action="add-new-user.php" onsubmit="return validateForm()">
+    <main>
+        <section class="login-container">
+            
+            <form action="register.php" method="post" class="login-form" onsubmit="return validateForm()">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username"><br><br>
 
@@ -155,13 +154,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="text" id="email" name="email" oninput="return validateEmail()">
                 <span id="email_error"></span>
                 <br><br>
-
-                <label for="role">Role:</label>
-                <select id="role" name="role" class="form-input" required>
-                    <option value="admin">Admin</option>
-                    <option value="renter">Renter</option>
-                    <option value="traveler">Traveler</option>
-                </select><br><br>
 
                 <label for="phone_number">Phone Number:</label>
                 <input type="text" id="phone_number" name="phone_number" oninput="return validatePhoneNumber()">
@@ -174,12 +166,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="confirm_password">Confirm Password:</label>
                 <input type="text" id="confirm_password" name="confirm_password"><br><br>
 
-                <input type="submit" value="Add User">
+                <input type="submit" value="Sign up">
+
+
             </form>
+            <p class="form-link">Already a user? <a href="register.php">Log in</a></p>
         </section>
     </main>
-    <footer>
-        <p>&copy; 2023 RentAndGo. All rights reserved.</p>
+    <footer class="footer">
+        <p class="footer-text">&copy; 2023 RentAndGo. All rights reserved.</p>
     </footer>
 </body>
 </html>

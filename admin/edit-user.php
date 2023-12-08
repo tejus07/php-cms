@@ -83,7 +83,11 @@ try {
                 <input type="text" id="username" name="username" value="<?php echo $user['username']; ?>"><br><br>
 
                 <label for="role">Role:</label>
-                <input type="text" id="role" name="role" value="<?php echo $user['role']; ?>"><br><br>
+                <select id="role" name="role" class="form-input" required>
+                    <option value="admin" <?php echo ($user['role'] == "admin") ? 'selected' : ''; ?>>Admin</option>
+                    <option value="renter" <?php echo ($user['role'] == "renter") ? 'selected' : ''; ?>>Renter</option>
+                    <option value="traveler" <?php echo ($user['role'] == "traveler") ? 'selected' : ''; ?>>Traveler</option>
+                </select><br><br>
 
                 <label for="phone_number">Phone Number:</label>
                 <input type="text" id="phone_number" name="phone_number" value="<?php echo $user['phone_number']; ?>"><br><br>

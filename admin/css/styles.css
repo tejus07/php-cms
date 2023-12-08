@@ -238,3 +238,20 @@ a.home-page-link {
     background-color: unset;
     border: none;
 }
+
+.login-successful-message {
+    background-color: #dff0d8;
+    color: #3c763d;
+    padding: 20px 90px;
+    border-radius: 5px;
+    display: block;
+    margin-bottom: 20px;
+    position: absolute;
+    width: fit-content;
+    text-align: center;
+    z-index: 9999;
+    top: 0px;
+    right: 0;
+    margin: auto;
+    font-weight: 600;
+}

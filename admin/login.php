@@ -6,12 +6,18 @@ if(!empty($_SESSION['user_id'])) {
     header('Location: .');
 }
 
+if(isset($_GET['success'])) {
+    $registration_success = "Registration successfull";
+}
+
+$invalidUsernameOrPassword;
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
+    $email = $_POST['email'];
     $password = $_POST['password'];
 
-     if (empty($username) || empty($password)) {
-        echo "Username and password are required.";
+     if (empty($email) || empty($password)) {
+        echo "Email and password are required.";
         exit();
     }
 
@@ -24,19 +30,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username_db, $password_db);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username");
-        $stmt->bindParam(':username', $username);
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+        $stmt->bindParam(':email', $email);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user['username'] && $user['password']) {
+        if (isset($user['email']) && isset($user['password']) && password_verify($_POST['password'], $user['password'])) {
 
-            $_SESSION['user_id'] = $username;
-            header("Location: ."); 
+            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['role'] = $user['role'];
 
+            header("Location: .?success"); 
             exit();
         } else {
-            echo "Invalid username or password. Please try again.";
+            $invalidUsernameOrPassword = "Invalid email or password. Please try again.";
         }
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
@@ -57,15 +64,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </header>
     <main>
         <section class="login-container">
+            
+            <?php if (isset($invalidUsernameOrPassword)) { ?>
+                <h3><?php echo $invalidUsernameOrPassword; ?></h3>
+            <?php } ?>
+
+            <?php if (isset($registration_success)) { ?>
+                <h3><?php echo $registration_success; ?></h3>
+            <?php } ?>
+            
             <form action="login.php" method="post" class="login-form">
-                <label for="username" class="form-label">Username:</label>
-                <input type="text" id="username" name="username" class="form-input" required><br><br>
+                <label for="email" class="form-label">Email:</label>
+                <input type="text" id="email" name="email" class="form-input" required><br><br>
 
                 <label for="password" class="form-label">Password:</label>
                 <input type="password" id="password" name="password" class="form-input" required><br><br>
 
                 <input type="submit" value="Login" class="form-submit">
             </form>
+            <p class="form-link">Not Registered? <a href="register.php">Sign up</a></p>
         </section>
     </main>
     <footer class="footer">

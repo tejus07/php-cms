@@ -20,13 +20,16 @@
                 <li><a href="manage-categories.php">Manage Categories</a></li>
             </ul>
         </li>
-        <li><a>Manage Booking</a></li>
-        <li><a>Users</a>
-            <ul class="submenu open">
-                <li><a href="add-new-user.php">Add a User</a></li>
-                <li><a href="manage-users.php">Manage Users</a></li>
-            </ul>
-        </li>
+        <!-- <li><a>Manage Booking</a></li> -->
+
+        <?php if (!empty($_SESSION['role']) && $_SESSION['role'] == 'admin') { ?>
+            <li><a>Users</a>
+                <ul class="submenu open">
+                    <li><a href="add-new-user.php">Add a User</a></li>
+                    <li><a href="manage-users.php">Manage Users</a></li>
+                </ul>
+            </li>
+        <?php } ?>
 
         <li><a href="./logout.php" onclick="return confirm('Are you sure you want to logout?');">Logout</a></li>
     </ul>
