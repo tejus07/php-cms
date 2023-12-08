@@ -34,8 +34,7 @@ try {
 		ORDER BY $sortColumn " . ($sortDirection === 'ASC' ? 'ASC' : 'DESC');
 	}
 
-	
-    $query .= " LIMIT " . intval($perPage) . " OFFSET " . intval($offset);
+	$query .= " LIMIT " . intval($perPage) . " OFFSET " . intval($offset);
 
     $stmt = $pdo->prepare($query);
 
