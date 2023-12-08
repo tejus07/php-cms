@@ -25,8 +25,30 @@ class Manage_image {
         return $file_extension_is_valid && $mime_type_is_valid;
     }
 
+    private function resize_image($file, $width, $height) {
+        list($originalWidth, $originalHeight) = getimagesize($file);
+        
+        $ratio = $originalWidth / $originalHeight;
 
-    public function get_image_url($imageFile) {
+        if ($width / $height > $ratio) {
+            $width = $height * $ratio;
+        } else {
+            $height = $width / $ratio;
+        }
+
+        $src = imagecreatefromstring(file_get_contents($file));
+        $dst = imagecreatetruecolor($width, $height);
+
+        imagecopyresampled($dst, $src, 0, 0, 0, 0, $width, $height, $originalWidth, $originalHeight);
+        imagedestroy($src);
+
+        imagejpeg($dst, $file);
+
+        imagedestroy($dst);
+    }
+
+
+    public function get_image_url($imageFile, $max_width = 400, $max_height = 250) {
 
         if ($imageFile['error'] === UPLOAD_ERR_OK) {
             
@@ -36,6 +58,7 @@ class Manage_image {
                 $target_file = $uploads_dir . $image_filename;
                 
                 if (move_uploaded_file($imageFile['tmp_name'], "../".$target_file)) {
+                    $this->resize_image( "../".$target_file, $max_width, $max_height);
                     return $target_file;
                 } else {
                     throw new Exception("Failed to move the uploaded file.");
