@@ -1,6 +1,8 @@
 <?php 
 include_once '../shared/database.php';
-
+if(empty($_SESSION['user_id']) || empty($_SESSION['is_admin'])) {
+    header('Location: login.php');
+}
 $database = new Database();
 $pdo = $database->getConnection();
 
@@ -12,10 +14,7 @@ $stmt1->bindParam(':category_id', $category_id, PDO::PARAM_INT);
 $stmt1->execute();
 $data = $stmt1->fetch(PDO::FETCH_ASSOC);
 
-if (empty($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit();
-}
+
 if ($data === false) {
     echo "Category not found!";
     exit();

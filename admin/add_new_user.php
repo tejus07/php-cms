@@ -2,9 +2,11 @@
 include_once '../Shared/database.php';
 include_once 'shared/userHandler.php';
 
-if(empty($_SESSION['user_id'])) {
+
+if(empty($_SESSION['user_id']) || empty($_SESSION['is_admin'])) {
     header('Location: login.php');
 }
+
 
 $conn = new Database();
 $userHandler = new UserHandler($conn);

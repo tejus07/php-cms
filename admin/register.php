@@ -5,7 +5,7 @@ include_once 'shared/userHandler.php';
 $conn = new Database();
 $userHandler = new UserHandler($conn);
 
-if(empty($_SESSION['user_id'])) {
+if(empty($_SESSION['user_id']) || empty($_SESSION['is_admin'])) {
     header('Location: login.php');
 }
 

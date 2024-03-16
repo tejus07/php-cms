@@ -12,9 +12,8 @@ $stmt1->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 $stmt1->execute();
 $data = $stmt1->fetch(PDO::FETCH_ASSOC);
 
-if (empty($_SESSION['user_id'])) {
+if(empty($_SESSION['user_id']) || empty($_SESSION['is_admin'])) {
     header('Location: login.php');
-    exit();
 }
 
 $users = [];

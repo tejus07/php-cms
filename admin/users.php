@@ -1,6 +1,9 @@
 <?php
 include_once '../shared/database.php';
 
+if(empty($_SESSION['user_id']) || empty($_SESSION['is_admin'])) {
+    header('Location: login.php');
+}
 $database = new Database();
 
 $pdo = $database->getConnection();

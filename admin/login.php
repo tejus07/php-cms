@@ -5,14 +5,15 @@ $database = new Database();
 $pdo = $database->getConnection();
 
 if(isset($_GET['logout']) && $_GET['logout']) {
-    echo'in if';
     unset($_SESSION['user_id']);
 }
 
-if(!empty($_SESSION['user_id'])) {
-    header('Location: .');
+// if(!empty($_SESSION['user_id'])) {
+//     header('Location: .');
+// }
+if(!empty($_SESSION['user_id']) && empty($_SESSION['is_admin'])) {
+    header('Location: ../user/user_dashboard.php');
 }
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -22,21 +23,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $query->execute([$email]);
     $user = $query->fetch(PDO::FETCH_ASSOC);
 
-    echo $user['email'];
-    echo $user['password'];
 
-    echo (password_verify($password, $user['password']));
     // echo $user. "in here";
     if ($user['email'] == $email && $password == $user['password']) {
-        echo 'in if';
-        echo $user['user_id'];
         
         $_SESSION['user_id'] = $user['user_id'];
-        
-        header('Location: index.php');
+        if ($user['is_admin']== 1){
+            $_SESSION['is_admin'] = true;
+            echo $_SESSION['is_admin'];
+            header('Location: index.php');
+        }
+        else {
+            unset($_SESSION['is_admin']);
+            header('Location: ../user/user_dashboard.php');
+        }
         exit;
     } else {
-        echo 'in else';
 
         $error_message = "Error: " . $query->errorInfo()[2];
     }

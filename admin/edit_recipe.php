@@ -6,9 +6,8 @@ include_once 'shared/categoryHandler.php';
 include_once 'shared/userHandler.php';
 
 
-if (empty($_SESSION['user_id'])) {
+if(empty($_SESSION['user_id']) || empty($_SESSION['is_admin'])) {
     header('Location: login.php');
-    exit();
 }
 $conn = new Database();
 $recipeHandler = new RecipeHandler($conn);
