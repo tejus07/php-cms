@@ -1,6 +1,7 @@
 <?php
 require 'includes/db.php';
 
+
 if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     session_start();
     session_destroy();
@@ -32,8 +33,11 @@ $brandFilter = isset($_GET['brandFilter']) ? $_GET['brandFilter'] : '';
 $page = 1;
 
 ?>
+<style>
+<?php include './styles.css'; ?>
+</style>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="index.php">Phone Specs Hub</a>
+    <a class="navbar-brand" href="index.php"><img src="logo.svg" class="img-fluid image-logo" alt="Phone Specs Hub"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>

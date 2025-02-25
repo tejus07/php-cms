@@ -8,7 +8,7 @@
   max-width: 80%;
   padding: 0 15px;
 }
-.search-container{
+.search-container {
   width: auto;
   padding: 0 15px;
 }
@@ -20,9 +20,9 @@
 .card-img-wrapper {
   position: relative;
   overflow: hidden;
-  font-family: Montserrat,sans-serif;
+  font-family: Montserrat, sans-serif;
   height: 300px;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .card-img-wrapper img {
@@ -30,5 +30,10 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
 
+img.img-fluid.image-logo {
+  width: 300px;
+  object-fit: cover;
+  height: 50px;
 }
